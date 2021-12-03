@@ -9,7 +9,19 @@ function loadSheetDataAsDict(sheet) {
   for (const row of data.slice(1)) {
     var row_obj = {};
     for (const i in row) {
-      row_obj[headers[i]] = row[i];
+      if (row[i]) {
+        if (typeof row[i] === "string") {
+          if (
+            row[i].charAt(0) === "[" &&
+            row[i].charAt(row[i].length - 1) == "]"
+          ) {
+            // The current cell is a list
+            row_obj[headers[i]] = JSON.parse(row[i].replace(/'/g, '"'));
+            continue;
+          }
+        }
+        row_obj[headers[i]] = row[i];
+      }
     }
     response.push(row_obj);
   }
