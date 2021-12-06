@@ -7,9 +7,9 @@
     {
       "type": "pwa-node",
       "request": "launch",
-      "name": "App Script Setup (Node.js)",
+      "name": "System setup (Node.js)",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}\\scripts\\app-script\\create-project.js"
+      "program": "${workspaceFolder}\\scripts\\setup.js"
     }
   ]
 }
