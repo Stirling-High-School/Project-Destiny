@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { authorize } = require('./g-setup/g-auth');
 const { createDriveFolder } = require('./g-setup/drive');
+const { createSpreadsheet } = require('./g-setup/sheets');
 
 
 // TODO: Implement failure callbacks, to proceed accordingly 
@@ -12,6 +13,9 @@ const { createDriveFolder } = require('./g-setup/drive');
 function setup(auth) {
   createDriveFolder(auth, (folderId) => {
     console.log("Drive folder id: " + folderId);
+    createSpreadsheet(auth, (spreadsheetId) => {
+      console.log(spreadsheetId);
+    });
   });
 }
 
