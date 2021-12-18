@@ -1,36 +1,42 @@
-import Form from 'react-bootstrap/Form'
-import Select from 'react-select'
+import Select, { components } from 'react-select'
 
-export function SelectInput({ name, options, description, required, onChange }) {
+export function SelectInput({ name, options, description, required, onChange, value }) {
+
+    const NoOptionsMessage = (props) => (
+        <components.NoOptionsMessage {...props}>
+            Select a subject to see available levels...
+        </components.NoOptionsMessage>
+    )
+
     return (
-        <Form.Group className="my-3" controlId={"formQuestion" + name}>
-            <Form.Label>{name}</Form.Label><br />
+        <div className="my-2 sm:my-3">
+            <label className="text-lg">{name}</label><br />
             {description &&
-                <Form.Text className="text-muted">{description}</Form.Text>}
-            <Select options={options} onChange={e => onChange(e.value)} />
-        </Form.Group>
+                <p className="text-sm text-grey">{description}</p>}
+            <Select className="my-2 shadow-sm" id={name} name={name} components={{ NoOptionsMessage }} options={options} value={value} onChange={e => onChange(e, name)} />
+        </div>
     )
 }
 
-export function TextInput({ name, type, description, required }) {
+export function TextInput({ name, type, description, required, onChange, value, disabled }) {
     return (
-        <Form.Group className="my-3" controlId={"formQuestion" + name}>
-            <Form.Label>{name}</Form.Label><br />
+        <div className="my-5">
+            <label className="text-lg">{name}</label><br />
             {description &&
-                <Form.Text className="text-muted">{description}</Form.Text>}
-            <Form.Control className="mt-2" type={type} required={required} />
-        </Form.Group>
+                <p className="text-sm text-grey">{description}</p>}
+            <input disabled={disabled} value={value} id={name} name={name} onChange={onChange} className="mt-2 p-2 shadow-sm rounded h-10 min-w-full border border-gray-300 focus:ring-blue-500 focus:ring-2 focus:outline-none focus:border-transparent" type={type} required={required} />
+        </div>
     )
 }
 
-export function LongTextInput({ name, type, description, required }) {
+export function LongTextInput({ name, type, description, required, onChange }) {
     return (
-        <Form.Group className="my-3" controlId={"formQuestion" + name}>
-            <Form.Label>{name}</Form.Label><br />
+        <div className="my-3">
+            <label className="text-lg">{name}</label><br />
             {description &&
-                <Form.Text className="text-muted">{description}</Form.Text>}
-            <Form.Control as="textarea" rows={3} className="mt-2" type={type} required={required} />
-        </Form.Group>
+                <p className="text-sm text-grey">{description}</p>}
+            <textarea className="mt-2 p-2 shadow-sm rounded h-32 min-w-full border border-gray-300 focus:ring-blue-500 focus:ring-2 focus:outline-none focus:border-transparent" style={{ resize: "vertical" }} id={name} name={name} onChange={onChange} type={type} required={required} />
+        </div>
     )
 }
 

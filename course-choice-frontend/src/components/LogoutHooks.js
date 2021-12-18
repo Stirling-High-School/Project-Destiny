@@ -1,13 +1,13 @@
 import React from 'react';
 import { useGoogleLogout } from 'react-google-login';
-import GoogleIcon from '../icons/google.png';
 
 const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
-function LogoutHooks() {
+function LogoutHooks({ setProfile }) {
     const onLogoutSuccess = (res) => {
         console.log('Logged out Success');
-        alert('Logged out Successfully ✌');
+        setProfile(null)
+        // alert('Logged out Successfully ✌');
     };
 
     const onFailure = () => {
@@ -21,11 +21,7 @@ function LogoutHooks() {
     });
 
     return (
-        <button onClick={signOut} className="button">
-            <img src={GoogleIcon} alt="google login" className="icon"></img>
-
-            <span className="buttonText">Sign out</span>
-        </button>
+        <button onClick={signOut} className="hover:underline text-blue-800">Log out</button>
     );
 }
 

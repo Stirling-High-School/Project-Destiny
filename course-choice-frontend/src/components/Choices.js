@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import Button from 'react-bootstrap/Button';
+import React from 'react';
 
 export default function Choices() {
 
