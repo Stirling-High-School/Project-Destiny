@@ -1,19 +1,21 @@
 function doGet(request) {
   /* Handle all GET requests */
   if (isValidGetRequest(request)) {
-    const courseChoiceName = courseChoiceIdResolver(
-      request.parameters.course_choice_id
-    );
-    if (courseChoiceName !== null) {
+    if (courseChoiceIdResolver(request.parameter.course_choice_id) !== null) {
+      // Course choice ID is valid
+      initializeConfiguration(request.parameter.course_choice_id);
+
       const courses = loadSheetDataAsDict(
-        CONFIGURATION_SPREADSHEET.getSheetByName(courseChoiceName)
+        CONFIG.CONFIGURATION_SPREADSHEET.getSheetByName("Course Choices")
       );
+
       return Response(
         "fetch_course",
         200,
         (data = {
           choices: serializeCourses(courses),
           additional_fields: getSerializedAdditionalFormFields(),
+          config: getSerializedConfig(),
         })
       );
     }
@@ -57,6 +59,6 @@ function isValidGetRequest(request) {
 function getSerializedAdditionalFormFields() {
   /* Get the additional form fields, serialized and ready for response */
   return loadSheetDataAsDict(
-    CONFIGURATION_SPREADSHEET.getSheetByName("Additional Form Fields")
+    CONFIG.CONFIGURATION_SPREADSHEET.getSheetByName("Additional Form Fields")
   );
 }
