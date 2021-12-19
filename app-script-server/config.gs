@@ -11,8 +11,7 @@ const FORM_RESPONSES_SPREADSHEET = SpreadsheetApp.openById(
 );
 
 // Map of request id's to sheet names
-// TODO: Potentially change the name of this, meta is a bit too general, meta would imply key value pairs, not a dedicated table
-const META = CONFIGURATION_SPREADSHEET.getSheetByName("Meta Data");
+const META = CONFIGURATION_SPREADSHEET.getSheetByName("Course ID Map");
 const COURSE_LEVELS = CONFIGURATION_SPREADSHEET.getSheetByName("Course Levels");
 
 // TODO I feel like this can be standardised in a better way

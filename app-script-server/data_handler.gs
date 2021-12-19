@@ -122,7 +122,16 @@ function storeFormResponse(formResponseData, course_choice_name) {
   var choices = [...formResponseData.choices];
   delete formResponseData.choices;
 
-  var optionalFields = Object.assign({}, formResponseData.optional_fields);
+  // Lower case all keys in optinalFields
+  var key,
+    keys = Object.keys(formResponseData.optional_fields);
+  var n = keys.length;
+  var optionalFields = {};
+  while (n--) {
+    key = keys[n];
+    optionalFields[key.toLowerCase()] = formResponseData.optional_fields[key];
+  }
+
   delete formResponseData.optional_fields;
 
   appendSheetDataAsDict(sheet, {
@@ -136,41 +145,4 @@ function storeFormResponse(formResponseData, course_choice_name) {
   for (const choice of choices.slice(1)) {
     appendSheetDataAsDict(sheet, choice);
   }
-}
-
-function test() {
-  // Test writing of form to spreadsheet
-  storeFormResponse(
-    {
-      email: "angus.henderson@citnow.com",
-      name: "Angus Henderson",
-      form_class: "6E1",
-      choices: [
-        {
-          subject: "Maths",
-          level: "Advanced Higher",
-          weight: 1,
-        },
-        {
-          subject: "Computing Science",
-          level: "Advanced Higher",
-          weight: 1,
-        },
-        {
-          subject: "Physics",
-          level: "Advanced Higher",
-          weight: 1,
-        },
-      ],
-      course_choice_id: "s45",
-      optional_fields: {
-        planned_destination: "Graduate Apprenticeship",
-        planned_destination_details:
-          "Looking to do a Graduate Apprenticeship in Software Engineering, potentially in fintech",
-        expected_leaving_date: 2022,
-        career_aspiration: "Software Engineer",
-      },
-    },
-    "S4-5 Course Choices"
-  );
 }

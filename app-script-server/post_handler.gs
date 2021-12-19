@@ -1,15 +1,10 @@
 // TODO Add proper POST request body data validation
 
 function doPost(request) {
-  var contents = JSON.parse(request.postData.contents);
-  // return Response("form_submit", 201, data=Object.keys({...contents.data}));
   /* Handle all POST requests */
-  // return Response("form_submit", 400, data={
-  //   "typeof": typeof data,
-  //   "data": data.data
-  // });
+  var contents = JSON.parse(request.postData.contents);
+
   if (isValidPostRequest(contents)) {
-    // return Response("form_submit", 201, data=contents.data);
     storeFormResponse(
       contents.data,
       courseChoiceIdResolver(contents.data.course_choice_id)
