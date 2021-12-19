@@ -1,18 +1,38 @@
-const CONFIGURATION_SPREADSHEET_ID =
+/* Project wide configuration */
+const ROOT_CONFIGURATION_SPREADSHEET_ID =
   "1laQGLcOqh0ukifaVeAjvBG7N9mWerIDB7tYOz1cZOa4";
-const FORM_RESPONSES_SPREADSHEET_ID =
-  "1QBErgKFQLoZm5II91zFlBb49YopauZRxZ7yUyV7CPn0";
-
-const CONFIGURATION_SPREADSHEET = SpreadsheetApp.openById(
-  CONFIGURATION_SPREADSHEET_ID
-);
-const FORM_RESPONSES_SPREADSHEET = SpreadsheetApp.openById(
-  FORM_RESPONSES_SPREADSHEET_ID
+const ROOT_CONFIGURATION_SPREADSHEET = SpreadsheetApp.openById(
+  ROOT_CONFIGURATION_SPREADSHEET_ID
 );
 
-// Map of request id's to sheet names
-const META = CONFIGURATION_SPREADSHEET.getSheetByName("Course ID Map");
-const COURSE_LEVELS = CONFIGURATION_SPREADSHEET.getSheetByName("Course Levels");
+var CONFIG = {
+  // ROOT LEVEL CONFIGURATION
+  COURSE_ID_MAP: ROOT_CONFIGURATION_SPREADSHEET.getSheetByName("Course ID Map"),
+  // Map of request id's to sheet names
+  COURSE_LEVELS: ROOT_CONFIGURATION_SPREADSHEET.getSheetByName("Course Levels"),
+
+  // CONFIGURATION DEPENDANT ON SELECTED LEVEL
+  CONFIGURATION_SPREADSHEET: null,
+  FORM_RESPONSES_SPREADSHEET: null,
+  SHEET_BORDER_COLOR: "#4285f4",
+};
+
+function initializeConfiguration(course_choice_id) {
+  // Fetch configuration data from the course_choice_id provided, assumes this is a valid id!
+  const sheet_data = loadSheetDataAsDict(CONFIG.COURSE_ID_MAP);
+  const course_choice_metadata = getAttributesForKey(
+    "course_choice_id",
+    course_choice_id,
+    sheet_data
+  );
+
+  CONFIG.CONFIGURATION_SPREADSHEET = SpreadsheetApp.openById(
+    course_choice_metadata.config_spreadsheet_id
+  );
+  CONFIG.FORM_RESPONSES_SPREADSHEET = SpreadsheetApp.openById(
+    course_choice_metadata.form_responses_spreadsheet_id
+  );
+}
 
 // TODO I feel like this can be standardised in a better way
 const getParameters = ["course_choice_id"];
@@ -25,5 +45,3 @@ const postDataOptions = [
   "optional_fields",
 ];
 const nonCourseChoiceOptions = ["Subject", "Department"];
-
-const SHEET_BORDER_COLOR = "#4285f4";

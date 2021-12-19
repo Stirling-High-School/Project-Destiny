@@ -55,7 +55,7 @@ function appendSheetDataAsDict(sheet, data) {
 function courseChoiceIdResolver(choiceChoiceId) {
   /* Convert course_choice_id to the display name of the corresponding sheet
   null returned if no id is found */
-  const data = loadSheetDataAsDict(META);
+  const data = loadSheetDataAsDict(CONFIG.COURSE_ID_MAP);
   for (const row of data) {
     if (choiceChoiceId == row.course_choice_id) {
       return row.display_name;
@@ -67,7 +67,7 @@ function courseChoiceIdResolver(choiceChoiceId) {
 function serializeCourses(course_data) {
   /* Convert raw course choice data from the spreadsheet into a json serialized object */
   var response = [];
-  var course_levels_data = loadSheetDataAsDict(COURSE_LEVELS);
+  var course_levels_data = loadSheetDataAsDict(CONFIG.COURSE_LEVELS);
   for (var course of course_data) {
     var r = {
       subject: course.Subject,
@@ -109,7 +109,8 @@ function getAttributesForKey(attribute_name, attribute_value, sheet_data) {
 function storeFormResponse(formResponseData, course_choice_name) {
   /* Insert the course choice form into the appropriate spreadsheet.
   Assumes course_choice_name is already valid, note this isn't the course_choice_id */
-  var sheet = FORM_RESPONSES_SPREADSHEET.getSheetByName(course_choice_name);
+  var sheet =
+    CONFIG.FORM_RESPONSES_SPREADSHEET.getSheetByName(course_choice_name);
   sheet.appendRow([" "]);
   sheet
     .getRange(
@@ -118,7 +119,7 @@ function storeFormResponse(formResponseData, course_choice_name) {
       1,
       sheet.getDataRange().getValues()[0].length
     )
-    .setBackground(SHEET_BORDER_COLOR);
+    .setBackground(CONFIG.SHEET_BORDER_COLOR);
   var choices = [...formResponseData.choices];
   delete formResponseData.choices;
 
@@ -145,4 +146,16 @@ function storeFormResponse(formResponseData, course_choice_name) {
   for (const choice of choices.slice(1)) {
     appendSheetDataAsDict(sheet, choice);
   }
+}
+
+function getSerializedConfig() {
+  /* Fetch all configuration data from the initialized config sheet, these are
+  simply key value pairs */
+  const response = {};
+  for (const row of loadSheetDataAsDict(
+    CONFIG.CONFIGURATION_SPREADSHEET.getSheetByName("Config")
+  )) {
+    response[row.key] = row.value;
+  }
+  return response;
 }
