@@ -106,11 +106,11 @@ function getAttributesForKey(attribute_name, attribute_value, sheet_data) {
   return null;
 }
 
-function storeFormResponse(formResponseData, course_choice_name) {
+function storeFormResponse(formResponseData) {
   /* Insert the course choice form into the appropriate spreadsheet.
-  Assumes course_choice_name is already valid, note this isn't the course_choice_id */
+  Assumes configuration has already been initialized */
   var sheet =
-    CONFIG.FORM_RESPONSES_SPREADSHEET.getSheetByName(course_choice_name);
+    CONFIG.FORM_RESPONSES_SPREADSHEET.getSheetByName("Form Responses");
   sheet.appendRow([" "]);
   sheet
     .getRange(
@@ -156,6 +156,18 @@ function getSerializedConfig() {
     CONFIG.CONFIGURATION_SPREADSHEET.getSheetByName("Config")
   )) {
     response[row.key] = row.value;
+  }
+  return response;
+}
+
+function getSerializedFormClasses() {
+  /* Fetch all form classes from the Form Classes sheet from the initialized
+  config spreadsheet, these are a list of strings */
+  const response = [];
+  for (const row of loadSheetDataAsDict(
+    CONFIG.CONFIGURATION_SPREADSHEET.getSheetByName("Form Classes")
+  )) {
+    response.push(row.form_class);
   }
   return response;
 }

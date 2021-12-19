@@ -5,17 +5,32 @@ function doPost(request) {
   var contents = JSON.parse(request.postData.contents);
 
   if (isValidPostRequest(contents)) {
-    storeFormResponse(
-      contents.data,
-      courseChoiceIdResolver(contents.data.course_choice_id)
-    );
+    if (courseChoiceIdResolver(contents.data.course_choice_id) !== null) {
+      // Course choice ID is valid
+      initializeConfiguration(contents.data.course_choice_id);
+
+      storeFormResponse(contents.data);
+
+      return Response(
+        "form_submit",
+        201,
+        (data = {
+          complete: true,
+          message: "Form has successfully been submitted",
+        })
+      );
+    }
+
     return Response(
       "form_submit",
-      201,
-      (data = {
-        complete: true,
-        message: "Form has successfully been submitted",
-      })
+      404,
+      (errors = [
+        {
+          message: "Invalid course_choice_id",
+          description: `Please provide a valid course_choice_id to submit the course choice form`,
+          type: 404,
+        },
+      ])
     );
   }
 
