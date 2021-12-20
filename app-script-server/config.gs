@@ -35,7 +35,10 @@ function initializeConfiguration(course_choice_id) {
 }
 
 // TODO I feel like this can be standardised in a better way
-const getParameters = ["course_choice_id"];
+const all_courses_without_keys = [
+  "config_spreadsheet_id",
+  "form_responses_spreadsheet_id",
+];
 const postDataOptions = [
   "email",
   "name",

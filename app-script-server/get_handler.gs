@@ -1,6 +1,6 @@
 function doGet(request) {
   /* Handle all GET requests */
-  if (isValidGetRequest(request)) {
+  if (courseChoiceIdProvided(request)) {
     const course_choice_id = request.parameter.course_choice_id;
     if (courseChoiceIdResolver(course_choice_id) !== null) {
       if (isLive(course_choice_id)) {
@@ -28,29 +28,21 @@ function doGet(request) {
 
     return INVALID_COURSE_CHOICE_ID_RESPONSE;
   }
+
+  // Return high level id summary for all courses
   return Response(
-    "fetch_course",
-    404,
-    (errors = [
-      {
-        message: "course_choice_id not provided",
-        description:
-          "Please provide a valid course_choice_id to fetch course choice information",
-        type: 404,
-      },
-    ])
+    "all_courses",
+    200,
+    (data = {
+      config: getSerializedRootConfig(),
+      courses: getAllSerializedCourses(),
+    })
   );
 }
 
-function isValidGetRequest(request) {
+function courseChoiceIdProvided(request) {
   /* Determine wether the parameters provided in a get request are valid */
-  for (const [parameter, _] of Object.entries(request.parameters)) {
-    if (!getParameters.includes(parameter)) {
-      return false;
-    }
-  }
-
-  return true;
+  return "course_choice_id" in request.parameter;
 }
 
 function getSerializedAdditionalFormFields() {

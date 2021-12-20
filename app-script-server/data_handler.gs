@@ -148,26 +148,46 @@ function storeFormResponse(formResponseData) {
   }
 }
 
-function getSerializedConfig() {
-  /* Fetch all configuration data from the initialized config sheet, these are
-  simply key value pairs */
+function __loadConfig(sheet) {
+  /* Load key value config data from a provided config sheet */
   const response = {};
-  for (const row of loadSheetDataAsDict(
-    CONFIG.CONFIGURATION_SPREADSHEET.getSheetByName("Config")
-  )) {
+  for (const row of loadSheetDataAsDict(sheet)) {
     response[row.key] = row.value;
   }
   return response;
 }
 
+function getSerializedConfig() {
+  /* Fetch all configuration data from the initialized config sheet, these are
+  simply key value pairs */
+  return __loadConfig(
+    CONFIG.CONFIGURATION_SPREADSHEET.getSheetByName("Config")
+  );
+}
+
+function getSerializedRootConfig() {
+  /* Fetch all configuration data from the project root config sheet, these are
+  simply key value pairs */
+  return __loadConfig(ROOT_CONFIGURATION_SPREADSHEET.getSheetByName("Config"));
+}
+
 function getSerializedFormClasses() {
   /* Fetch all form classes from the Form Classes sheet from the initialized
   config spreadsheet, these are a list of strings */
-  const response = [];
+  var response = [];
   for (const row of loadSheetDataAsDict(
     CONFIG.CONFIGURATION_SPREADSHEET.getSheetByName("Form Classes")
   )) {
     response.push(row.form_class);
   }
   return response;
+}
+
+function getAllSerializedCourses() {
+  /* Load Course ID Map data from root project configuration */
+  const data = loadSheetDataAsDict(CONFIG.COURSE_ID_MAP);
+  for (const row of data) {
+    all_courses_without_keys.forEach((e) => delete row[e]);
+  }
+  return data;
 }
