@@ -97,7 +97,7 @@ export default function Form() {
                     : null}
                 <SubjectChoices
                     maxChoices={data.config.max_choices}
-                    maxChoices={data.config.min_choices}
+                    minChoices={data.config.min_choices}
                     allChoices={data.choices}
                     groupedSubjects={groupSubjects(data.choices)}
                     weightings={data.config.weightings}
