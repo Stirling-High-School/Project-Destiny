@@ -1,4 +1,4 @@
-// TODO Add proper POST request body data validation
+// TODO Potentially add deeper validation, inline with config and additional_fields
 
 function doPost(request) {
   /* Handle all POST requests */
@@ -21,17 +21,7 @@ function doPost(request) {
       );
     }
 
-    return Response(
-      "form_submit",
-      404,
-      (errors = [
-        {
-          message: "Invalid course_choice_id",
-          description: `Please provide a valid course_choice_id to submit the course choice form`,
-          type: 404,
-        },
-      ])
-    );
+    return INVALID_COURSE_CHOICE_ID_RESPONSE;
   }
 
   return Response(
