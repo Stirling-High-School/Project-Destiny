@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import Form from './components/Form';
-import Choices from './components/Choices';
-import Header from './components/Header';
-import './App.css'
+import React from 'react';
+import Home from './components/Home';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 function App() {
   return (
-    <div className="py-8 px-1 md:py-12 md:px-12 lg:py-14 lg:px-48 bg-gray-100">
-      <Header />
-      <Form />
-      <Choices />
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/" exact component={() => <Home />} />
+        {/* <Route path="/:id" children={<Page />} /> */}
+        {/* <Route exact component={() => <NotFound />} /> */}
+      </Switch>
+    </Router>
   );
 }
 
