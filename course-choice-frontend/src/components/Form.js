@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AdditionalFields, PersonalDetails, SubjectChoices } from './form/index-forms'
+import { AdditionalFields, SubjectChoices } from './form/index-forms'
 import Loading from './reusable/Loading';
 import Header from './Header';
 
@@ -32,7 +32,7 @@ function groupSubjects(choices) {
 
 export default function Form() {
 
-    const [profile, setProfile] = useState()
+    // const [profile, setProfile] = useState()
     const [data, setData] = useState()
     const [formValues, setFormValues] = useState({
         type: '',
@@ -71,8 +71,8 @@ export default function Form() {
     function submitForm() {
         console.log("submitting form!")
         let current = formValues
-        current["data"].name = profile.name
-        current["data"].email = profile.email
+        // current["data"].name = profile.name
+        // current["data"].email = profile.email
         setFormValues(current)
         console.log(JSON.stringify(current))
 
@@ -89,12 +89,12 @@ export default function Form() {
         <div className="py-8 px-1 md:py-12 md:px-12 lg:py-14 lg:px-48 h-full">
             <Header title={data.config.title} welcomeMessage={data.config.welcome_message} imageBlob={data.config.image_blob} />
             <div className="m-5">
-                {profile ? <PersonalDetails
+                {/* {profile ? <PersonalDetails
                     formClasses={data.form_class_options}
                     profile={profile}
                     formValues={formValues}
                     setFormValues={e => setFormValues(e)} />
-                    : null}
+                    : null} */}
                 <SubjectChoices
                     maxChoices={data.config.max_choices}
                     minChoices={data.config.min_choices}

@@ -1,5 +1,5 @@
 import { TextInput, LongTextInput, SelectInput } from './inputs/index-inputs';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Card from '../reusable/Card';
 
 export default function AdditionalFields({ additional_fields, formValues, setFormValues }) {
