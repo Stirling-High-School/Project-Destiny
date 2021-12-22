@@ -1,62 +1,93 @@
 import { SelectInput } from './inputs/index-inputs';
-import { useState, useEffect } from 'react';
+import { useEffect, useReducer } from 'react';
 
-export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weightings, formValues, setFormValues }) {
+function choiceReducer(state, action) {
+    switch (action.type) {
+        case 'SET_SELECTED_SUBJECT':
+            let subjectObject = state["all_choices"].find(subjectObj => subjectObj.subject === action.payload);
+            let levels = subjectObject["levels"].map(level => ({ value: level.display_name, label: level.display_name }));
+            return {
+                ...state,
+                return_choice: { ...state.return_choice, subject: action.payload },
+                availableLevels: levels,
+            };
+        case 'SET_SELECTED_LEVEL':
+            return {
+                ...state,
+                return_choice: { ...state.return_choice, level: action.payload },
+            };
+        case 'SET_SELECTED_WEIGHTING':
+            return {
+                ...state,
+                return_choice: { ...state.return_choice, weight: action.payload },
+            };
+        default:
+            throw new Error();
+    }
+}
 
-    const [selectedSubject, setSelectedSubject] = useState()
-    const [selectedLevel, setSelectedLevel] = useState()
-    const [selectedWeighting, setSelectedWeighting] = useState()
+// has to send back choice object: { subject: '', level: '', weight: 0 }
+export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weightings, handleSubjectChoicesChange, required, setFocusSet, canFocus, last }) {
 
-    const [subjectLevels, setSubjectLevels] = useState([])
+    const [choice, dispatchChoice] = useReducer(
+        choiceReducer,
+        {
+            return_choice: {
+                subject: null,
+                level: null,
+                weight: null,
+            },
+            availableLevels: [],
+            all_choices: allChoices,
+            choice_no: choiceNo,
+        },
+    )
+    const { return_choice, availableLevels } = choice;
+    const { level } = return_choice;
 
-    useEffect(() => {
-        if (selectedSubject) {
-            let subjectObject = allChoices.find(subjectObj => subjectObj.subject === selectedSubject)
-            let levels = subjectObject["levels"].map(level => ({ value: level.display_name, label: level.display_name }))
-            
-            setSubjectLevels(levels)
-            setSelectedLevel(null)
-
-            formValues["data"]["choices"][choiceNo - 1] ? formValues["data"]["choices"][choiceNo - 1].subject = selectedSubject : formValues["data"]["choices"][choiceNo - 1] = { subject: selectedSubject, level: '', weight: 0 }
-            setFormValues(formValues)
-        }
-    }, [selectedSubject, choiceNo, allChoices, formValues, setFormValues])
-
-    useEffect(() => {
-        if (selectedLevel) {
-            formValues["data"]["choices"][choiceNo - 1] ? formValues["data"]["choices"][choiceNo - 1].level = selectedLevel : formValues["data"]["choices"][choiceNo - 1] = { subject: '', level: selectedLevel, weight: 0 }
-            setFormValues(formValues)
-        }
-    }, [selectedLevel, choiceNo, formValues, setFormValues])
-
-    useEffect(() => {
-        if (selectedWeighting) {
-            console.log("New subject selected: " + selectedWeighting + " for " + choiceNo)
-            formValues["data"]["choices"][choiceNo - 1] ? formValues["data"]["choices"][choiceNo - 1].weight = selectedWeighting : formValues["data"]["choices"][choiceNo - 1] = { subject: '', level: '', weight: selectedWeighting }
-            setFormValues(formValues)
-        }
-    }, [selectedWeighting, choiceNo, formValues, setFormValues])
+    // Not the best fix in the world...
+    useEffect((choice = choiceNo, pls = handleSubjectChoicesChange) => {
+        pls(choice - 1, return_choice);
+    }, [return_choice])
 
     return (
-        <div className="my-2">
-            <h5 className="text-2xl">{"Choice " + choiceNo}</h5>
-            <div className="grid sm:grid-cols-3 sm:gap-4">
-                <SelectInput
-                    name="Subject:"
-                    options={groupedSubjects}
-                    onChange={e => setSelectedSubject(e.value)} />
-                <SelectInput
-                    name="Level:"
-                    value={selectedLevel
-                        ? { value: selectedLevel, label: selectedLevel }
-                        : null}
-                    options={subjectLevels}
-                    onChange={e => setSelectedLevel(e.value)} />
-                <SelectInput
-                    name="Weighting:"
-                    options={weightings.map(weighting => ({ value: weighting, label: weighting }))}
-                    onChange={e => setSelectedWeighting(e.value)} />
+        <>
+            <div className="my-2 flex items-center justify-center">
+                <h5 className="flex flex-shrink-0 text-xl mr-10">
+                    {`Choice ${choiceNo}`}
+                    <p className={`text-red-600 ml-1 ${required || "invisible"}`}>*</p>
+                </h5>
+                <div className="grid sm:grid-cols-3 w-full sm:gap-4">
+                    <SelectInput
+                        name=""
+                        placeholder="Subject..."
+                        options={groupedSubjects}
+                        onChange={e => dispatchChoice({ type: 'SET_SELECTED_SUBJECT', payload: e.value })}
+                        required={required}
+                        setFocusSet={e => setFocusSet(e)}
+                        canFocus={canFocus} />
+                    <SelectInput
+                        name=""
+                        placeholder="Level..."
+                        value={level
+                            ? { value: level, label: level }
+                            : null}
+                        options={availableLevels}
+                        onChange={e => dispatchChoice({ type: 'SET_SELECTED_LEVEL', payload: e.value })}
+                        required={required}
+                        setFocusSet={e => setFocusSet(e)}
+                        canFocus={canFocus} />
+                    <SelectInput
+                        name=""
+                        placeholder="Weighting..."
+                        options={weightings.map(weighting => ({ value: weighting, label: weighting }))}
+                        onChange={e => dispatchChoice({ type: 'SET_SELECTED_WEIGHTING', payload: e.value })}
+                        required={required}
+                        setFocusSet={e => setFocusSet(e)}
+                        canFocus={canFocus} />
+                </div>
             </div>
-        </div>
+            {last || <hr />}
+        </>
     )
 }

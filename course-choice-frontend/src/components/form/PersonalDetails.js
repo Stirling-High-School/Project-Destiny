@@ -1,31 +1,30 @@
-import { TextInput, SelectInput } from './inputs/index-inputs'
+import { SelectInput } from './inputs/index-inputs'
 import Card from '../reusable/Card';
+import FormHeading from '../reusable/FormHeading';
 
-export default function PersonalDetails({ formClasses, profile, formValues, setFormValues }) {
-
-    function handleFormClassChange(e) {
-        formValues["data"].form_class = e.value
-        setFormValues(formValues)
-    }
+export default function PersonalDetails({ formClasses, handleFormClassChange, setFocusSet, canFocus }) {
 
     return (
         <Card>
-            <h1 className="text-4xl">Personal Details</h1>
-            <TextInput
+            <FormHeading>Your Details</FormHeading>
+            {/* <TextInput
                 name="Name:"
-                value={profile.name}
+                value={name}
                 disabled={true}
                 type="text" />
             <TextInput
                 name="Email address:"
-                value={profile.email}
+                value={email}
                 disabled={true}
-                type="text" />
+                type="text" /> */}
             <SelectInput
-                name="Form class:"
+                name="Form class"
                 options={formClasses.map(formClass => ({ value: formClass, label: formClass }))}
                 required={true}
-                onChange={e => handleFormClassChange(e)} />
+                onChange={handleFormClassChange}
+                setFocusSet={e => setFocusSet(e)}
+                canFocus={canFocus}
+            />
         </Card>
     )
 }

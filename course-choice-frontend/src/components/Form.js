@@ -1,119 +1,249 @@
-import React, { useEffect, useState } from 'react'
-import { AdditionalFields, SubjectChoices } from './form/index-forms'
+import React, { useEffect, useState, useReducer } from 'react'
+import { AdditionalFields, PersonalDetails, SubjectChoices } from './form/index-forms'
+import Login from './Login';
 import Loading from './reusable/Loading';
 import Header from './Header';
+import groupSubjects from './groupSubjects';
+import { toast } from 'react-toastify';
+import { useLocation, Link } from 'react-router-dom';
+import axios from 'axios';
+import ErrorComponent from './form/errors/ErrorComponent';
+import Submit from './form/Submit';
+import ActualForm from './ActualForm';
 
-function groupSubjects(choices) {
-
-    let groupedSubjectsArr = [{
-        label: choices[0].department,
-        options: [
-            { label: choices[0].subject, value: choices[0].subject }
-        ]
-    }]
-
-    for (let i = 1; i < choices.length; i++) {
-
-        let { department, subject } = choices[i]
-        let currentDep = groupedSubjectsArr.find(choice => choice.label === department)
-
-        if (currentDep) currentDep["options"].push({ label: subject, value: subject })
-        else {
-            groupedSubjectsArr.push({
-                label: department,
-                options: [
-                    { label: subject, value: subject }
-                ]
-            })
-        }
+function fetchDataReducer(state, action) {
+    switch (action.type) {
+        case 'DATA_FETCH_INIT':
+            return {
+                ...state,
+                isLoading: true,
+                isError: false,
+            };
+        case 'DATA_FETCH_SUCCESS':
+            return {
+                ...state,
+                isLoading: false,
+                isError: false,
+                choices_data: action.payload.choices,
+                optional_fields_data: action.payload.additional_fields,
+                config: action.payload.config,
+                form_class_options: action.payload.form_class_options,
+            };
+        case 'DATA_FETCH_FAILURE':
+            return {
+                ...state,
+                isLoading: false,
+                isError: true,
+                errorComponent: action.payload,
+            };
+        case 'SET_PROFILE':
+            return {
+                ...state,
+                profile: action.payload,
+            }
+        default:
+            throw new Error();
     }
-    return groupedSubjectsArr;
 }
 
-export default function Form() {
+function formValuesReducer(state, action) {
+    switch (action.type) {
+        case 'SET_NAME':
+            return {
+                ...state,
+                data: { ...state.data, name: action.payload },
+            }
+        case 'SET_EMAIL':
+            return {
+                ...state,
+                data: { ...state.data, email: action.payload },
+            }
+        case 'SET_FORM_CLASS':
+            return {
+                ...state,
+                data: { ...state.data, form_class: action.payload },
+            }
+        case 'SET_CHOICES':
+            return {
+                ...state,
+                data: { ...state.data, choices: action.payload },
+            }
+        case 'SET_ADDITIONAL_FIELDS':
+            return {
+                ...state,
+                data: { ...state.data, optional_fields: action.payload },
+            }
+        default:
+            throw new Error();
+    }
+}
 
-    // const [profile, setProfile] = useState()
-    const [data, setData] = useState()
-    const [formValues, setFormValues] = useState({
-        type: '',
-        data: {
-            email: '',
-            name: '',
-            form_class: '',
-            course_choice_id: 's45',
-            choices: [
-                {
-                    subject: '',
-                    level: '',
-                    weight: 0
-                }
-            ],
-            optional_fields: {},
+function Form() {
+
+    const location = useLocation()
+    const id = location.pathname.substring(1)
+
+    const [profile, setProfile] = useState()
+
+    const [fetchData, dispatchFetchData] = useReducer(
+        fetchDataReducer,
+        {
+            choices_data: null,
+            optional_fields_data: null,
+            config: null,
+            form_class_options: null,
+            isLoading: true,
+            isError: false,
+            errorComponent: null
         }
-    })
+    );
+    const { choices_data, optional_fields_data, config, form_class_options, isLoading, isError, errorComponent } = fetchData;
 
-    const api = "https://script.google.com/macros/s/AKfycbxendJicJ5Z2SW9kg1bS9R-Xfxy9AL_qaVwqEC7SF0gJGTUGkLxI9TqMyo6w0Cupt1IFg/exec?course_choice_id=s45";
+    const [formValues, dispatchFormValues] = useReducer(
+        formValuesReducer,
+        {
+            type: 'form_response',
+            data: {
+                email: '',
+                name: '',
+                form_class: '',
+                course_choice_id: id,
+                choices: [],
+                optional_fields: {},
+            }
+        }
+    )
+    const { data } = formValues;
+    const { choices, optional_fields } = data
+
+    const [focusSet, setFocusSet] = useState(false)
 
     useEffect(() => {
-        fetch(api)
-            .then((response) => response.json())
-            .then((data) => {
-                setData(data.data)
-                console.log(data.data)
-            });
-    }, [])
+        async function fetchData() {
+            dispatchFetchData({ type: 'DATA_FETCH_INIT' })
+            const api = `https://script.google.com/macros/s/AKfycbwl_u-N1_mbOzZGXz1TXZPdlJ9D78_cDzvWqynJQuEM-UcX_Q-icyZ-TO1C_ZQSpbP6WA/exec?course_choice_id=${id}`;
+            try {
+                const result = await axios.get(api);
+                console.log(result.data.data)
+                if (result.data.status_code === 200) {
+                    dispatchFetchData({
+                        type: 'DATA_FETCH_SUCCESS',
+                        payload: result.data.data,
+                    });
+                } else {
+                    dispatchFetchData({
+                        type: 'DATA_FETCH_FAILURE',
+                        payload: <ErrorComponent message={result.data.data[0].message} description={result.data.data[0].description} />
+                    })
+                }
+            } catch (error) {
+                dispatchFetchData({
+                    type: 'DATA_FETCH_FAILURE',
+                    payload: <ErrorComponent message={"An unknown error has occured"} description={"Please try again later."} />
+                })
+            }
+        }
+        fetchData()
+    }, [id])
 
     useEffect(() => {
         console.log("New form values: ")
         console.log(formValues)
     }, [formValues])
 
-    function submitForm() {
-        console.log("submitting form!")
-        let current = formValues
-        // current["data"].name = profile.name
-        // current["data"].email = profile.email
-        setFormValues(current)
-        console.log(JSON.stringify(current))
+    useEffect(() => {
+        if (profile) {
+            dispatchFormValues({
+                type: 'SET_NAME',
+                payload: profile.displayName,
+            })
+            dispatchFormValues({
+                type: 'SET_EMAIL',
+                payload: profile.email,
+            })
+        }
+    }, [profile])
 
-        fetch(api, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(current)
+    const submitForm = (e) => {
+        e.preventDefault();
+
+        const api = 'https://script.google.com/macros/s/AKfycbwl_u-N1_mbOzZGXz1TXZPdlJ9D78_cDzvWqynJQuEM-UcX_Q-icyZ-TO1C_ZQSpbP6WA/exec';
+
+        console.log("submitting form!")
+        console.log(formValues)
+
+        const postData = () => {
+            return fetch(api, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formValues)
+            })
+        }
+
+        const response = toast.promise(
+            postData(),
+            {
+                pending: 'Submitting form...',
+                success: 'Form submitted!',
+                error: 'There was an error submitting the form!'
+            }
+        )
+
+        if (response.isFulfilled) {
+            <Link to='/submitted' />
+        }
+    }
+
+    const handleAdditionalFieldChange = (field, value) => {
+        dispatchFormValues({
+            type: 'SET_ADDITIONAL_FIELDS',
+            payload: { ...optional_fields, [field]: value }
+        })
+    }
+
+    const handleSubjectChoicesChange = (choice, value) => {
+        let newChoices = choices;
+        newChoices[choice] = value
+        dispatchFormValues({
+            type: 'SET_CHOICES',
+            payload: newChoices
+        })
+    }
+
+    const handleFormClassChange = (e) => {
+        dispatchFormValues({
+            type: 'SET_FORM_CLASS',
+            payload: e.value
         })
     }
 
     return (
-        data ?
-        <div className="py-8 px-1 md:py-12 md:px-12 lg:py-14 lg:px-48 h-full">
-            <Header title={data.config.title} welcomeMessage={data.config.welcome_message} imageBlob={data.config.image_blob} />
-            <div className="m-5">
-                {/* {profile ? <PersonalDetails
-                    formClasses={data.form_class_options}
-                    profile={profile}
-                    formValues={formValues}
-                    setFormValues={e => setFormValues(e)} />
-                    : null} */}
-                <SubjectChoices
-                    maxChoices={data.config.max_choices}
-                    minChoices={data.config.min_choices}
-                    allChoices={data.choices}
-                    groupedSubjects={groupSubjects(data.choices)}
-                    weightings={data.config.weightings}
-                    formValues={formValues}
-                    setFormValues={e => setFormValues(e)} />
-                <AdditionalFields
-                    additional_fields={data.additional_fields}
-                    formValues={formValues}
-                    setFormValues={e => setFormValues(e)} />
-                <button onClick={submitForm} type="submit" className="cursor-pointer my-10 px-5 py-3 bg-blue-700 rounded-xl text-gray-100 sm:w-1/3 md:w-1/6">
-                    Submit
-                </button>
-                <p className="mb-2">Please make sure that your choices are correct before submitting.</p>
-                <p>You will recieve and email confirmation with your choices.</p>
-            </div>
-        </div> 
-        : <Loading />
+        <>
+            {isLoading ? <Loading /> : (
+                <>
+                    {isError ? errorComponent : (
+                        <>
+                            <Header title={config.title} welcomeMessage={config.welcome_message} imageBlob={config.image_blob} />
+                            <Login profile={profile} setProfile={e => setProfile(e)} />
+
+                            {profile ? (
+                                <ActualForm
+                                    fetchData={fetchData}
+                                    submitForm={(e) => submitForm(e)}
+                                    focusSet={focusSet}
+                                    setFocusSet={e => setFocusSet(e)}
+                                    handleFormClassChange={e => handleFormClassChange(e)}
+                                    handleSubjectChoicesChange={e => handleSubjectChoicesChange(e)}
+                                    handleAdditionalFieldChange={e => handleAdditionalFieldChange(e)}
+                                />
+                            ) : (
+                                null
+                            )}
+                        </>)}
+                </>)}
+        </>
     )
 }
+
+export default Form;
