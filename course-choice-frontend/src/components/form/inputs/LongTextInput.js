@@ -9,6 +9,7 @@ export default function LongTextInput({ name, type, description, required, onCha
         setError(false)
         onChange(e)
         setFocusSet(false)
+        toast.dismiss()
     }
 
     const handleInvalid = (e) => {

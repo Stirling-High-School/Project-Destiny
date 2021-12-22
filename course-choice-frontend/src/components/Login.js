@@ -28,11 +28,11 @@ export default function Login({ profile, setProfile }) {
     const auth = getAuth();
     signInWithPopup(auth, provider)
       .then((result) => {
-        const user = result.user;
-        setProfile(user)
+        setProfile(result.user)
+        toast.success("Successfully signed in!")
       }).catch((error) => {
         toast.error("An error occured while trying to sign in!")
-        console.log(error)
+        console.log("Error occured during sign in: " + error)
       });
   }
 
@@ -40,10 +40,11 @@ export default function Login({ profile, setProfile }) {
     const auth = getAuth();
 
     signOut(auth).then(() => {
-      console.log("signed out")
       setProfile(null)
+      toast.success("Successfully signed out!")
     }).catch((error) => {
-      console.log(error)
+      toast.error("An error occured while trying to sign out!")
+      console.log("Error occured during sign out: " + error)
     });
   }
 

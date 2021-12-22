@@ -1,33 +1,6 @@
-import { SelectInput } from './inputs/index-inputs';
+import { SelectInput } from '../inputs';
 import { useEffect, useReducer } from 'react';
-
-function choiceReducer(state, action) {
-    switch (action.type) {
-        case 'SET_SELECTED_SUBJECT':
-            let subjectObject = state["all_choices"].find(subjectObj => subjectObj.subject === action.payload);
-            let levels = []
-            if (subjectObject) {
-                levels = subjectObject["levels"].map(level => ({ value: level.display_name, label: level.display_name, isDisabled: false }));
-            }
-            return {
-                ...state,
-                return_choice: { ...state.return_choice, subject: action.payload },
-                availableLevels: levels,
-            };
-        case 'SET_SELECTED_LEVEL':
-            return {
-                ...state,
-                return_choice: { ...state.return_choice, level: action.payload },
-            };
-        case 'SET_SELECTED_WEIGHTING':
-            return {
-                ...state,
-                return_choice: { ...state.return_choice, weight: action.payload },
-            };
-        default:
-            throw new Error();
-    }
-}
+import choiceReducer from '../../reducers/choiceReducer'
 
 // has to send back choice object: { subject: '', level: '', weight: 0 }
 export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weightings, handleSubjectChoicesChange, reinstateSubject, reinstateWeight, required, setFocusSet, canFocus, last }) {
@@ -53,8 +26,8 @@ export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weigh
         pls(choice - 1, return_choice);
     }, [return_choice])
 
-    const weightChange = (value = "") => {
-        dispatchChoice({ type: 'SET_SELECTED_WEIGHTING', payload: value })
+    const weightChange = (weight = "") => {
+        dispatchChoice({ type: 'SET_SELECTED_WEIGHTING', payload: weight })
     }
 
     return (
@@ -91,7 +64,7 @@ export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weigh
                         name=""
                         placeholder="Weighting..."
                         options={weightings}
-                        onChange={weightChange}
+                        onChange={e => weightChange(e.value)}
                         required={required}
                         reinstate={(weight) => reinstateWeight(weight)}
                         setFocusSet={e => setFocusSet(e)}

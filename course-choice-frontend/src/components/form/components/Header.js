@@ -1,5 +1,4 @@
 import Linkify from 'react-linkify';
-import Break from './reusable/Break';
 
 export default function Header({ title, welcomeMessage, imageBlob }) {
     return (
@@ -11,7 +10,6 @@ export default function Header({ title, welcomeMessage, imageBlob }) {
             />
             <h1 className="text-xl sm:text-3xl md:text-4xl m-2">{title}</h1>
             <Linkify><p className="mx-8">{welcomeMessage}</p></Linkify>
-            {/* <Break /> */}
         </div>
     )
 }

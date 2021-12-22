@@ -1,22 +1,11 @@
-import { SelectInput } from './inputs/index-inputs'
-import Card from '../reusable/Card';
-import FormHeading from '../reusable/FormHeading';
+import SelectInput from '../inputs/SelectInput';
+import { Card, FormHeading } from '../../reusable';
 
 export default function PersonalDetails({ formClasses, handleFormClassChange, setFocusSet, canFocus }) {
 
     return (
         <Card>
             <FormHeading>Your Details</FormHeading>
-            {/* <TextInput
-                name="Name:"
-                value={name}
-                disabled={true}
-                type="text" />
-            <TextInput
-                name="Email address:"
-                value={email}
-                disabled={true}
-                type="text" /> */}
             <SelectInput
                 name="Form class"
                 options={formClasses.map(formClass => ({ value: formClass, label: formClass }))}

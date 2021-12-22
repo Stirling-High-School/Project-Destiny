@@ -1,6 +1,5 @@
-import Submit from './form/Submit';
-import groupSubjects from './groupSubjects';
-import { AdditionalFields, PersonalDetails, SubjectChoices } from './form/index-forms'
+import groupSubjects from '../functions/groupSubjects';
+import { AdditionalFields, PersonalDetails, SubjectChoices, Submit } from './components'
 
 export default function ActualForm({ fetchData, submitForm, focusSet, setFocusSet, handleFormClassChange, handleSubjectChoicesChange, handleAdditionalFieldChange }) {
     const { choices_data, optional_fields_data, config, form_class_options } = fetchData;

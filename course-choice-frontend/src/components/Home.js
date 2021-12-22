@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
-import Card from './reusable/Card';
+import { Card, Loading } from './reusable';
 import { useState, useEffect } from 'react';
-import Header from './Header';
-import Loading from './reusable/Loading';
+import Header from './form/components/Header';
 
 function Home() {
 

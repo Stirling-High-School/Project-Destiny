@@ -1,6 +1,5 @@
 import ChoiceRow from './ChoiceRow';
-import Card from '../reusable/Card';
-import FormHeading from '../reusable/FormHeading';
+import { Card, FormHeading } from '../../reusable';
 import { useState } from 'react';
 
 export default function SubjectChoices({ message, maxChoices, minChoices, allChoices, groupedSubjects, weightings, handleSubjectChoicesChange, setFocusSet, canFocus }) {

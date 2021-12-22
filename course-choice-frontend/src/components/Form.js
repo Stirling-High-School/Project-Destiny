@@ -1,86 +1,18 @@
-import React, { useEffect, useState, useReducer } from 'react'
+import React, { useEffect, useState, useReducer } from 'react';
+import { fetchDataReducer, formValuesReducer, submittedReducer } from './reducers';
 import Login from './Login';
-import Loading from './reusable/Loading';
-import Header from './Header';
-import { toast } from 'react-toastify';
-import { useLocation, Link } from 'react-router-dom';
+import { Loading } from './reusable';
+import Header from './form/components/Header';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import ErrorComponent from './form/errors/ErrorComponent';
-import ActualForm from './ActualForm';
-
-function fetchDataReducer(state, action) {
-    switch (action.type) {
-        case 'DATA_FETCH_INIT':
-            return {
-                ...state,
-                isLoading: true,
-                isError: false,
-            };
-        case 'DATA_FETCH_SUCCESS':
-            return {
-                ...state,
-                isLoading: false,
-                isError: false,
-                choices_data: action.payload.choices,
-                optional_fields_data: action.payload.additional_fields,
-                config: action.payload.config,
-                form_class_options: action.payload.form_class_options,
-            };
-        case 'DATA_FETCH_FAILURE':
-            return {
-                ...state,
-                isLoading: false,
-                isError: true,
-                errorComponent: action.payload,
-            };
-        case 'SET_PROFILE':
-            return {
-                ...state,
-                profile: action.payload,
-            }
-        default:
-            throw new Error();
-    }
-}
-
-function formValuesReducer(state, action) {
-    switch (action.type) {
-        case 'SET_NAME':
-            return {
-                ...state,
-                data: { ...state.data, name: action.payload },
-            }
-        case 'SET_EMAIL':
-            return {
-                ...state,
-                data: { ...state.data, email: action.payload },
-            }
-        case 'SET_FORM_CLASS':
-            return {
-                ...state,
-                data: { ...state.data, form_class: action.payload },
-            }
-        case 'SET_CHOICES':
-            return {
-                ...state,
-                data: { ...state.data, choices: action.payload },
-            }
-        case 'SET_ADDITIONAL_FIELDS':
-            return {
-                ...state,
-                data: { ...state.data, optional_fields: action.payload },
-            }
-        default:
-            throw new Error();
-    }
-}
+import ActualForm from './form/ActualForm';
+import Submitted from './Submitted';
 
 function Form() {
 
     const location = useLocation()
     const id = location.pathname.substring(1)
-
-    const [profile, setProfile] = useState()
 
     const [fetchData, dispatchFetchData] = useReducer(
         fetchDataReducer,
@@ -111,9 +43,19 @@ function Form() {
         }
     )
     const { data } = formValues;
-    const { choices, optional_fields } = data
+    const { choices, optional_fields } = data;
+
+    const [submitted, dispatchSubmitted] = useReducer(
+        submittedReducer,
+        {
+            isSubmitting: false,
+            isSubmitted: false
+        }
+    )
+    const { isSubmitting, isSubmitted } = submitted;
 
     const [focusSet, setFocusSet] = useState(false)
+    const [profile, setProfile] = useState()
 
     useEffect(() => {
         async function fetchData() {
@@ -143,10 +85,10 @@ function Form() {
         fetchData()
     }, [id])
 
-    useEffect(() => {
-        console.log("New form values: ")
-        console.log(formValues)
-    }, [formValues])
+    // useEffect(() => {
+    //     console.log("New form values: ")
+    //     console.log(formValues)
+    // }, [formValues])
 
     useEffect(() => {
         if (profile) {
@@ -163,33 +105,26 @@ function Form() {
 
     const submitForm = (e) => {
         e.preventDefault();
-
         const api = 'https://script.google.com/macros/s/AKfycbwl_u-N1_mbOzZGXz1TXZPdlJ9D78_cDzvWqynJQuEM-UcX_Q-icyZ-TO1C_ZQSpbP6WA/exec';
 
         console.log("submitting form!")
         console.log(formValues)
 
-        const postData = () => {
-            return fetch(api, {
+        async function postData() {
+
+            dispatchSubmitted({ type: 'SUBMIT_INIT' })
+
+            const response = await fetch(api, {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formValues)
             })
+
+            if (response) dispatchSubmitted({ type: 'SUBMIT_SUCCESS' })
         }
 
-        const response = toast.promise(
-            postData(),
-            {
-                pending: 'Submitting form...',
-                success: 'Form submitted!',
-                error: 'There was an error submitting the form!'
-            }
-        )
-
-        if (response.isFulfilled) {
-            <Link to='/submitted' />
-        }
+        postData()
     }
 
     const handleAdditionalFieldChange = (field, value) => {
@@ -215,32 +150,37 @@ function Form() {
         })
     }
 
-    return (
-        <>
-            {isLoading ? <Loading /> : (
-                <>
-                    {isError ? errorComponent : (
-                        <>
-                            <Header title={config.title} welcomeMessage={config.welcome_message} imageBlob={config.image_blob} />
-                            <Login profile={profile} setProfile={e => setProfile(e)} />
 
-                            {profile ? (
-                                <ActualForm
-                                    fetchData={fetchData}
-                                    submitForm={(e) => submitForm(e)}
-                                    focusSet={focusSet}
-                                    setFocusSet={e => setFocusSet(e)}
-                                    handleFormClassChange={e => handleFormClassChange(e)}
-                                    handleSubjectChoicesChange={(choice, value) => handleSubjectChoicesChange(choice, value)}
-                                    handleAdditionalFieldChange={(field, value) => handleAdditionalFieldChange(field, value)}
-                                />
-                            ) : (
-                                null
-                            )}
-                        </>)}
-                </>)}
-        </>
-    )
+    if (isSubmitting) {
+        return <Loading text="Submitting..." colour="green" />
+    } else if (isSubmitted) {
+        return <Submitted />
+    } else if (isLoading) {
+        return <Loading text="Loading..." colour="blue" />
+    } else if (isError) {
+        return errorComponent
+    } else {
+        return (
+            <>
+                <Header title={config.title} welcomeMessage={config.welcome_message} imageBlob={config.image_blob} />
+                <Login profile={profile} setProfile={e => setProfile(e)} />
+
+                {profile ? (
+                    <ActualForm
+                        fetchData={fetchData}
+                        submitForm={(e) => submitForm(e)}
+                        focusSet={focusSet}
+                        setFocusSet={e => setFocusSet(e)}
+                        handleFormClassChange={e => handleFormClassChange(e)}
+                        handleSubjectChoicesChange={(choice, value) => handleSubjectChoicesChange(choice, value)}
+                        handleAdditionalFieldChange={(field, value) => handleAdditionalFieldChange(field, value)}
+                    />
+                ) : (
+                    null
+                )}
+            </>
+        )
+    }
 }
 
 export default Form;

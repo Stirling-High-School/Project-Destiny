@@ -1,6 +1,5 @@
-import { TextInput, LongTextInput, SelectInput } from './inputs/index-inputs';
-import Card from '../reusable/Card';
-import FormHeading from '../reusable/FormHeading';
+import { TextInput, LongTextInput, SelectInput } from '../inputs';
+import { Card, FormHeading } from '../../reusable';
 
 export default function AdditionalFields({ title, message, additional_fields, handleAdditionalFieldChange, setFocusSet, canFocus }) {
     return (

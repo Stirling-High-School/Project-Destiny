@@ -9,6 +9,7 @@ export default function TextInput({ name, type, description, required, onChange,
         setError(false)
         onChange(e)
         setFocusSet(false)
+        toast.dismiss()
     }
 
     const handleInvalid = (e) => {

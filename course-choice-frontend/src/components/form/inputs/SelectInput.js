@@ -4,9 +4,10 @@ import { toast } from 'react-toastify';
 
 export default function SelectInput({ name, placeholder, options, description, required, onChange, reinstate, value = "", setFocusSet, canFocus, isClearable }) {
 
-    const selectRef = useRef();
     const [currentValue, setCurrentValue] = useState(value);
     const [error, setError] = useState(false)
+    
+    const selectRef = useRef();
 
     // TODO - this also displays for inputs other than level
     const NoOptionsMessage = (props) => (
@@ -33,6 +34,7 @@ export default function SelectInput({ name, placeholder, options, description, r
         // if (action === "clear") {
         //     handleClear(selected)
         // }
+        toast.dismiss()
 
         let label = "";
         if (currentValue) {
