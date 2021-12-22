@@ -24,6 +24,7 @@ export default function PersonalDetails({ formClasses, handleFormClassChange, se
                 onChange={handleFormClassChange}
                 setFocusSet={e => setFocusSet(e)}
                 canFocus={canFocus}
+                isClearable={false}
             />
         </Card>
     )

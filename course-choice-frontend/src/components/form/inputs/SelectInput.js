@@ -2,7 +2,7 @@ import Select, { components } from 'react-select';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
-export default function SelectInput({ name, placeholder, options, description, required, onChange, value = "", setFocusSet, canFocus }) {
+export default function SelectInput({ name, placeholder, options, description, required, onChange, reinstate, value = "", setFocusSet, canFocus, isClearable }) {
 
     const selectRef = useRef();
     const [currentValue, setCurrentValue] = useState(value);
@@ -29,19 +29,33 @@ export default function SelectInput({ name, placeholder, options, description, r
         })
     };
 
-    const handleChange = (e, name) => {
+    const handleChange = (selected = "", { action }) => {
+        // if (action === "clear") {
+        //     handleClear(selected)
+        // }
+
+        let label = "";
+        if (currentValue) {
+            label = currentValue.label
+        }
+
+        console.log("onchange")
+        console.log(label)
+
+        if (reinstate) {
+            reinstate(label)
+        }
+
         setError(false)
-        onChange(e)
         setFocusSet(false)
-        setCurrentValue(e)
+        onChange(selected)
+        setCurrentValue(selected)
     }
 
     const handleInvalid = (e) => {
         setError(true)
         e.preventDefault()
-        console.log(canFocus)
         if (canFocus) {
-            console.log("focus")
             e.target.focus()
             setFocusSet(true)
             toast.error("Please fill out all required fields!")
@@ -51,11 +65,14 @@ export default function SelectInput({ name, placeholder, options, description, r
     return (
         <div className="my-2 sm:my-3">
             {name &&
-                <><label className="text-lg">
-                    {name + ":"}
-                    {required &&
-                        <span className="text-red-600"> *</span>}
-                </label><br /></>}
+                <>
+                    <label className="text-lg">
+                        {name + ":"}
+                        {required &&
+                            <span className="text-red-600"> *</span>}
+                    </label>
+                    <br />
+                </>}
             {description &&
                 <p className="text-sm text-grey">{description}</p>}
             <Select
@@ -67,7 +84,8 @@ export default function SelectInput({ name, placeholder, options, description, r
                 components={{ NoOptionsMessage }}
                 options={options}
                 value={currentValue}
-                onChange={e => handleChange(e, name)}
+                isClearable={isClearable}
+                onChange={handleChange}
                 styles={error && styleObject} />
             {required && (
                 <input

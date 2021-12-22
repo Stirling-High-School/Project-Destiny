@@ -5,7 +5,10 @@ function choiceReducer(state, action) {
     switch (action.type) {
         case 'SET_SELECTED_SUBJECT':
             let subjectObject = state["all_choices"].find(subjectObj => subjectObj.subject === action.payload);
-            let levels = subjectObject["levels"].map(level => ({ value: level.display_name, label: level.display_name }));
+            let levels = []
+            if (subjectObject) {
+                levels = subjectObject["levels"].map(level => ({ value: level.display_name, label: level.display_name, isDisabled: false }));
+            }
             return {
                 ...state,
                 return_choice: { ...state.return_choice, subject: action.payload },
@@ -27,7 +30,7 @@ function choiceReducer(state, action) {
 }
 
 // has to send back choice object: { subject: '', level: '', weight: 0 }
-export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weightings, handleSubjectChoicesChange, required, setFocusSet, canFocus, last }) {
+export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weightings, handleSubjectChoicesChange, reinstateSubject, reinstateWeight, required, setFocusSet, canFocus, last }) {
 
     const [choice, dispatchChoice] = useReducer(
         choiceReducer,
@@ -50,6 +53,10 @@ export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weigh
         pls(choice - 1, return_choice);
     }, [return_choice])
 
+    const weightChange = (value = "") => {
+        dispatchChoice({ type: 'SET_SELECTED_WEIGHTING', payload: value })
+    }
+
     return (
         <>
             <div className="my-2 flex items-center justify-center">
@@ -63,28 +70,33 @@ export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weigh
                         placeholder="Subject..."
                         options={groupedSubjects}
                         onChange={e => dispatchChoice({ type: 'SET_SELECTED_SUBJECT', payload: e.value })}
+                        reinstate={(subject) => reinstateSubject(subject)}
                         required={required}
                         setFocusSet={e => setFocusSet(e)}
-                        canFocus={canFocus} />
+                        canFocus={canFocus}
+                        isClearable={false} />
                     <SelectInput
                         name=""
                         placeholder="Level..."
                         value={level
                             ? { value: level, label: level }
-                            : null}
+                            : ""}
                         options={availableLevels}
                         onChange={e => dispatchChoice({ type: 'SET_SELECTED_LEVEL', payload: e.value })}
                         required={required}
                         setFocusSet={e => setFocusSet(e)}
-                        canFocus={canFocus} />
+                        canFocus={canFocus}
+                        isClearable={false} />
                     <SelectInput
                         name=""
                         placeholder="Weighting..."
-                        options={weightings.map(weighting => ({ value: weighting, label: weighting }))}
-                        onChange={e => dispatchChoice({ type: 'SET_SELECTED_WEIGHTING', payload: e.value })}
+                        options={weightings}
+                        onChange={weightChange}
                         required={required}
+                        reinstate={(weight) => reinstateWeight(weight)}
                         setFocusSet={e => setFocusSet(e)}
-                        canFocus={canFocus} />
+                        canFocus={canFocus}
+                        isClearable={true} />
                 </div>
             </div>
             {last || <hr />}

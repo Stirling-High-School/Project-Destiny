@@ -50,12 +50,18 @@ export default function Login({ profile, setProfile }) {
   return (
     profile ?
       (
-        <>
-          <Pill action={signOutPls} title={"Signed in as: "}>
+        <div className="flex flex-col items-center justify-center m-8">
+          {/* <Pill action={signOutPls} title={"Signed in as: "}>
             <img src={profile.photoURL} alt="profile" className="h-6 w-6 mr-2" />
             <p className="text-xl">{profile.displayName}</p>
-          </Pill>
-        </>
+          </Pill> */}
+          <p>Signed in as:</p>
+          <div className="flex items-center justify-center m-2">
+            <img src={profile.photoURL} alt="profile" className="h-6 w-6 mr-2" />
+            <p className="text-xl">{profile.displayName}</p>
+          </div>
+          <button className="hover:underline text-blue-700" onClick={signOutPls}>Log out</button>
+        </div>
       ) : (
         <>
           <Pill action={googleSignIn} title={"To get started, please: "}>

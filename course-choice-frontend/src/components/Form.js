@@ -1,14 +1,11 @@
 import React, { useEffect, useState, useReducer } from 'react'
-import { AdditionalFields, PersonalDetails, SubjectChoices } from './form/index-forms'
 import Login from './Login';
 import Loading from './reusable/Loading';
 import Header from './Header';
-import groupSubjects from './groupSubjects';
 import { toast } from 'react-toastify';
 import { useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
 import ErrorComponent from './form/errors/ErrorComponent';
-import Submit from './form/Submit';
 import ActualForm from './ActualForm';
 
 function fetchDataReducer(state, action) {
@@ -97,7 +94,7 @@ function Form() {
             errorComponent: null
         }
     );
-    const { choices_data, optional_fields_data, config, form_class_options, isLoading, isError, errorComponent } = fetchData;
+    const { config, isLoading, isError, errorComponent } = fetchData;
 
     const [formValues, dispatchFormValues] = useReducer(
         formValuesReducer,
@@ -234,8 +231,8 @@ function Form() {
                                     focusSet={focusSet}
                                     setFocusSet={e => setFocusSet(e)}
                                     handleFormClassChange={e => handleFormClassChange(e)}
-                                    handleSubjectChoicesChange={e => handleSubjectChoicesChange(e)}
-                                    handleAdditionalFieldChange={e => handleAdditionalFieldChange(e)}
+                                    handleSubjectChoicesChange={(choice, value) => handleSubjectChoicesChange(choice, value)}
+                                    handleAdditionalFieldChange={(field, value) => handleAdditionalFieldChange(field, value)}
                                 />
                             ) : (
                                 null

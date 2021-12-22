@@ -28,7 +28,7 @@ export default function ActualForm({ fetchData, submitForm, focusSet, setFocusSe
                 title={config.optional_fields_title}
                 message={config.optional_fields_message}
                 additional_fields={optional_fields_data}
-                handleAdditionalFieldChange={handleAdditionalFieldChange}
+                handleAdditionalFieldChange={(field, value) => handleAdditionalFieldChange(field, value)}
                 setFocusSet={e => setFocusSet(e)}
                 canFocus={!focusSet}
             />
