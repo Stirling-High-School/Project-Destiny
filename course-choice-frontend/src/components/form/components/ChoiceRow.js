@@ -8,11 +8,7 @@ export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weigh
     const [choice, dispatchChoice] = useReducer(
         choiceReducer,
         {
-            return_choice: {
-                subject: null,
-                level: null,
-                weight: null,
-            },
+            return_choice: {},
             availableLevels: [],
             all_choices: allChoices,
             choice_no: choiceNo,
@@ -26,8 +22,12 @@ export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weigh
         pls(choice - 1, return_choice);
     }, [return_choice])
 
-    const weightChange = (weight = "") => {
-        dispatchChoice({ type: 'SET_SELECTED_WEIGHTING', payload: weight })
+    const weightChange = (e) => {
+        if (!e) {
+            dispatchChoice({ type: 'SET_SELECTED_WEIGHTING', payload: null })
+        } else {
+            dispatchChoice({ type: 'SET_SELECTED_WEIGHTING', payload: e.value })
+        }
     }
 
     return (
@@ -64,7 +64,7 @@ export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weigh
                         name=""
                         placeholder="Weighting..."
                         options={weightings}
-                        onChange={e => weightChange(e.value)}
+                        onChange={weightChange}
                         required={required}
                         reinstate={(weight) => reinstateWeight(weight)}
                         setFocusSet={e => setFocusSet(e)}

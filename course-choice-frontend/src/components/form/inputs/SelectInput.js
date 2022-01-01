@@ -30,10 +30,7 @@ export default function SelectInput({ name, placeholder, options, description, r
         })
     };
 
-    const handleChange = (selected = "", { action }) => {
-        // if (action === "clear") {
-        //     handleClear(selected)
-        // }
+    const handleChange = (selected = "") => {
         toast.dismiss()
 
         let label = "";
@@ -100,7 +97,7 @@ export default function SelectInput({ name, placeholder, options, description, r
                         height: 0,
                         position: "absolute"
                     }}
-                    value={currentValue}
+                    value={currentValue ? currentValue : ""}
                     onChange={() => { }}
                     onFocus={() => (selectRef.current.focus())}
                     required={required}

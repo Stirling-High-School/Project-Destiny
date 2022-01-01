@@ -85,10 +85,10 @@ function Form() {
         fetchData()
     }, [id])
 
-    // useEffect(() => {
-    //     console.log("New form values: ")
-    //     console.log(formValues)
-    // }, [formValues])
+    useEffect(() => {
+        console.log("New form values: ")
+        console.log(formValues)
+    }, [formValues])
 
     useEffect(() => {
         if (profile) {
