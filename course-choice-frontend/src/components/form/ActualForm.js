@@ -1,4 +1,5 @@
 import groupSubjects from '../functions/groupSubjects';
+import { useMemo } from 'react';
 import { AdditionalFields, PersonalDetails, SubjectChoices, Submit } from './components'
 
 export default function ActualForm({ fetchData, submitForm, focusSet, setFocusSet, handleFormClassChange, handleSubjectChoicesChange, handleAdditionalFieldChange }) {
@@ -17,7 +18,7 @@ export default function ActualForm({ fetchData, submitForm, focusSet, setFocusSe
                 maxChoices={config.max_choices}
                 minChoices={config.min_choices}
                 allChoices={choices_data}
-                groupedSubjects={groupSubjects(choices_data)}
+                groupedSubjects={useMemo(() => groupSubjects(choices_data), [choices_data])}
                 weightings={config.weightings}
                 handleSubjectChoicesChange={(choice, value) => handleSubjectChoicesChange(choice, value)}
                 setFocusSet={e => setFocusSet(e)}

@@ -1,4 +1,7 @@
 const formatWeightings = (availableWeightings) => {
+
+    console.log("Formatting weightings")
+    
     let unique = availableWeightings.filter((x, i, arr) => arr.findIndex(y => y.value === x.value && y.isDisabled === x.isDisabled) === i);
     unique.sort(
         function (a, b) {

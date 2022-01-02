@@ -1,4 +1,5 @@
 const modifyAvailableSubjects = (subject, disabled, availableSubjects) => {
+    
     let department = availableSubjects.find(department => {
         for (let x = 0; x < department["options"].length; x++) {
             if (subject === department["options"][x].label) return true

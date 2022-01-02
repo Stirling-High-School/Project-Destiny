@@ -1,6 +1,6 @@
 import ChoiceRow from './ChoiceRow';
 import { Card, FormHeading } from '../../reusable';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { formatWeightings, modifyAvailableSubjects, modifyAvailableWeightings } from '../../functions';
 
 export default function SubjectChoices({ message, maxChoices, minChoices, allChoices, groupedSubjects, weightings, handleSubjectChoicesChange, setFocusSet, canFocus }) {
@@ -14,12 +14,19 @@ export default function SubjectChoices({ message, maxChoices, minChoices, allCho
         value: weight,
         isDisabled: false
     })))
+    const [formattedWeightings, setFormattedWeightings] = useState(formatWeightings(weightings.map((weight) => ({
+        label: weight,
+        value: weight,
+        isDisabled: false
+    }))))
 
     const handleChange = (choice, value) => {
         handleSubjectChoicesChange(choice, value);
 
         if (value.weight) {
-            setAvailableWeightings(modifyAvailableWeightings(value.weight, true, availableWeightings))
+            const modifiedWeightings = modifyAvailableWeightings(value.weight, true, availableWeightings)
+            setAvailableWeightings(modifiedWeightings)
+            setFormattedWeightings(formatWeightings(modifiedWeightings))
         } else if (value.subject) {
             setAvailableSubjects(modifyAvailableSubjects(value.subject, true, availableSubjects))
         }
@@ -29,7 +36,7 @@ export default function SubjectChoices({ message, maxChoices, minChoices, allCho
         <Card>
             <FormHeading>Course Choices</FormHeading>
             <p className="mb-6">{message}</p>
-            
+
             {choices.map((choice, index) => {
                 return (
                     <ChoiceRow
@@ -37,7 +44,7 @@ export default function SubjectChoices({ message, maxChoices, minChoices, allCho
                         choiceNo={choice}
                         allChoices={allChoices}
                         groupedSubjects={availableSubjects}
-                        weightings={formatWeightings(availableSubjects)}
+                        weightings={formattedWeightings}
                         handleSubjectChoicesChange={(choice, value) => handleChange(choice, value)}
                         reinstateSubject={(subject) => modifyAvailableSubjects(subject, false, availableSubjects)}
                         reinstateWeight={(weight) => modifyAvailableWeightings(weight, false, availableWeightings)}
