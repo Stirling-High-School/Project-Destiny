@@ -1,13 +1,21 @@
 import React, { useEffect, useState, useReducer } from 'react';
 import { fetchDataReducer, formValuesReducer, submittedReducer } from './reducers';
 import Login from './Login';
-import { Loading } from './reusable';
+import { Loading, Card } from './reusable';
 import Header from './form/components/Header';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import ErrorComponent from './form/errors/ErrorComponent';
 import ActualForm from './form/ActualForm';
-import Submitted from './Submitted';
+
+const Submitted = () => (
+    <div className="centerpls">
+        <Card>
+            <h1 className="text-2xl mb-2">Form submitted! 🥳</h1>
+            <p>You should recieve an email confirmation shortly.</p>
+        </Card>
+    </div>
+)
 
 function Form() {
 
@@ -60,7 +68,7 @@ function Form() {
     useEffect(() => {
         async function fetchData() {
             dispatchFetchData({ type: 'DATA_FETCH_INIT' })
-            const api = `https://script.google.com/macros/s/AKfycbwl_u-N1_mbOzZGXz1TXZPdlJ9D78_cDzvWqynJQuEM-UcX_Q-icyZ-TO1C_ZQSpbP6WA/exec?course_choice_id=${id}`;
+            const api = `${process.env.REACT_APP_API_URL}?course_choice_id=${id}`;
             try {
                 const result = await axios.get(api);
                 console.log(result.data.data)
@@ -69,6 +77,7 @@ function Form() {
                         type: 'DATA_FETCH_SUCCESS',
                         payload: result.data.data,
                     });
+                    console.log(result.data.data)
                 } else {
                     dispatchFetchData({
                         type: 'DATA_FETCH_FAILURE',
@@ -86,11 +95,6 @@ function Form() {
     }, [id])
 
     useEffect(() => {
-        console.log("New form values: ")
-        console.log(formValues)
-    }, [formValues])
-
-    useEffect(() => {
         if (profile) {
             dispatchFormValues({
                 type: 'SET_NAME',
@@ -105,7 +109,7 @@ function Form() {
 
     const submitForm = (e) => {
         e.preventDefault();
-        const api = 'https://script.google.com/macros/s/AKfycbwl_u-N1_mbOzZGXz1TXZPdlJ9D78_cDzvWqynJQuEM-UcX_Q-icyZ-TO1C_ZQSpbP6WA/exec';
+        const api = process.env.REACT_APP_API_URL;
 
         console.log("submitting form!")
         console.log(formValues)
@@ -149,7 +153,6 @@ function Form() {
             payload: e.value
         })
     }
-
 
     if (isSubmitting) {
         return <Loading text="Submitting..." colour="green" />
