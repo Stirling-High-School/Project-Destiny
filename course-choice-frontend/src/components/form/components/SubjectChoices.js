@@ -1,9 +1,10 @@
 import ChoiceRow from './ChoiceRow';
+import BackupOption from './BackupOption';
 import { Card, FormHeading } from '../../reusable';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { formatWeightings, modifyAvailableSubjects, modifyAvailableWeightings } from '../../functions';
 
-export default function SubjectChoices({ message, maxChoices, minChoices, allChoices, groupedSubjects, weightings, handleSubjectChoicesChange, setFocusSet, canFocus }) {
+export default function SubjectChoices({ message, maxChoices, minChoices, allChoices, groupedSubjects, weightings, handleSubjectChoicesChange, setFocusSet, canFocus, backup_message }) {
 
     let choices = []
     for (let x = 1; x <= maxChoices; x++) choices.push(x)
@@ -37,23 +38,31 @@ export default function SubjectChoices({ message, maxChoices, minChoices, allCho
             <FormHeading>Course Choices</FormHeading>
             <p className="mb-6">{message}</p>
 
-            {choices.map((choice, index) => {
-                return (
-                    <ChoiceRow
-                        key={index}
-                        choiceNo={choice}
-                        allChoices={allChoices}
-                        groupedSubjects={availableSubjects}
-                        weightings={formattedWeightings}
-                        handleSubjectChoicesChange={(choice, value) => handleChange(choice, value)}
-                        reinstateSubject={(subject) => modifyAvailableSubjects(subject, false, availableSubjects)}
-                        reinstateWeight={(weight) => modifyAvailableWeightings(weight, false, availableWeightings)}
-                        required={((choice - 1) < minChoices) ? true : false}
-                        setFocusSet={e => setFocusSet(e)}
-                        canFocus={canFocus}
-                        last={(choice === choices.length) ? true : false} />
-                )
-            })}
+            {choices.map((choice, index) => (
+                <ChoiceRow
+                    key={index}
+                    choiceNo={choice}
+                    allChoices={allChoices}
+                    groupedSubjects={availableSubjects}
+                    weightings={formattedWeightings}
+                    handleSubjectChoicesChange={(choice, value) => handleChange(choice, value)}
+                    reinstateSubject={(subject) => modifyAvailableSubjects(subject, false, availableSubjects)}
+                    reinstateWeight={(weight) => modifyAvailableWeightings(weight, false, availableWeightings)}
+                    required={((choice - 1) < minChoices) ? true : false}
+                    setFocusSet={e => setFocusSet(e)}
+                    canFocus={canFocus} />
+            )
+            )}
+
+            <BackupOption
+                allChoices={allChoices}
+                groupedSubjects={availableSubjects}
+                handleSubjectChoicesChange={(choice, value) => handleChange(choice, value)}
+                reinstateSubject={(subject) => modifyAvailableSubjects(subject, false, availableSubjects)}
+                reinstateWeight={(weight) => modifyAvailableWeightings(weight, false, availableWeightings)}
+                setFocusSet={e => setFocusSet(e)}
+                canFocus={canFocus}
+                backup_message={backup_message} />
         </Card>
     )
 }

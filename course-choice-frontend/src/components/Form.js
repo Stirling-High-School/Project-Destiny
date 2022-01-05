@@ -147,6 +147,11 @@ function Form() {
         })
     }
 
+    useEffect(() => {
+        console.log("New form values")
+        console.log(formValues)
+    }, [formValues])
+
     const handleFormClassChange = (e) => {
         dispatchFormValues({
             type: 'SET_FORM_CLASS',
@@ -165,8 +170,10 @@ function Form() {
     } else {
         return (
             <>
-                <Header title={config.title} welcomeMessage={config.welcome_message} imageBlob={config.image_blob} />
-                <Login profile={profile} setProfile={e => setProfile(e)} />
+                <Card>
+                    <Header title={config.title} welcomeMessage={config.welcome_message} imageBlob={config.image_blob} />
+                    <Login profile={profile} setProfile={e => setProfile(e)} />
+                </Card>
 
                 {profile ? (
                     <ActualForm

@@ -6,7 +6,7 @@ export default function ActualForm({ fetchData, submitForm, focusSet, setFocusSe
     const { choices_data, optional_fields_data, config, form_class_options } = fetchData;
 
     return (
-        <form onSubmit={e => submitForm(e)} className="mx-8 md:mx-14 lg:mx-24 my-10">
+        <form onSubmit={e => submitForm(e)}>
             <PersonalDetails
                 formClasses={form_class_options}
                 handleFormClassChange={handleFormClassChange}
@@ -23,6 +23,7 @@ export default function ActualForm({ fetchData, submitForm, focusSet, setFocusSe
                 handleSubjectChoicesChange={(choice, value) => handleSubjectChoicesChange(choice, value)}
                 setFocusSet={e => setFocusSet(e)}
                 canFocus={!focusSet}
+                backup_message={config.backup_message}
             />
             <AdditionalFields
                 title={config.optional_fields_title}

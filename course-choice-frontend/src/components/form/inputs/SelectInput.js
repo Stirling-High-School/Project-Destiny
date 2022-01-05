@@ -2,20 +2,20 @@ import Select, { components } from 'react-select';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
-export default function SelectInput({ name, placeholder, options, description, required, onChange, reinstate, value = "", setFocusSet, canFocus, isClearable }) {
+export default function SelectInput({ name, placeholder, options, description, required, onChange, reinstate, value, setFocusSet, canFocus }) {
 
-    const [currentValue, setCurrentValue] = useState(value);
-    const [error, setError] = useState(false)
-    
+    const [error, setError] = useState(false);
     const selectRef = useRef();
 
     // TODO - this also displays for inputs other than level
+    // Message when no options are available in drop-down
     const NoOptionsMessage = (props) => (
         <components.NoOptionsMessage {...props}>
             Select a subject to see available levels...
         </components.NoOptionsMessage>
     )
 
+    // Custom styleObject for react-select input component for error
     const styleObject = {
         control: (base, state) => ({
             ...base,
@@ -30,30 +30,26 @@ export default function SelectInput({ name, placeholder, options, description, r
         })
     };
 
-    const handleChange = (selected = "") => {
+    const handleChange = (selected) => {
+        // Reinstate option to make it available again (for weightings and subjects)
+        let label = value ? value.label : ""
+        if (reinstate) reinstate(label)
+
+        // Reset any invalid errors
         toast.dismiss()
-
-        let label = "";
-        if (currentValue) {
-            label = currentValue.label
-        }
-
-        console.log("onchange")
-        console.log(label)
-
-        if (reinstate) {
-            reinstate(label)
-        }
-
         setError(false)
         setFocusSet(false)
+
+        // Set new value
         onChange(selected)
-        setCurrentValue(selected)
     }
 
     const handleInvalid = (e) => {
+        // Set error and prevent default browser behaviour
         setError(true)
         e.preventDefault()
+
+        // If this input is first (determined further up component tree), set focus and send toast
         if (canFocus) {
             e.target.focus()
             setFocusSet(true)
@@ -63,6 +59,8 @@ export default function SelectInput({ name, placeholder, options, description, r
 
     return (
         <div className="my-2 sm:my-3">
+
+            {/* Display name if provided */}
             {name &&
                 <>
                     <label className="text-lg">
@@ -72,8 +70,12 @@ export default function SelectInput({ name, placeholder, options, description, r
                     </label>
                     <br />
                 </>}
+
+            {/* Display description if provided */}
             {description &&
                 <p className="text-sm text-grey">{description}</p>}
+
+            {/* react-select input component */}
             <Select
                 className="my-2 shadow-sm"
                 id={name}
@@ -82,10 +84,12 @@ export default function SelectInput({ name, placeholder, options, description, r
                 placeholder={placeholder}
                 components={{ NoOptionsMessage }}
                 options={options}
-                value={currentValue}
-                isClearable={isClearable}
+                value={value}
+                isClearable={true}
                 onChange={handleChange}
                 styles={error && styleObject} />
+
+            {/* If required, we need a hidden input field to trigger function when the form is submitted */}
             {required && (
                 <input
                     onInvalid={handleInvalid}
@@ -97,12 +101,14 @@ export default function SelectInput({ name, placeholder, options, description, r
                         height: 0,
                         position: "absolute"
                     }}
-                    value={currentValue ? currentValue : ""}
+                    value={value}
                     onChange={() => { }}
                     onFocus={() => (selectRef.current.focus())}
                     required={required}
                 />
             )}
+
+            {/* Error message */}
             {error &&
                 <p className="text-sm text-red-600">
                     {name

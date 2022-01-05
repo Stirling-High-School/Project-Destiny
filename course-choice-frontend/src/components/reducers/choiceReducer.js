@@ -8,7 +8,7 @@ export default function choiceReducer(state, action) {
             }
             return {
                 ...state,
-                return_choice: { ...state.return_choice, subject: action.payload },
+                return_choice: { ...state.return_choice, subject: action.payload, level: null },
                 availableLevels: levels,
             };
         case 'SET_SELECTED_LEVEL':

@@ -2,77 +2,74 @@ import { SelectInput } from '../inputs';
 import { useEffect, useReducer } from 'react';
 import choiceReducer from '../../reducers/choiceReducer'
 
-// has to send back choice object: { subject: '', level: '', weight: 0 }
-export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weightings, handleSubjectChoicesChange, reinstateSubject, reinstateWeight, required, setFocusSet, canFocus, last }) {
+// Renders a choice row
+// handleSubjectChoicesChange is passed object in form: { subject: '', level: '', weight: 0 }
+export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weightings, handleSubjectChoicesChange, reinstateSubject, reinstateWeight, required, setFocusSet, canFocus }) {
 
     const [choice, dispatchChoice] = useReducer(
         choiceReducer,
         {
-            return_choice: {},
+            return_choice: {
+                subject: null,
+                level: null,
+                weight: null,
+            },
             availableLevels: [],
             all_choices: allChoices,
             choice_no: choiceNo,
         },
     )
     const { return_choice, availableLevels } = choice;
-    const { level } = return_choice;
+    const { subject, level, weight } = return_choice;
 
-    // Not the best fix in the world...
+    // TODO - Not the best fix in the world...
+    // Runs handlSubjectChoicesChange when return_choice gets new values
     useEffect((choice = choiceNo, pls = handleSubjectChoicesChange) => {
         pls(choice - 1, return_choice);
     }, [return_choice])
 
-    const weightChange = (e) => {
-        if (!e) {
-            dispatchChoice({ type: 'SET_SELECTED_WEIGHTING', payload: null })
-        } else {
-            dispatchChoice({ type: 'SET_SELECTED_WEIGHTING', payload: e.value })
-        }
-    }
-
     return (
         <>
             <div className="my-2 flex items-center justify-center">
+                {/* Choice number */}
                 <h5 className="flex flex-shrink-0 text-xl mr-10">
                     {`Choice ${choiceNo}`}
+                    {/* Display red * if required */}
                     <p className={`text-red-600 ml-1 ${required || "invisible"}`}>*</p>
                 </h5>
                 <div className="grid sm:grid-cols-3 w-full sm:gap-4">
+                    {/* Subject input */}
                     <SelectInput
-                        name=""
                         placeholder="Subject..."
+                        value={subject ? { value: subject, label: subject } : null}
                         options={groupedSubjects}
-                        onChange={e => dispatchChoice({ type: 'SET_SELECTED_SUBJECT', payload: e.value })}
+                        onChange={e => dispatchChoice({ type: 'SET_SELECTED_SUBJECT', payload: e ? e.value : null })}
                         reinstate={(subject) => reinstateSubject(subject)}
                         required={required}
                         setFocusSet={e => setFocusSet(e)}
-                        canFocus={canFocus}
-                        isClearable={false} />
+                        canFocus={canFocus} />
+                    {/* Level input */}
                     <SelectInput
-                        name=""
                         placeholder="Level..."
-                        value={level
-                            ? { value: level, label: level }
-                            : ""}
+                        value={level ? { value: level, label: level } : null}
                         options={availableLevels}
-                        onChange={e => dispatchChoice({ type: 'SET_SELECTED_LEVEL', payload: e.value })}
+                        onChange={e => dispatchChoice({ type: 'SET_SELECTED_LEVEL', payload: e ? e.value : null })}
                         required={required}
                         setFocusSet={e => setFocusSet(e)}
-                        canFocus={canFocus}
-                        isClearable={false} />
+                        canFocus={canFocus} />
+                    {/* Weighting input */}
                     <SelectInput
-                        name=""
                         placeholder="Weighting..."
+                        value={weight ? { value: weight, label: weight } : null}
                         options={weightings}
-                        onChange={weightChange}
+                        onChange={e => dispatchChoice({ type: 'SET_SELECTED_WEIGHTING', payload: e ? e.value : null })}
                         required={required}
                         reinstate={(weight) => reinstateWeight(weight)}
                         setFocusSet={e => setFocusSet(e)}
-                        canFocus={canFocus}
-                        isClearable={true} />
+                        canFocus={canFocus} />
                 </div>
             </div>
-            {last || <hr />}
+            <hr />
         </>
     )
 }
