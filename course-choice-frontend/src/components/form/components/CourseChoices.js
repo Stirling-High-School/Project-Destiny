@@ -43,7 +43,7 @@ export default function SubjectChoices({ message, maxChoices, minChoices, allCho
     return (
         <Card>
             <FormHeading>Course Choices</FormHeading>
-            <p>{message}</p>
+            <p className="mb-4 sm:mb-2">{message}</p>
 
             {/* Render a choice row for each choice */}
             {choices.map((choice, index) => (

@@ -63,7 +63,7 @@ function Home() {
         return (
             <>
                 <Header title={config.title} imageBlob={config.image_blob} />
-                <div className="grid grid-cols-2 gap-10">
+                <div className="grid md:grid-cols-2 md:gap-10">
                     {courses.map(({ course_choice_id, display_name }, index) => (
                         <Card key={index}>
                             <h1 className="text-2xl">{display_name}</h1>

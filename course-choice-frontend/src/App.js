@@ -13,7 +13,7 @@ function App() {
   });
 
   return (
-    <div className="my-8 px-1 md:my-10 md:px-12 lg:px-56 h-full">
+    <div className="my-8 px-2 md:my-10 md:px-12 lg:px-56 h-full">
       <Router>
         <Switch>
           <Route path="/" exact component={() => <Home />} />
