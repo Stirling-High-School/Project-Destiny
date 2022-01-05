@@ -43,11 +43,12 @@ const INVALID_COURSE_CHOICE_ID_RESPONSE = Response(
 
 const NO_EMAIL_PROVIDED_RESPONSE = Response(
   "no_email_provided",
+  400,
   (errors = [
     {
       message: "No email provided",
       description:
-        "Please provided an email address so we can ensure no response is submitted multiple times",
+        "Please provide an email address so we can ensure no response is submitted multiple times",
       type: 400,
     },
   ])
@@ -55,6 +56,7 @@ const NO_EMAIL_PROVIDED_RESPONSE = Response(
 
 const FORM_ALREADY_SUBMITTED_RESPONSE = Response(
   "form_already_submitted",
+  422,
   (errors = [
     {
       message: "Form already submitted",
