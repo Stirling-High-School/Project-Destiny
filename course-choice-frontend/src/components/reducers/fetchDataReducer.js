@@ -15,6 +15,7 @@ export default function fetchDataReducer(state, action) {
                 optional_fields_data: action.payload.additional_fields,
                 config: action.payload.config,
                 form_class_options: action.payload.form_class_options,
+                wider_achievement_options: action.payload.wider_achievement_options,
             };
         case 'DATA_FETCH_FAILURE':
             return {

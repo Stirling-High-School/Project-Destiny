@@ -1,12 +1,12 @@
 import groupSubjects from '../functions/groupSubjects';
 import { useMemo } from 'react';
-import { AdditionalFields, FormClass, CourseChoices, Submit } from './components'
+import { AdditionalFields, FormClass, CourseChoices, WiderAchievementOptions, Submit } from './components'
 
 // Renders the form sections
-export default function ActualForm({ fetchData, submitForm, focusSet, setFocusSet, handleFormClassChange, handleSubjectChoicesChange, handleAdditionalFieldChange }) {
+export default function ActualForm({ fetchData, submitForm, focusSet, setFocusSet, handleFormClassChange, handleSubjectChoicesChange, handleAdditionalFieldChange, handleWiderAchievementChange }) {
     
     // Deconstruct data form fetchData for readability
-    const { choices_data, optional_fields_data, config, form_class_options } = fetchData;
+    const { choices_data, optional_fields_data, config, form_class_options, wider_achievement_options } = fetchData;
 
     return (
         <form onSubmit={e => submitForm(e)}>
@@ -40,6 +40,14 @@ export default function ActualForm({ fetchData, submitForm, focusSet, setFocusSe
                 setFocusSet={e => setFocusSet(e)}
                 canFocus={!focusSet}
             />
+            {wider_achievement_options &&
+            <WiderAchievementOptions 
+                wider_achievement_options={wider_achievement_options}
+                message={config.wider_achievement_message}
+                handleWiderAchievementChange={(values) => handleWiderAchievementChange(values)}
+                setFocusSet={e => setFocusSet(e)}
+                canFocus={!focusSet}
+            />}
             {/* Submit button + message */}
             <Submit message={config.submit_message} />
         </form>

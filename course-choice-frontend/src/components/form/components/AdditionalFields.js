@@ -45,7 +45,7 @@ export default function AdditionalFields({ title, message, additional_fields, ha
                                 description={description}
                                 options={options.map(option => ({ value: option, label: option }))}
                                 required={required}
-                                onChange={e => handleAdditionalFieldChange(name, e.value)}
+                                onChange={e => handleAdditionalFieldChange(name, e ? e.value : "")}
                                 setFocusSet={e => setFocusSet(e)}
                                 canFocus={canFocus} />
                         )

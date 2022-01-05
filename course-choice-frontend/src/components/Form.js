@@ -31,6 +31,7 @@ function Form() {
             optional_fields_data: null,
             config: null,
             form_class_options: null,
+            wider_achievement_options: null,
             isLoading: true,
             isError: false,
             errorComponent: null,
@@ -50,6 +51,8 @@ function Form() {
                 course_choice_id: id,
                 choices: [],
                 optional_fields: {},
+                wider_achievement_choice_1: '',
+                wider_achievement_choice_2: '',
             }
         }
     )
@@ -174,6 +177,19 @@ function Form() {
         })
     }
 
+    // Wider Achievement Change
+    const handleWiderAchievementChange = (values) => {
+        dispatchFormValues({
+            type: 'SET_WIDER_ACHIEVEMENT',
+            payload: values ? values : null
+        })
+    }
+
+    useEffect(() => {
+        console.log("new form values")
+        console.log(formValues)
+    }, [formValues])
+
     // Conditional rendering
     if (isSubmitting) {
         // Form is currently submitting
@@ -216,6 +232,7 @@ function Form() {
                         handleFormClassChange={e => handleFormClassChange(e)}
                         handleSubjectChoicesChange={(choice, value) => handleSubjectChoicesChange(choice, value)}
                         handleAdditionalFieldChange={(field, value) => handleAdditionalFieldChange(field, value)}
+                        handleWiderAchievementChange={(values) => handleWiderAchievementChange(values)}
                     />
                 ) : (
                     null
