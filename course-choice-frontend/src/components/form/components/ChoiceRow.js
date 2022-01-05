@@ -30,7 +30,7 @@ export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weigh
 
     return (
         <>
-            <div className="my-2 flex items-center justify-center">
+            <div className="flex items-center justify-center">
                 {/* Choice number */}
                 <h5 className="flex flex-shrink-0 text-xl mr-10">
                     {`Choice ${choiceNo}`}
@@ -69,7 +69,6 @@ export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weigh
                         canFocus={canFocus} />
                 </div>
             </div>
-            <hr />
         </>
     )
 }

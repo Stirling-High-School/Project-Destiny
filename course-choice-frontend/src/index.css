@@ -10,7 +10,7 @@ iframe {
     width: 0% !important;
 }
 
-html, body, #root { height: 100% }
+/* html, body, #root { height: 100% } */
 
 /* For Linkify */
 a {

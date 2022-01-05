@@ -28,18 +28,19 @@ export default function ChoiceRow({ allChoices, groupedSubjects, handleSubjectCh
 
     return (
         <>
-            <div className="my-2 flex items-center justify-center">
+            <hr />
+            {/* Backup message text */}
+            <p className="mt-4">{backup_message}</p>
+
+            <div className="flex items-center justify-center">
 
                 {/* Backup option text */}
                 <h5 className="flex flex-shrink-0 text-xl mr-10">
                     {`Backup Option`}
-                    
+
                     {/* Display red * if required */}
                     <p className={`text-red-600 ml-1`}>*</p>
                 </h5>
-
-                {/* Backup message text */}
-                <p>{backup_message}</p>
 
                 <div className="grid sm:grid-cols-2 w-full sm:gap-4">
                     {/* Subject input */}

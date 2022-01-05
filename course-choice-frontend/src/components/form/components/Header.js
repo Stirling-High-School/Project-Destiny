@@ -1,21 +1,29 @@
 import Linkify from 'react-linkify';
 
 // Form page header
-const Header = ({ title, welcomeMessage, imageBlob }) => (
-    <div className="flex flex-col items-center mb-4">
-        {/* Display the school logo from imageBlob */}
-        <img
-            style={{ width: "100px", height: "100px" }}
-            src={"data:image/png;base64," + imageBlob}
-            alt="SHS badge"
-        />
+export default function Header({ title, welcomeMessage, imageBlob }) {
 
-        {/* Header with form title */}
-        <h1 className="text-xl sm:text-3xl md:text-4xl m-2">{title}</h1>
+    // Open in new tab
+    const componentDecorator = (href, text, key) => (
+        <a href={href} key={key} target="_blank" rel="noopener noreferrer">
+            {text}
+        </a>
+    );
 
-        {/* Linkify turns links inside strings into clickable <a> tags */}
-        <Linkify><p className="mx-8">{welcomeMessage}</p></Linkify>
-    </div>
-)
+    return (
+        <div className="flex flex-col items-center mb-4">
+            {/* Display the school logo from imageBlob */}
+            <img
+                style={{ width: "100px", height: "100px" }}
+                src={"data:image/png;base64," + imageBlob}
+                alt="SHS badge"
+            />
 
-export default Header;
+            {/* Header with form title */}
+            <h1 className="text-xl sm:text-2xl md:text-3xl m-2">{title}</h1>
+
+            {/* Linkify turns links inside strings into clickable <a> tags */}
+            <Linkify componentDecorator={componentDecorator}> <p className="mx-8">{welcomeMessage}</p></Linkify>
+        </div >
+    )
+}

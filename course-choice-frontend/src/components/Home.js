@@ -67,8 +67,8 @@ function Home() {
                     {courses.map(({ course_choice_id, display_name }, index) => (
                         <Card key={index}>
                             <h1 className="text-2xl">{display_name}</h1>
-                            <Link to={{ pathname: `/${course_choice_id}` }}>
-                                Open
+                            <Link className="hover:no-underline" to={{ pathname: `/${course_choice_id}` }}>
+                                <p className="cursor-pointer mt-3 px-5 py-3 bg-blue-700 rounded-xl text-gray-100 max-w-max transition duration-300 hover:bg-blue-900">Fill out form</p>
                             </Link>
                         </Card>
                     ))}

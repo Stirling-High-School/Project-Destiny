@@ -6,6 +6,7 @@ export default function SelectInput({ name, placeholder, options, description, r
 
     const [error, setError] = useState(false);
     const selectRef = useRef();
+    const hiddenRef = useRef();
 
     // TODO - this also displays for inputs other than level
     // Message when no options are available in drop-down
@@ -39,6 +40,8 @@ export default function SelectInput({ name, placeholder, options, description, r
         toast.dismiss()
         setError(false)
         setFocusSet(false)
+        
+        if (required) hiddenRef.current.value = selected
 
         // Set new value
         onChange(selected)
@@ -94,6 +97,7 @@ export default function SelectInput({ name, placeholder, options, description, r
             {/* If required, we need a hidden input field to trigger function when the form is submitted */}
             {required && (
                 <input
+                    ref={hiddenRef}
                     onInvalid={handleInvalid}
                     tabIndex={-1}
                     autoComplete="off"

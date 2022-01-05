@@ -1,8 +1,12 @@
+import Button from '../../reusable/Button';
+
 // Submit button + message
 const Submit = ({ message }) => (
     <div className="my-8">
-        <input type="submit" value="Submit" className="cursor-pointer mb-2 px-5 py-3 bg-blue-700 rounded-xl text-gray-100 sm:w-1/3 md:w-1/6" />
-        <p>{message}</p>
+        <Button>
+            <button type="submit" value="Submit">Submit</button>
+        </Button>
+        <p className="mt-2">{message}</p>
     </div>
 )
 

@@ -37,10 +37,13 @@ export default function SubjectChoices({ message, maxChoices, minChoices, allCho
         }
     }
 
+    // Boolean - true if weighting 3 is selected
+    const backupEnabled = availableWeightings.some(weight => weight.value === 3 && weight.isDisabled === true)
+
     return (
         <Card>
             <FormHeading>Course Choices</FormHeading>
-            <p className="mb-6">{message}</p>
+            <p>{message}</p>
 
             {/* Render a choice row for each choice */}
             {choices.map((choice, index) => (
@@ -61,16 +64,16 @@ export default function SubjectChoices({ message, maxChoices, minChoices, allCho
             )
             )}
 
-            {/* Also render the backup option */}
-            {/* TODO - backup option render only when weighting 3 is selected */}
-            <BackupOption
-                allChoices={allChoices}
-                groupedSubjects={availableSubjects}
-                handleSubjectChoicesChange={(choice, value) => handleChange(choice, value)}
-                reinstateSubject={(subject) => modifyAvailableSubjects(subject, false, availableSubjects)}
-                setFocusSet={e => setFocusSet(e)}
-                canFocus={canFocus}
-                backup_message={backup_message} />
+            {backupEnabled &&
+                // Render the backup option
+                <BackupOption
+                    allChoices={allChoices}
+                    groupedSubjects={availableSubjects}
+                    handleSubjectChoicesChange={(choice, value) => handleChange(choice, value)}
+                    reinstateSubject={(subject) => modifyAvailableSubjects(subject, false, availableSubjects)}
+                    setFocusSet={e => setFocusSet(e)}
+                    canFocus={canFocus}
+                    backup_message={backup_message} />}
         </Card>
     )
 }

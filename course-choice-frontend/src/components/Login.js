@@ -53,10 +53,10 @@ export default function Login({ profile, setProfile }) {
     profile ?
       (
         // User is logged in
-        <div className="flex flex-col items-center justify-center m-8">
+        <div className="flex flex-col items-center justify-center mt-6">
           <p>Signed in as:</p>
           {/* Display profile information */}
-          <div className="flex items-center justify-center m-2">
+          <div className="flex items-center justify-center">
             <img
               src={profile.photoURL}
               alt="profile"
