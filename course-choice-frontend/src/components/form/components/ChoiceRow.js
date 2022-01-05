@@ -41,7 +41,7 @@ export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weigh
                     {/* Subject input */}
                     <SelectInput
                         placeholder="Subject..."
-                        value={subject ? { value: subject, label: subject } : null}
+                        value={subject ? { value: subject, label: subject } : ""}
                         options={groupedSubjects}
                         onChange={e => dispatchChoice({ type: 'SET_SELECTED_SUBJECT', payload: e ? e.value : null })}
                         reinstate={(subject) => reinstateSubject(subject)}
@@ -51,7 +51,7 @@ export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weigh
                     {/* Level input */}
                     <SelectInput
                         placeholder="Level..."
-                        value={level ? { value: level, label: level } : null}
+                        value={level ? { value: level, label: level } : ""}
                         options={availableLevels}
                         onChange={e => dispatchChoice({ type: 'SET_SELECTED_LEVEL', payload: e ? e.value : null })}
                         required={required}
@@ -60,7 +60,7 @@ export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weigh
                     {/* Weighting input */}
                     <SelectInput
                         placeholder="Weighting..."
-                        value={weight ? { value: weight, label: weight } : null}
+                        value={weight ? { value: weight, label: weight } : ""}
                         options={weightings}
                         onChange={e => dispatchChoice({ type: 'SET_SELECTED_WEIGHTING', payload: e ? e.value : null })}
                         required={required}

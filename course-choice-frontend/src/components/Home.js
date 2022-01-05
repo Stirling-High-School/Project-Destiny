@@ -54,7 +54,7 @@ function Home() {
 
     if (isLoading) {
         // The data is still loading, render spinner
-        return <Loading />
+        return <Loading text={"Loading..."} colour={"blue"} />
     } else if (isError) {
         // There has been an error, render the error component
         return errorComponent

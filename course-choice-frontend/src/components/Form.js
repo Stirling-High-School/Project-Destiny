@@ -1,245 +1,65 @@
-import React, { useEffect, useState, useReducer } from 'react';
-import { fetchDataReducer, formValuesReducer, submittedReducer } from './reducers';
-import Login from './Login';
-import { Loading, Card, ErrorComponent } from './reusable';
-import Header from './form/components/Header';
-import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { Card } from './reusable';
 import ActualForm from './form/ActualForm';
+import { initializeApp } from "firebase/app";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import GoogleIcon from '../icons/google.png';
+import { toast } from "react-toastify";
 
-// Submitted component, displays success screen
-const Submitted = () => (
-    <div className="centerpls">
-        <Card>
-            <h1 className="text-2xl mb-2">Form submitted! 🥳</h1>
-            <p>You should recieve an email confirmation shortly.</p>
-        </Card>
-    </div>
-)
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyCQ9cLex-z8woLW1cwt-5s0mIwZ67KXWcs",
+    authDomain: "shs-course-choice-auth-2021.firebaseapp.com",
+    projectId: "shs-course-choice-auth-2021",
+    storageBucket: "shs-course-choice-auth-2021.appspot.com",
+    messagingSenderId: "810594559995",
+    appId: "1:810594559995:web:8d5c63ddb167f496180d5e"
+};
 
+// Initialize Firebase
+initializeApp(firebaseConfig);
 function Form() {
 
-    // Get the form ID
-    const location = useLocation()
-    const id = location.pathname.substring(1)
+    const [profile, setProfile] = useState();
 
-    // Fetch data state
-    const [fetchData, dispatchFetchData] = useReducer(
-        fetchDataReducer,
-        {
-            choices_data: null,
-            optional_fields_data: null,
-            config: null,
-            form_class_options: null,
-            wider_achievement_options: null,
-            isLoading: true,
-            isError: false,
-            errorComponent: null,
-        }
-    );
-    const { config, isLoading, isError, errorComponent } = fetchData;
+    function googleSignIn() {
+        const provider = new GoogleAuthProvider();
+        provider.setCustomParameters({
+            'hd': 'stirlingschools.net' // Restrict to stirlingschools.net hosted domain
+        });
 
-    // Form values state
-    const [formValues, dispatchFormValues] = useReducer(
-        formValuesReducer,
-        {
-            type: 'form_response',
-            data: {
-                email: '',
-                name: '',
-                form_class: '',
-                course_choice_id: id,
-                choices: [],
-                optional_fields: {},
-                wider_achievement_choice_1: '',
-                wider_achievement_choice_2: '',
-            }
-        }
-    )
-    const { data } = formValues;
-    const { choices, optional_fields } = data;
-
-    // Submitted state
-    const [submitted, dispatchSubmitted] = useReducer(
-        submittedReducer,
-        {
-            isSubmitting: false,
-            isSubmitted: false
-        }
-    )
-    const { isSubmitting, isSubmitted, isSubmitError, submitErrorComponent } = submitted;
-
-    // Focus and profile states
-    const [focusSet, setFocusSet] = useState(false)
-    const [profile, setProfile] = useState()
-
-    // Fetch data
-    useEffect(() => {
-        async function fetchData() {
-            // Initialise fetch data process
-            dispatchFetchData({ type: 'DATA_FETCH_INIT' })
-            const api = `${process.env.REACT_APP_API_URL}?course_choice_id=${id}`;
-
-            try {
-                const result = await axios.get(api);
-
-                // If successfull, set data
-                if (result.data.status_code === 200) {
-                    dispatchFetchData({
-                        type: 'DATA_FETCH_SUCCESS',
-                        payload: result.data.data,
-                    });
-                    console.log(result.data.data)
-                } else {
-                    // Error occurred, generate error component
-                    dispatchFetchData({
-                        type: 'DATA_FETCH_FAILURE',
-                        payload: <ErrorComponent message={result.data.data[0].message} description={result.data.data[0].description} />
-                    })
-                }
-            } catch (error) {
-                // An unknown error occurred, generate error component
-                dispatchFetchData({
-                    type: 'DATA_FETCH_FAILURE',
-                    payload: <ErrorComponent message={"An unknown error has occured"} description={"Please try again later."} />
-                })
-            }
-        }
-        fetchData()
-    }, [id])
-
-    // When profile changes, update formValues
-    useEffect(() => {
-        if (profile) {
-            dispatchFormValues({
-                type: 'SET_NAME',
-                payload: profile.displayName,
-            })
-            dispatchFormValues({
-                type: 'SET_EMAIL',
-                payload: profile.email,
-            })
-        }
-    }, [profile])
-
-    // Submit form
-    const submitForm = (e) => {
-        // Prevent default browser behaviour
-        e.preventDefault();
-        const api = process.env.REACT_APP_API_URL;
-
-        async function postData() {
-            // Initialise submit
-            dispatchSubmitted({ type: 'SUBMIT_INIT' })
-
-            const response = await fetch(api, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formValues)
-            })
-
-            if (response) {
-                dispatchSubmitted({ type: 'SUBMIT_SUCCESS' })
-            } else {
-                dispatchSubmitted({
-                    type: 'SUBMIT_FAILURE',
-                    payload: <ErrorComponent message={"An unknown error has occured"} description={"Please try again later."} />
-                })
-            }
-        }
-        postData()
+        const auth = getAuth();
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                // Successful login
+                setProfile(result.user)
+                toast.success("Successfully signed in!")
+            }).catch(() => {
+                // Error occured
+                toast.error("An error occured while trying to sign in!")
+            });
     }
 
-    // Additional Fields Change
-    const handleAdditionalFieldChange = (field, value) => {
-        dispatchFormValues({
-            type: 'SET_ADDITIONAL_FIELDS',
-            payload: { ...optional_fields, [field]: value }
-        })
-    }
-
-    // Subject Choices Change
-    const handleSubjectChoicesChange = (choice, value) => {
-        let newChoices = choices;
-        newChoices[choice] = value
-        dispatchFormValues({
-            type: 'SET_CHOICES',
-            payload: newChoices
-        })
-    }
-
-    // Form Class Change
-    const handleFormClassChange = (e) => {
-        dispatchFormValues({
-            type: 'SET_FORM_CLASS',
-            payload: e ? e.value : null
-        })
-    }
-
-    // Wider Achievement Change
-    const handleWiderAchievementChange = (values) => {
-        dispatchFormValues({
-            type: 'SET_WIDER_ACHIEVEMENT',
-            payload: values ? values : null
-        })
-    }
-
-    useEffect(() => {
-        console.log("new form values")
-        console.log(formValues)
-    }, [formValues])
-
-    // Conditional rendering
-    if (isSubmitting) {
-        // Form is currently submitting
-        return (
-            <Loading
-                text="Submitting..."
-                colour="green" />
-        )
-    } else if (isSubmitted) {
-        // Form has been submitted
-        return <Submitted />
-    } else if (isSubmitError) {
-        // An error occurred while submitting
-        return submitErrorComponent
-    } else if (isLoading) {
-        // Form is currently loading
-        return (
-            <Loading
-                text="Loading..."
-                colour="blue" />
-        )
-    } else if (isError) {
-        // Error while loading form
-        return errorComponent
-    } else {
-        // Form has loaded
-        return (
-            <>
+    return (
+        profile ?
+            <ActualForm profile={profile} />
+            :
+            <div className="centerpls">
                 <Card>
-                    <Header title={config.title} welcomeMessage={config.welcome_message} imageBlob={config.image_blob} />
-                    <Login profile={profile} setProfile={e => setProfile(e)} />
+                    <div className="flex flex-col items-center justify-center">
+                        <p className="flex justify-center mt-5 mb-1">To get started, please:</p>
+                        {/* Sign in with Google button */}
+                        <button onClick={googleSignIn} className="m-2 flex justify-items-start items-center bg-blue-100 rounded-full py-3 px-5">
+                            <img
+                                src={GoogleIcon}
+                                alt="google login"
+                                className="w-5 h-5 mr-5" />
+                            <p className="justify-items-center w-full mr-5 font-medium text-blue-700">Sign in with Google</p>
+                        </button>
+                    </div>
                 </Card>
-
-                {profile ? (
-                    <ActualForm
-                        fetchData={fetchData}
-                        submitForm={(e) => submitForm(e)}
-                        focusSet={focusSet}
-                        setFocusSet={e => setFocusSet(e)}
-                        handleFormClassChange={e => handleFormClassChange(e)}
-                        handleSubjectChoicesChange={(choice, value) => handleSubjectChoicesChange(choice, value)}
-                        handleAdditionalFieldChange={(field, value) => handleAdditionalFieldChange(field, value)}
-                        handleWiderAchievementChange={(values) => handleWiderAchievementChange(values)}
-                    />
-                ) : (
-                    null
-                )}
-            </>
-        )
-    }
+            </div>
+    )
 }
 
 export default Form;

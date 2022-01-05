@@ -1,3 +1,5 @@
+import { groupSubjects } from "../functions";
+
 export default function fetchDataReducer(state, action) {
     switch (action.type) {
         case 'DATA_FETCH_INIT':
@@ -12,6 +14,7 @@ export default function fetchDataReducer(state, action) {
                 isLoading: false,
                 isError: false,
                 choices_data: action.payload.choices,
+                grouped_choices_data: groupSubjects(action.payload.choices),
                 optional_fields_data: action.payload.additional_fields,
                 config: action.payload.config,
                 form_class_options: action.payload.form_class_options,

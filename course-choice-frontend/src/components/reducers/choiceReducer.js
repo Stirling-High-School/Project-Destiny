@@ -4,7 +4,6 @@ export default function choiceReducer(state, action) {
         case 'SET_SELECTED_SUBJECT':
             let subjectObject = state["all_choices"].find(subjectObj => subjectObj.subject === action.payload);
             let levels = subjectObject ? subjectObject["levels"].map(level => ({ value: level.display_name, label: level.display_name, isDisabled: false })) : []
-
             return {
                 ...state,
                 return_choice: { ...state.return_choice, subject: action.payload, level: null },
@@ -15,7 +14,7 @@ export default function choiceReducer(state, action) {
                 ...state,
                 return_choice: { ...state.return_choice, level: action.payload },
             };
-                case 'SET_SELECTED_WEIGHTING':
+        case 'SET_SELECTED_WEIGHTING':
             return {
                 ...state,
                 return_choice: { ...state.return_choice, weight: action.payload },
