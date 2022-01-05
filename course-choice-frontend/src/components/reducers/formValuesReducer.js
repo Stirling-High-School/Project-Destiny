@@ -25,6 +25,7 @@ export default function formValuesReducer(state, action) {
                 ...state,
                 data: { ...state.data, optional_fields: action.payload },
             }
+        // Throw error if none of the above
         default:
             throw new Error();
     }

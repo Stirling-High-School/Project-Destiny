@@ -17,8 +17,10 @@ export default function submittedReducer(state, action) {
             return {
                 ...state,
                 isSubmitting: false,
-                isSubmitError: true
+                isSubmitError: true,
+                submitErrorComponent: action.payload,
             };
+        // Throw error if none of the above
         default:
             throw new Error();
     }

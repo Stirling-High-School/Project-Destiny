@@ -1,3 +1,4 @@
+// Re-usable loading component
 const Loading = ({ text, colour }) => (
     <div className="centerpls flex-grow justify-center items-center align-middle">
         <div className="justify-center items-center align-middle flex">

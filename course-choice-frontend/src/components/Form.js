@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useReducer } from 'react';
 import { fetchDataReducer, formValuesReducer, submittedReducer } from './reducers';
 import Login from './Login';
-import { Loading, Card } from './reusable';
+import { Loading, Card, ErrorComponent } from './reusable';
 import Header from './form/components/Header';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import ErrorComponent from './form/errors/ErrorComponent';
 import ActualForm from './form/ActualForm';
 
+// Submitted component, displays success screen
 const Submitted = () => (
     <div className="centerpls">
         <Card>
@@ -19,9 +19,11 @@ const Submitted = () => (
 
 function Form() {
 
+    // Get the form ID
     const location = useLocation()
     const id = location.pathname.substring(1)
 
+    // Fetch data state
     const [fetchData, dispatchFetchData] = useReducer(
         fetchDataReducer,
         {
@@ -31,11 +33,12 @@ function Form() {
             form_class_options: null,
             isLoading: true,
             isError: false,
-            errorComponent: null
+            errorComponent: null,
         }
     );
     const { config, isLoading, isError, errorComponent } = fetchData;
 
+    // Form values state
     const [formValues, dispatchFormValues] = useReducer(
         formValuesReducer,
         {
@@ -53,6 +56,7 @@ function Form() {
     const { data } = formValues;
     const { choices, optional_fields } = data;
 
+    // Submitted state
     const [submitted, dispatchSubmitted] = useReducer(
         submittedReducer,
         {
@@ -60,18 +64,23 @@ function Form() {
             isSubmitted: false
         }
     )
-    const { isSubmitting, isSubmitted } = submitted;
+    const { isSubmitting, isSubmitted, isSubmitError, submitErrorComponent } = submitted;
 
+    // Focus and profile states
     const [focusSet, setFocusSet] = useState(false)
     const [profile, setProfile] = useState()
 
+    // Fetch data
     useEffect(() => {
         async function fetchData() {
+            // Initialise fetch data process
             dispatchFetchData({ type: 'DATA_FETCH_INIT' })
             const api = `${process.env.REACT_APP_API_URL}?course_choice_id=${id}`;
+
             try {
                 const result = await axios.get(api);
-                console.log(result.data.data)
+
+                // If successfull, set data
                 if (result.data.status_code === 200) {
                     dispatchFetchData({
                         type: 'DATA_FETCH_SUCCESS',
@@ -79,12 +88,14 @@ function Form() {
                     });
                     console.log(result.data.data)
                 } else {
+                    // Error occurred, generate error component
                     dispatchFetchData({
                         type: 'DATA_FETCH_FAILURE',
                         payload: <ErrorComponent message={result.data.data[0].message} description={result.data.data[0].description} />
                     })
                 }
             } catch (error) {
+                // An unknown error occurred, generate error component
                 dispatchFetchData({
                     type: 'DATA_FETCH_FAILURE',
                     payload: <ErrorComponent message={"An unknown error has occured"} description={"Please try again later."} />
@@ -94,6 +105,7 @@ function Form() {
         fetchData()
     }, [id])
 
+    // When profile changes, update formValues
     useEffect(() => {
         if (profile) {
             dispatchFormValues({
@@ -107,15 +119,14 @@ function Form() {
         }
     }, [profile])
 
+    // Submit form
     const submitForm = (e) => {
+        // Prevent default browser behaviour
         e.preventDefault();
         const api = process.env.REACT_APP_API_URL;
 
-        console.log("submitting form!")
-        console.log(formValues)
-
         async function postData() {
-
+            // Initialise submit
             dispatchSubmitted({ type: 'SUBMIT_INIT' })
 
             const response = await fetch(api, {
@@ -125,12 +136,19 @@ function Form() {
                 body: JSON.stringify(formValues)
             })
 
-            if (response) dispatchSubmitted({ type: 'SUBMIT_SUCCESS' })
+            if (response) {
+                dispatchSubmitted({ type: 'SUBMIT_SUCCESS' })
+            } else {
+                dispatchSubmitted({
+                    type: 'SUBMIT_FAILURE',
+                    payload: <ErrorComponent message={"An unknown error has occured"} description={"Please try again later."} />
+                })
+            }
         }
-
         postData()
     }
 
+    // Additional Fields Change
     const handleAdditionalFieldChange = (field, value) => {
         dispatchFormValues({
             type: 'SET_ADDITIONAL_FIELDS',
@@ -138,6 +156,7 @@ function Form() {
         })
     }
 
+    // Subject Choices Change
     const handleSubjectChoicesChange = (choice, value) => {
         let newChoices = choices;
         newChoices[choice] = value
@@ -147,27 +166,40 @@ function Form() {
         })
     }
 
-    useEffect(() => {
-        console.log("New form values")
-        console.log(formValues)
-    }, [formValues])
-
+    // Form Class Change
     const handleFormClassChange = (e) => {
         dispatchFormValues({
             type: 'SET_FORM_CLASS',
-            payload: e.value
+            payload: e ? e.value : null
         })
     }
 
+    // Conditional rendering
     if (isSubmitting) {
-        return <Loading text="Submitting..." colour="green" />
+        // Form is currently submitting
+        return (
+            <Loading
+                text="Submitting..."
+                colour="green" />
+        )
     } else if (isSubmitted) {
+        // Form has been submitted
         return <Submitted />
+    } else if (isSubmitError) {
+        // An error occurred while submitting
+        return submitErrorComponent
     } else if (isLoading) {
-        return <Loading text="Loading..." colour="blue" />
+        // Form is currently loading
+        return (
+            <Loading
+                text="Loading..."
+                colour="blue" />
+        )
     } else if (isError) {
+        // Error while loading form
         return errorComponent
     } else {
+        // Form has loaded
         return (
             <>
                 <Card>

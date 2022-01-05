@@ -65,6 +65,8 @@ export default function SelectInput({ name, placeholder, options, description, r
                 <>
                     <label className="text-lg">
                         {name + ":"}
+
+                        {/* Display red * if required */}
                         {required &&
                             <span className="text-red-600"> *</span>}
                     </label>

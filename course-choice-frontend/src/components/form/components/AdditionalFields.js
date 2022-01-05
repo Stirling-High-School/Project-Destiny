@@ -1,11 +1,16 @@
 import { TextInput, LongTextInput, SelectInput } from '../inputs';
 import { Card, FormHeading } from '../../reusable';
 
+// Renders the additional fields
 export default function AdditionalFields({ title, message, additional_fields, handleAdditionalFieldChange, setFocusSet, canFocus }) {
     return (
         <Card>
             <FormHeading>{title}</FormHeading>
+
+            {/* Additional fields message text */}
             <p>{message}</p>
+
+            {/* For each additional field, render the correct input type and pass props */}
             {additional_fields.map(({ name, description, type, options, required }, index) => {
                 switch (type) {
                     case "text":

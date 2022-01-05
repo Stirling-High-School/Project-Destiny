@@ -1,3 +1,10 @@
+/** 
+* Enables/disables subject choices.
+* @param {String} subject - The subject name to be enabled/disabled.
+* @param {Boolean} disabled - Whether the subject is to be enabled or disabled.
+* @param {Array} availableSubjects - The list of the current avaiable subjects (includes enabled and disabled options).
+* @return {Array} Array of avaiable subjects but with the desired subject changed to the desired disabled state.
+*/
 const modifyAvailableSubjects = (subject, disabled, availableSubjects) => {
     
     let department = availableSubjects.find(department => {

@@ -1,6 +1,7 @@
 import React from 'react';
-import Card from '../../reusable/Card';
+import Card from './Card';
 
+// Error component
 export default function ErrorComponent({ message, description }) {
     return (
         <div className="centerpls">

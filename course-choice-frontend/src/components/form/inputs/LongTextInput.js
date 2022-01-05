@@ -6,18 +6,22 @@ export default function LongTextInput({ name, type, description, required, onCha
     const [error, setError] = useState(false)
 
     const handleChange = (e) => {
+        // Reset any invalid errors
         setError(false)
-        onChange(e)
-        setFocusSet(false)
         toast.dismiss()
+        setFocusSet(false)
+
+        // Set new value
+        onChange(e)
     }
 
     const handleInvalid = (e) => {
+        // Set error and prevent default browser behaviour
         setError(true)
         e.preventDefault()
-        console.log(canFocus)
+
+        // If this input is first (determined further up component tree), set focus and send toast
         if (canFocus) {
-            console.log("focus")
             e.target.focus()
             setFocusSet(true)
             toast.error("Please fill out all required fields!")
@@ -26,13 +30,25 @@ export default function LongTextInput({ name, type, description, required, onCha
 
     return (
         <div className="my-5">
-            <label className="text-lg">
-                {name}
-                {required &&
-                    <span className="text-red-600"> *</span>}
-            </label><br />
+
+            {/* Display name if provided */}
+            {name &&
+                <>
+                    <label className="text-lg">
+                        {name + ":"}
+
+                        {/* Display red * if required */}
+                        {required &&
+                            <span className="text-red-600"> *</span>}
+                    </label>
+                    <br />
+                </>}
+
+            {/* Display description if provided */}
             {description &&
                 <p className="text-sm text-grey">{description}</p>}
+
+            {/* Input component */}
             <textarea
                 onInvalid={handleInvalid}
                 disabled={disabled}
@@ -44,6 +60,8 @@ export default function LongTextInput({ name, type, description, required, onCha
                 type={type}
                 required={required}
             />
+
+            {/* Error message */}
             {error &&
                 <p className="text-sm text-red-600">{name} is required!</p>}
         </div>
