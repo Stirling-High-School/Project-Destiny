@@ -1,0 +1,15 @@
+/* ./src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Temp fix for weird iframe problem I haven't looked at yet */
+iframe { left: 0 !important }
+
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+}
