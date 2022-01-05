@@ -40,3 +40,27 @@ const INVALID_COURSE_CHOICE_ID_RESPONSE = Response(
     },
   ])
 );
+
+const NO_EMAIL_PROVIDED_RESPONSE = Response(
+  "no_email_provided",
+  (errors = [
+    {
+      message: "No email provided",
+      description:
+        "Please provided an email address so we can ensure no response is submitted multiple times",
+      type: 400,
+    },
+  ])
+);
+
+const FORM_ALREADY_SUBMITTED_RESPONSE = Response(
+  "form_already_submitted",
+  (errors = [
+    {
+      message: "Form already submitted",
+      description:
+        "This email address has already been used to submit a form response, you cannot submit another form using the same email",
+      type: 422,
+    },
+  ])
+);

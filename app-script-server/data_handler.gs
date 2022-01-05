@@ -123,7 +123,7 @@ function storeFormResponse(formResponseData) {
   var choices = [...formResponseData.choices];
   delete formResponseData.choices;
 
-  // Lower case all keys in optinalFields
+  // Lower case all keys in optionalFields
   var key,
     keys = Object.keys(formResponseData.optional_fields);
   var n = keys.length;
@@ -146,6 +146,16 @@ function storeFormResponse(formResponseData) {
   for (const choice of choices.slice(1)) {
     appendSheetDataAsDict(sheet, choice);
   }
+}
+
+function checkFormAlreadySubmitted(email) {
+  /* Determine whether a given user, identifiable under an email address, has already submitted a form response */
+  for (const row of loadSheetDataAsDict(CONFIG.FORM_RESPONSES_SPREADSHEET.getSheetByName("Form Responses"))) {
+    if (row.email === email) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function __loadConfig(sheet) {
@@ -181,6 +191,23 @@ function getSerializedFormClasses() {
     response.push(row.form_class);
   }
   return response;
+}
+
+// David added:
+function getSerializedWiderAchievement() {
+  /* Fetch all wider achievement options from the Wider Achievement Choices sheet from the initialized
+  config spreadsheet, these are a list of strings */
+  var response = [];
+  try {
+    for (const row of loadSheetDataAsDict(
+      CONFIG.CONFIGURATION_SPREADSHEET.getSheetByName("Wider Achievement Choices")
+    )) {
+      response.push(row.wider_achievement);
+    }
+    return response;
+  } catch {
+    return null;
+  }
 }
 
 function getAllSerializedCourses() {

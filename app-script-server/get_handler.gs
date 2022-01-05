@@ -4,23 +4,33 @@ function doGet(request) {
     const course_choice_id = request.parameter.course_choice_id;
     if (courseChoiceIdResolver(course_choice_id) !== null) {
       if (isLive(course_choice_id)) {
-        // Course choice ID is valid
-        initializeConfiguration(course_choice_id);
+        if (emailProvided(request)) {
+          initializeConfiguration(course_choice_id);
 
-        const courses = loadSheetDataAsDict(
-          CONFIG.CONFIGURATION_SPREADSHEET.getSheetByName("Course Choices")
-        );
+          if (!checkFormAlreadySubmitted(request.parameter.email)) {
+            // Request is valid
 
-        return Response(
-          "fetch_course",
-          200,
-          (data = {
-            choices: serializeCourses(courses),
-            additional_fields: getSerializedAdditionalFormFields(),
-            config: getSerializedConfig(),
-            form_class_options: getSerializedFormClasses(),
-          })
-        );
+            const courses = loadSheetDataAsDict(
+              CONFIG.CONFIGURATION_SPREADSHEET.getSheetByName("Course Choices")
+            );
+
+            return Response(
+              "fetch_course",
+              200,
+              (data = {
+                choices: serializeCourses(courses),
+                additional_fields: getSerializedAdditionalFormFields(),
+                config: getSerializedConfig(),
+                form_class_options: getSerializedFormClasses(),
+                wider_achievement_options: getSerializedWiderAchievement(), // David added:
+              })
+            );
+          }
+
+          return FORM_ALREADY_SUBMITTED_RESPONSE;
+        }
+
+        return NO_EMAIL_PROVIDED_RESPONSE;
       }
 
       return FORM_SHUT_RESPONSE;
@@ -43,6 +53,11 @@ function doGet(request) {
 function courseChoiceIdProvided(request) {
   /* Determine wether the parameters provided in a get request are valid */
   return "course_choice_id" in request.parameter;
+}
+
+function emailProvided(request) {
+  /* Determine whether the request includes email as a parameter */
+  return "email" in request.parameter;
 }
 
 function getSerializedAdditionalFormFields() {

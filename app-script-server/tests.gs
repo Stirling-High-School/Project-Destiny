@@ -33,7 +33,7 @@ function testPost() {
               weight: 1,
             },
           ],
-          course_choice_id: "s45",
+          course_choice_id: "s56",
           optional_fields: {
             "Planned Destination": "Graduate Apprenticeship",
             "Planned Destination Details":
@@ -45,5 +45,15 @@ function testPost() {
       }),
     },
   });
-  Logger.log(response);
+  Logger.log(response.getContent());
+}
+
+function testGet() {
+  const response = doGet({
+    parameter: {
+      course_choice_id: "s56",
+      email: "digitalwizard06@stirlingschools.net",
+    },
+  });
+  Logger.log(response.getContent());
 }

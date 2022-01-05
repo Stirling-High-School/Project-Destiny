@@ -9,16 +9,20 @@ function doPost(request) {
       // Course choice ID is valid
       initializeConfiguration(contents.data.course_choice_id);
 
-      storeFormResponse(contents.data);
+      if (!checkFormAlreadySubmitted(contents.data.email)) {
+        storeFormResponse(contents.data);
 
-      return Response(
-        "form_submit",
-        201,
-        (data = {
-          complete: true,
-          message: "Form has successfully been submitted",
-        })
-      );
+        return Response(
+          "form_submit",
+          201,
+          (data = {
+            complete: true,
+            message: "Form has successfully been submitted",
+          })
+        );
+      }
+
+      return FORM_ALREADY_SUBMITTED_RESPONSE;
     }
 
     return INVALID_COURSE_CHOICE_ID_RESPONSE;
