@@ -135,22 +135,47 @@ function storeFormResponse(formResponseData) {
 
   delete formResponseData.optional_fields;
 
+  var wider_achievement_options =
+    "wider_achievement_options" in formResponseData
+      ? formResponseData.wider_achievement_options
+      : [""];
+
   appendSheetDataAsDict(sheet, {
     ...formResponseData,
     ...optionalFields,
     ...choices[0],
+    wider_achievement_options: wider_achievement_options[0],
     choice_count: choices.length,
     submitted_at: new Date(),
   });
 
-  for (const choice of choices.slice(1)) {
-    appendSheetDataAsDict(sheet, choice);
+  // Remove rows already added to sheet
+  choices.shift();
+  wider_achievement_options.shift();
+
+  while (choices.length !== 0 || wider_achievement_options.length !== 0) {
+    var data = {};
+    if (choices.length !== 0) {
+      data = { ...data, ...choices[0] };
+      choices.shift();
+    }
+    if (wider_achievement_options.length !== 0) {
+      data = {
+        ...data,
+        wider_achievement_options: wider_achievement_options[0],
+      };
+      wider_achievement_options.shift();
+    }
+
+    appendSheetDataAsDict(sheet, data);
   }
 }
 
 function checkFormAlreadySubmitted(email) {
   /* Determine whether a given user, identifiable under an email address, has already submitted a form response */
-  for (const row of loadSheetDataAsDict(CONFIG.FORM_RESPONSES_SPREADSHEET.getSheetByName("Form Responses"))) {
+  for (const row of loadSheetDataAsDict(
+    CONFIG.FORM_RESPONSES_SPREADSHEET.getSheetByName("Form Responses")
+  )) {
     if (row.email === email) {
       return true;
     }
@@ -200,7 +225,9 @@ function getSerializedWiderAchievement() {
   var response = [];
   try {
     for (const row of loadSheetDataAsDict(
-      CONFIG.CONFIGURATION_SPREADSHEET.getSheetByName("Wider Achievement Choices")
+      CONFIG.CONFIGURATION_SPREADSHEET.getSheetByName(
+        "Wider Achievement Choices"
+      )
     )) {
       response.push(row.wider_achievement);
     }

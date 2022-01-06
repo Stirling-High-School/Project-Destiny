@@ -12,6 +12,7 @@ function doPost(request) {
       if (!checkFormAlreadySubmitted(contents.data.email)) {
         storeFormResponse(contents.data);
 
+        Logger.log("Form submission success");
         return Response(
           "form_submit",
           201,
@@ -22,9 +23,11 @@ function doPost(request) {
         );
       }
 
+      Logger.log("Form already submitted");
       return FORM_ALREADY_SUBMITTED_RESPONSE;
     }
 
+    Logger.log("Invalid course choice ID");
     return INVALID_COURSE_CHOICE_ID_RESPONSE;
   }
 
@@ -42,8 +45,8 @@ function isValidPostRequest(contents) {
     return false;
   }
 
-  for (const parameter of Object.keys({ ...contents.data })) {
-    if (!postDataOptions.includes(parameter)) {
+  for (const parameter of postDataOptions) {
+    if (!(parameter in contents.data)) {
       return false;
     }
   }
