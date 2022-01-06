@@ -1,18 +1,8 @@
 import React, { useEffect, useState, useReducer } from 'react';
 import { fetchDataReducer, formValuesReducer, submittedReducer } from '../reducers';
-import { Loading, Card, MessageComponent } from '../reusable';
+import { Loading, MessageComponent } from '../reusable';
 import axios from 'axios';
 import { AdditionalFields, Submit, CourseChoices, FormClass, WiderAchievementOptions, Header } from './components'
-
-// Submitted component, displays success screen
-const Submitted = () => (
-    <div className="centerpls">
-        <Card>
-            <h1 className="text-2xl mb-2">Form submitted! 🥳</h1>
-            <p>You should recieve an email confirmation shortly.</p>
-        </Card>
-    </div>
-)
 
 // Renders the form sections
 export default function ActualForm({ profile, id }) {
