@@ -28,7 +28,7 @@ export default function formValuesReducer(state, action) {
         case 'SET_WIDER_ACHIEVEMENT':
             return {
                 ...state,
-                data: { ...state.data, wider_achievement_choice_1: action.payload[0], wider_achievement_choice_2: action.payload[1] },
+                data: { ...state.data, wider_achievement_options: action.payload },
             }
         // Throw error if none of the above
         default:
