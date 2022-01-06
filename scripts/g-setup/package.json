@@ -1,0 +1,17 @@
+{
+  "name": "google-apps-script-nodejs-quickstart",
+  "version": "1.0.0",
+  "description": "A simple Node.js command-line application that makes requests to the Google Apps Script API.",
+  "private": true,
+  "dependencies": {
+    "googleapis": "^39.0.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=6.4.0"
+  },
+  "scripts": {
+    "start": "node ."
+  },
+  "license": "Apache-2.0"
+}

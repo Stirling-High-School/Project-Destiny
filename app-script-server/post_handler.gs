@@ -1,27 +1,34 @@
-// TODO Add proper POST request body data validation
+// TODO Potentially add deeper validation, inline with config and additional_fields
 
 function doPost(request) {
-  var contents = JSON.parse(request.postData.contents);
-  // return Response("form_submit", 201, data=Object.keys({...contents.data}));
   /* Handle all POST requests */
-  // return Response("form_submit", 400, data={
-  //   "typeof": typeof data,
-  //   "data": data.data
-  // });
+  var contents = JSON.parse(request.postData.contents);
+
   if (isValidPostRequest(contents)) {
-    // return Response("form_submit", 201, data=contents.data);
-    storeFormResponse(
-      contents.data,
-      courseChoiceIdResolver(contents.data.course_choice_id)
-    );
-    return Response(
-      "form_submit",
-      201,
-      (data = {
-        complete: true,
-        message: "Form has successfully been submitted",
-      })
-    );
+    if (courseChoiceIdResolver(contents.data.course_choice_id) !== null) {
+      // Course choice ID is valid
+      initializeConfiguration(contents.data.course_choice_id);
+
+      if (!checkFormAlreadySubmitted(contents.data.email)) {
+        storeFormResponse(contents.data);
+
+        Logger.log("Form submission success");
+        return Response(
+          "form_submit",
+          201,
+          (data = {
+            complete: true,
+            message: "Form has successfully been submitted",
+          })
+        );
+      }
+
+      Logger.log("Form already submitted");
+      return FORM_ALREADY_SUBMITTED_RESPONSE;
+    }
+
+    Logger.log("Invalid course choice ID");
+    return INVALID_COURSE_CHOICE_ID_RESPONSE;
   }
 
   return Response(
@@ -38,8 +45,8 @@ function isValidPostRequest(contents) {
     return false;
   }
 
-  for (const parameter of Object.keys({ ...contents.data })) {
-    if (!postDataOptions.includes(parameter)) {
+  for (const parameter of postDataOptions) {
+    if (!(parameter in contents.data)) {
       return false;
     }
   }
