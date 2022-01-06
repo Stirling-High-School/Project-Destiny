@@ -4,12 +4,31 @@
 @tailwind utilities;
 
 /* Temp fix for weird iframe problem I haven't looked at yet */
-iframe { left: 0 !important }
-
-html {
-    height: 100%;
+iframe { 
+    left: 0 !important;
+    height: 0% !important;
+    width: 0% !important;
 }
 
-body {
-    min-height: 100%;
+/* For Linkify */
+a {
+    --tw-text-opacity: 1;
+    color: rgba(29, 78, 216, var(--tw-text-opacity));
 }
+
+a:hover {
+    text-decoration: underline;
+}
+
+.centerpls {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.required:after {
+    content:" *";
+    color: red;
+  }
+
