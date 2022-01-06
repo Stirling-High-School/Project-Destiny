@@ -30,15 +30,15 @@ export default function ChoiceRow({ allChoices, groupedSubjects, handleSubjectCh
         <>
             <hr />
             {/* Backup message text */}
-            <p className="mt-4">{backup_message}</p>
+            <p className="my-4">{backup_message}</p>
 
-            <div className="flex items-center justify-center">
+            <div className="flex-col sm:flex-row flex items-center justify-center">
 
                 {/* Backup option text */}
                 <h5 className="flex flex-shrink-0 text-xl mr-10">
                     {`Backup Option`}
 
-                    {/* Display red * if required */}
+                    {/* Display red * (required) */}
                     <p className={`text-red-600 ml-1`}>*</p>
                 </h5>
 
@@ -49,7 +49,7 @@ export default function ChoiceRow({ allChoices, groupedSubjects, handleSubjectCh
                         value={subject ? { value: subject, label: subject } : null}
                         placeholder="Subject..."
                         options={groupedSubjects}
-                        onChange={e => dispatchChoice({ type: 'SET_SELECTED_SUBJECT', payload: e.value })}
+                        onChange={e => dispatchChoice({ type: 'SET_SELECTED_SUBJECT', payload: e ? e.value : "" })}
                         reinstate={(subject) => reinstateSubject(subject)}
                         required={true}
                         setFocusSet={e => setFocusSet(e)}
@@ -60,7 +60,7 @@ export default function ChoiceRow({ allChoices, groupedSubjects, handleSubjectCh
                         placeholder="Level..."
                         value={level ? { value: level, label: level } : null}
                         options={availableLevels}
-                        onChange={e => dispatchChoice({ type: 'SET_SELECTED_LEVEL', payload: e.value })}
+                        onChange={e => dispatchChoice({ type: 'SET_SELECTED_LEVEL', payload: e ? e.value : "" })}
                         required={true}
                         setFocusSet={e => setFocusSet(e)}
                         canFocus={canFocus} />

@@ -63,7 +63,6 @@ export default function ActualForm({ profile, id }) {
 
             try {
                 const result = await axios.get(api);
-                console.log(result)
 
                 // If successfull, set data
                 if (result.data.status_code === 200) {
@@ -166,11 +165,6 @@ export default function ActualForm({ profile, id }) {
         })
     }
 
-    useEffect(() => {
-        console.log("new form values")
-        console.log(formValues)
-    }, [formValues])
-
     // Conditional rendering
     if (isSubmitting) {
         // Form is currently submitting
@@ -235,7 +229,7 @@ export default function ActualForm({ profile, id }) {
                         setFocusSet={e => setFocusSet(e)}
                         canFocus={!focusSet}
                     />
-                    {wider_achievement_options &&
+                    {config.show_wider_achievement_options &&
                         <WiderAchievementOptions
                             wider_achievement_options={wider_achievement_options}
                             message={config.wider_achievement_message}
