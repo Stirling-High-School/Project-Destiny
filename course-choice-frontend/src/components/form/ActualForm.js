@@ -16,10 +16,7 @@ const Submitted = () => (
 )
 
 // Renders the form sections
-export default function ActualForm({ profile }) {
-    // Get the form ID
-    const location = useLocation()
-    const id = location.pathname.substring(1)
+export default function ActualForm({ profile, id }) {
 
     // Fetch data state
     const [fetchData, dispatchFetchData] = useReducer(
