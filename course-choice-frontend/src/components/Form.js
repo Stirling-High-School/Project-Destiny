@@ -95,9 +95,8 @@ function Form() {
     let formTitle = ""
 
     if (courses) {
-        console.log(courses)
         for (let course in courses) {
-            if (courses[course].course_choice_id == id) {
+            if (courses[course].course_choice_id === id) {
                 formTitle = courses[course].display_name;
             }
         }

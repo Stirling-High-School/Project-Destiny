@@ -108,25 +108,28 @@ export default function ActualForm({ profile, id }) {
         e.preventDefault();
         const api = process.env.REACT_APP_API_URL;
 
-        async function postData() {
+        function postData() {
             // Initialise submit
             dispatchSubmitted({ type: 'SUBMIT_INIT' })
 
-            const response = await fetch(api, {
+            fetch(api, {
+                redirect: 'follow',
                 method: 'POST',
-                mode: 'no-cors',
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "text/plain" },
+                crossDomain: true,
                 body: JSON.stringify(formValues)
             })
-
-            if (response) {
-                dispatchSubmitted({ type: 'SUBMIT_SUCCESS' })
-            } else {
-                dispatchSubmitted({
-                    type: 'SUBMIT_FAILURE',
-                    payload: <MessageComponent message={"An unknown error has occured"} description={"Please try again later."} isError />
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status_code === 201) {
+                        dispatchSubmitted({ type: 'SUBMIT_SUCCESS' })
+                    } else {
+                        dispatchSubmitted({
+                            type: 'SUBMIT_FAILURE',
+                            payload: <MessageComponent message={data.data[0].message} description={data.data[0].description} isError />
+                        })
+                    }
                 })
-            }
         }
         postData()
     }
