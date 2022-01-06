@@ -10,8 +10,6 @@ iframe {
     width: 0% !important;
 }
 
-/* html, body, #root { height: 100% } */
-
 /* For Linkify */
 a {
     --tw-text-opacity: 1;
@@ -28,3 +26,8 @@ a:hover {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.required:after {
+    content:" *";
+    color: red;
+  }

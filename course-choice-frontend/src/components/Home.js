@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Card, Loading, ErrorComponent } from './reusable';
+import { Card, Loading, MessageComponent } from './reusable';
 import { useReducer, useEffect } from 'react';
 import Header from './form/components/Header';
 import homeDataReducer from './reducers/homeDataReducer';
@@ -38,14 +38,14 @@ function Home() {
                     // Error occurred, generate error component
                     dispatchHomeData({
                         type: 'DATA_FETCH_FAILURE',
-                        payload: <ErrorComponent message={result.data.data[0].message} description={result.data.data[0].description} />
+                        payload: <MessageComponent message={result.data.data[0].message} description={result.data.data[0].description} isError />
                     })
                 }
             } catch (error) {
                 // An unknown error occurred, generate error component
                 dispatchHomeData({
                     type: 'DATA_FETCH_FAILURE',
-                    payload: <ErrorComponent message={"An unknown error has occured"} description={"Please try again later."} />
+                    payload: <MessageComponent message={"An unknown error has occured"} description={"Please try again later."} isError />
                 })
             }
         }
@@ -61,9 +61,9 @@ function Home() {
     } else {
         // Data has loaded, display options
         return (
-            <>
+            <div className="flex flex-col justify-center items-center">
                 <Header title={config.title} imageBlob={config.image_blob} />
-                <div className="grid md:grid-cols-2 md:gap-10">
+                <div className="grid md:grid-cols-2 md:gap-10 max-w-max">
                     {courses.map(({ course_choice_id, display_name }, index) => (
                         <Card key={index}>
                             <h1 className="text-2xl">{display_name}</h1>
@@ -73,7 +73,7 @@ function Home() {
                         </Card>
                     ))}
                 </div>
-            </>
+            </div>
         )
     }
 }

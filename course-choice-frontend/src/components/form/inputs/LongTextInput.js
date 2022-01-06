@@ -34,12 +34,8 @@ export default function LongTextInput({ name, type, description, required, onCha
             {/* Display name if provided */}
             {name &&
                 <>
-                    <label className="text-lg">
+                    <label className={`text-lg ${required && 'required'}`}>
                         {name + ":"}
-
-                        {/* Display red * if required */}
-                        {required &&
-                            <span className="text-red-600"> *</span>}
                     </label>
                     <br />
                 </>}

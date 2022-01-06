@@ -34,12 +34,8 @@ export default function TextInput({ name, type, description, required, onChange,
             {/* Display name if provided */}
             {name &&
                 <>
-                    <label className="text-lg">
+                    <label className={`text-lg ${required && 'required'}`}>
                         {name + ":"}
-
-                        {/* Display red * if required */}
-                        {required &&
-                            <span className="text-red-600"> *</span>}
                     </label>
                     <br />
                 </>}

@@ -1,5 +1,5 @@
 import React, { useState, useReducer, useEffect } from 'react';
-import { Card, ErrorComponent, Loading } from './reusable';
+import { Card, MessageComponent, Loading } from './reusable';
 import ActualForm from './form/ActualForm';
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
@@ -78,20 +78,20 @@ function Form() {
                     // Error occurred, generate error component
                     dispatchHomeData({
                         type: 'DATA_FETCH_FAILURE',
-                        payload: <ErrorComponent message={result.data.data[0].message} description={result.data.data[0].description} />
+                        payload: <MessageComponent message={result.data.data[0].message} description={result.data.data[0].description} isError />
                     })
                 }
             } catch (error) {
                 // An unknown error occurred, generate error component
                 dispatchHomeData({
                     type: 'DATA_FETCH_FAILURE',
-                    payload: <ErrorComponent message={"An unknown error has occured"} description={"Please try again later."} />
+                    payload: <MessageComponent message={"An unknown error has occured"} description={"Please try again later."} isError />
                 })
             }
         }
         fetchData()
     }, [])
-    
+
     let formTitle = ""
 
     if (courses) {

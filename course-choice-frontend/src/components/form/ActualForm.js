@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useReducer } from 'react';
 import { fetchDataReducer, formValuesReducer, submittedReducer } from '../reducers';
-import { Loading, Card, ErrorComponent } from '../reusable';
-import { useLocation } from 'react-router-dom';
+import { Loading, Card, MessageComponent } from '../reusable';
 import axios from 'axios';
 import { AdditionalFields, Submit, CourseChoices, FormClass, WiderAchievementOptions, Header } from './components'
 
@@ -86,14 +85,14 @@ export default function ActualForm({ profile, id }) {
                     // Error occurred, generate error component
                     dispatchFetchData({
                         type: 'DATA_FETCH_FAILURE',
-                        payload: <ErrorComponent message={result.data.data[0].message} description={result.data.data[0].description} />
+                        payload: <MessageComponent message={result.data.data[0].message} description={result.data.data[0].description} isError />
                     })
                 }
             } catch (error) {
                 // An unknown error occurred, generate error component
                 dispatchFetchData({
                     type: 'DATA_FETCH_FAILURE',
-                    payload: <ErrorComponent message={"An unknown error has occured"} description={"Please try again later."} />
+                    payload: <MessageComponent message={"An unknown error has occured"} description={"Please try again later."} isError />
                 })
             }
         }
@@ -136,7 +135,7 @@ export default function ActualForm({ profile, id }) {
             } else {
                 dispatchSubmitted({
                     type: 'SUBMIT_FAILURE',
-                    payload: <ErrorComponent message={"An unknown error has occured"} description={"Please try again later."} />
+                    payload: <MessageComponent message={"An unknown error has occured"} description={"Please try again later."} isError />
                 })
             }
         }
@@ -192,7 +191,7 @@ export default function ActualForm({ profile, id }) {
         )
     } else if (isSubmitted) {
         // Form has been submitted
-        return <Submitted />
+        return <MessageComponent message={"Form submitted!"} description={"You should recieve an email confirmation shortly."} />
     } else if (isSubmitError) {
         // An error occurred while submitting
         return submitErrorComponent

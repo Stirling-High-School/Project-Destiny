@@ -18,7 +18,7 @@ export default function SelectInput({ name, placeholder, options, description, r
 
     // Custom styleObject for react-select input component for error
     const styleObject = {
-        control: (base, state) => ({
+        control: (base) => ({
             ...base,
             boxShadow: `0 0 0 2px 'red'`,
             borderColor: 'red',
@@ -40,7 +40,7 @@ export default function SelectInput({ name, placeholder, options, description, r
         toast.dismiss()
         setError(false)
         setFocusSet(false)
-        
+
         if (required) hiddenRef.current.value = selected
 
         // Set new value
@@ -66,12 +66,8 @@ export default function SelectInput({ name, placeholder, options, description, r
             {/* Display name if provided */}
             {name &&
                 <>
-                    <label className="text-lg">
+                    <label className={`text-lg ${required && 'required'}`}>
                         {name + ":"}
-
-                        {/* Display red * if required */}
-                        {required &&
-                            <span className="text-red-600"> *</span>}
                     </label>
                     <br />
                 </>}

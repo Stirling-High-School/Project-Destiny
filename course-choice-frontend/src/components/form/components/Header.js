@@ -20,10 +20,10 @@ export default function Header({ title, welcomeMessage, imageBlob, profile }) {
             />
 
             {/* Header with form title */}
-            <h1 className="text-xl sm:text-2xl md:text-3xl m-2">{title}</h1>
+            <h1 className="text-3xl m-2 text-center">{title}</h1>
 
             {/* Linkify turns links inside strings into clickable <a> tags */}
-            <Linkify componentDecorator={componentDecorator}> <p className="mx-8">{welcomeMessage}</p></Linkify>
+            <Linkify componentDecorator={componentDecorator}> <p className="mx-8 text-center">{welcomeMessage}</p></Linkify>
 
             {/* Logged in */}
             {profile &&
