@@ -6,7 +6,6 @@
 * @return {Array} Array of avaiable wider achievement options but with the desired option changed to the desired disabled state.
 */
 const modifyAvailableOptions = (option, disabled, availableOptions) => {
-    console.log(option)
     for (let x = 0; x < availableOptions.length; x++) {
         if (availableOptions[x].value === option) {
             if (availableOptions[x].isDisabled === !disabled) {

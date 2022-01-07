@@ -12,7 +12,7 @@ export default function ChoiceRow({ allChoices, groupedSubjects, handleSubjectCh
             return_choice: {
                 subject: null,
                 level: null,
-                weight: "backup",
+                weight: "Backup",
             },
             availableLevels: [],
             all_choices: allChoices,
