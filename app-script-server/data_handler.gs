@@ -109,6 +109,9 @@ function getAttributesForKey(attribute_name, attribute_value, sheet_data) {
 function storeFormResponse(formResponseData) {
   /* Insert the course choice form into the appropriate spreadsheet.
   Assumes configuration has already been initialized */
+
+  const emailData = JSON.parse(JSON.stringify(formResponseData));
+
   var sheet =
     CONFIG.FORM_RESPONSES_SPREADSHEET.getSheetByName("Form Responses");
   sheet.appendRow([" "]);
@@ -120,7 +123,7 @@ function storeFormResponse(formResponseData) {
       sheet.getDataRange().getValues()[0].length
     )
     .setBackground(CONFIG.SHEET_BORDER_COLOR);
-  var choices = [...formResponseData.choices];
+  var choices = cleanChoices([...formResponseData.choices]);
   delete formResponseData.choices;
 
   // Lower case all keys in optionalFields
@@ -169,6 +172,20 @@ function storeFormResponse(formResponseData) {
 
     appendSheetDataAsDict(sheet, data);
   }
+
+  /* Send confirmation email */
+  sendEmail(emailData);
+}
+
+function cleanChoices(choices) {
+  /* Remove incomplete rows from choices, this is any choice which has null as any attribute value */
+  var cleanedChoices = [];
+  for (const choice of choices) {
+    if (Object.values(choice).every((o) => o !== null)) {
+      cleanedChoices.push(choice);
+    }
+  }
+  return cleanedChoices;
 }
 
 function checkFormAlreadySubmitted(email) {
