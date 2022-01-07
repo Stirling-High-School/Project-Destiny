@@ -1,0 +1,25 @@
+[debug] [2021-12-20T14:18:46.971Z] ----------------------------------------------------------------------
+[debug] [2021-12-20T14:18:46.974Z] Command:       C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2021-12-20T14:18:46.974Z] CLI Version:   9.23.3
+[debug] [2021-12-20T14:18:46.974Z] Platform:      win32
+[debug] [2021-12-20T14:18:46.975Z] Node Version:  v16.6.1
+[debug] [2021-12-20T14:18:46.976Z] Time:          Mon Dec 20 2021 14:18:46 GMT+0000 (Greenwich Mean Time)
+[debug] [2021-12-20T14:18:46.976Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-12-20T14:18:47.052Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-12-20T14:18:47.052Z] > authorizing via signed-in user (digitalwizard06@stirlingschools.net)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  E:\Firebase\Project-Destiny\course-choice-frontend
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+

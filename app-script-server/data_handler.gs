@@ -55,7 +55,7 @@ function appendSheetDataAsDict(sheet, data) {
 function courseChoiceIdResolver(choiceChoiceId) {
   /* Convert course_choice_id to the display name of the corresponding sheet
   null returned if no id is found */
-  const data = loadSheetDataAsDict(META);
+  const data = loadSheetDataAsDict(CONFIG.COURSE_ID_MAP);
   for (const row of data) {
     if (choiceChoiceId == row.course_choice_id) {
       return row.display_name;
@@ -67,7 +67,7 @@ function courseChoiceIdResolver(choiceChoiceId) {
 function serializeCourses(course_data) {
   /* Convert raw course choice data from the spreadsheet into a json serialized object */
   var response = [];
-  var course_levels_data = loadSheetDataAsDict(COURSE_LEVELS);
+  var course_levels_data = loadSheetDataAsDict(CONFIG.COURSE_LEVELS);
   for (var course of course_data) {
     var r = {
       subject: course.Subject,
@@ -106,10 +106,11 @@ function getAttributesForKey(attribute_name, attribute_value, sheet_data) {
   return null;
 }
 
-function storeFormResponse(formResponseData, course_choice_name) {
+function storeFormResponse(formResponseData) {
   /* Insert the course choice form into the appropriate spreadsheet.
-  Assumes course_choice_name is already valid, note this isn't the course_choice_id */
-  var sheet = FORM_RESPONSES_SPREADSHEET.getSheetByName(course_choice_name);
+  Assumes configuration has already been initialized */
+  var sheet =
+    CONFIG.FORM_RESPONSES_SPREADSHEET.getSheetByName("Form Responses");
   sheet.appendRow([" "]);
   sheet
     .getRange(
@@ -118,59 +119,129 @@ function storeFormResponse(formResponseData, course_choice_name) {
       1,
       sheet.getDataRange().getValues()[0].length
     )
-    .setBackground(SHEET_BORDER_COLOR);
+    .setBackground(CONFIG.SHEET_BORDER_COLOR);
   var choices = [...formResponseData.choices];
   delete formResponseData.choices;
 
-  var optionalFields = Object.assign({}, formResponseData.optional_fields);
+  // Lower case all keys in optionalFields
+  var key,
+    keys = Object.keys(formResponseData.optional_fields);
+  var n = keys.length;
+  var optionalFields = {};
+  while (n--) {
+    key = keys[n];
+    optionalFields[key.toLowerCase()] = formResponseData.optional_fields[key];
+  }
+
   delete formResponseData.optional_fields;
+
+  var wider_achievement_options =
+    "wider_achievement_options" in formResponseData
+      ? formResponseData.wider_achievement_options
+      : [""];
 
   appendSheetDataAsDict(sheet, {
     ...formResponseData,
     ...optionalFields,
     ...choices[0],
+    wider_achievement_options: wider_achievement_options[0],
     choice_count: choices.length,
     submitted_at: new Date(),
   });
 
-  for (const choice of choices.slice(1)) {
-    appendSheetDataAsDict(sheet, choice);
+  // Remove rows already added to sheet
+  choices.shift();
+  wider_achievement_options.shift();
+
+  while (choices.length !== 0 || wider_achievement_options.length !== 0) {
+    var data = {};
+    if (choices.length !== 0) {
+      data = { ...data, ...choices[0] };
+      choices.shift();
+    }
+    if (wider_achievement_options.length !== 0) {
+      data = {
+        ...data,
+        wider_achievement_options: wider_achievement_options[0],
+      };
+      wider_achievement_options.shift();
+    }
+
+    appendSheetDataAsDict(sheet, data);
   }
 }
 
-function test() {
-  // Test writing of form to spreadsheet
-  storeFormResponse(
-    {
-      email: "angus.henderson@citnow.com",
-      name: "Angus Henderson",
-      form_class: "6E1",
-      choices: [
-        {
-          subject: "Maths",
-          level: "Advanced Higher",
-          weight: 1,
-        },
-        {
-          subject: "Computing Science",
-          level: "Advanced Higher",
-          weight: 1,
-        },
-        {
-          subject: "Physics",
-          level: "Advanced Higher",
-          weight: 1,
-        },
-      ],
-      course_choice_id: "s45",
-      optional_fields: {
-        planned_destination: "Graduate Apprenticeship",
-        planned_destination_details:
-          "Looking to do a Graduate Apprenticeship in Software Engineering, potentially in fintech",
-        expected_leaving_date: 2022,
-        career_aspiration: "Software Engineer",
-      },
-    },
-    "S4-5 Course Choices"
+function checkFormAlreadySubmitted(email) {
+  /* Determine whether a given user, identifiable under an email address, has already submitted a form response */
+  for (const row of loadSheetDataAsDict(
+    CONFIG.FORM_RESPONSES_SPREADSHEET.getSheetByName("Form Responses")
+  )) {
+    if (row.email === email) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function __loadConfig(sheet) {
+  /* Load key value config data from a provided config sheet */
+  const response = {};
+  for (const row of loadSheetDataAsDict(sheet)) {
+    response[row.key] = row.value;
+  }
+  return response;
+}
+
+function getSerializedConfig() {
+  /* Fetch all configuration data from the initialized config sheet, these are
+  simply key value pairs */
+  return __loadConfig(
+    CONFIG.CONFIGURATION_SPREADSHEET.getSheetByName("Config")
   );
+}
+
+function getSerializedRootConfig() {
+  /* Fetch all configuration data from the project root config sheet, these are
+  simply key value pairs */
+  return __loadConfig(ROOT_CONFIGURATION_SPREADSHEET.getSheetByName("Config"));
+}
+
+function getSerializedFormClasses() {
+  /* Fetch all form classes from the Form Classes sheet from the initialized
+  config spreadsheet, these are a list of strings */
+  var response = [];
+  for (const row of loadSheetDataAsDict(
+    CONFIG.CONFIGURATION_SPREADSHEET.getSheetByName("Form Classes")
+  )) {
+    response.push(row.form_class);
+  }
+  return response;
+}
+
+// David added:
+function getSerializedWiderAchievement() {
+  /* Fetch all wider achievement options from the Wider Achievement Choices sheet from the initialized
+  config spreadsheet, these are a list of strings */
+  var response = [];
+  try {
+    for (const row of loadSheetDataAsDict(
+      CONFIG.CONFIGURATION_SPREADSHEET.getSheetByName(
+        "Wider Achievement Choices"
+      )
+    )) {
+      response.push(row.wider_achievement);
+    }
+    return response;
+  } catch {
+    return null;
+  }
+}
+
+function getAllSerializedCourses() {
+  /* Load Course ID Map data from root project configuration */
+  const data = loadSheetDataAsDict(CONFIG.COURSE_ID_MAP);
+  for (const row of data) {
+    all_courses_without_keys.forEach((e) => delete row[e]);
+  }
+  return data;
 }
