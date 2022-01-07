@@ -11,16 +11,17 @@ import { useLocation, Redirect } from 'react-router-dom';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyCQ9cLex-z8woLW1cwt-5s0mIwZ67KXWcs",
-    authDomain: "shs-course-choice-auth-2021.firebaseapp.com",
-    projectId: "shs-course-choice-auth-2021",
-    storageBucket: "shs-course-choice-auth-2021.appspot.com",
-    messagingSenderId: "810594559995",
-    appId: "1:810594559995:web:8d5c63ddb167f496180d5e"
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_FIREBASE_APP_ID
 };
 
 // Initialize Firebase
 initializeApp(firebaseConfig);
+
 function Form() {
 
     // Get the form ID
@@ -32,7 +33,7 @@ function Form() {
     function googleSignIn() {
         const provider = new GoogleAuthProvider();
         provider.setCustomParameters({
-            'hd': 'stirlingschools.net' // Restrict to stirlingschools.net hosted domain
+            'hd': process.env.REACT_APP_GOOGLE_DOMAIN // Restrict to specific hosted domain
         });
 
         const auth = getAuth();

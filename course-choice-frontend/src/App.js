@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Form from './components/Form';
 import { toast } from 'react-toastify';
 import MessageComponent from './components/reusable/MessageComponent';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
