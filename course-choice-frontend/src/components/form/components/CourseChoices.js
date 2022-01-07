@@ -12,9 +12,9 @@ export default function SubjectChoices({ message, maxChoices, minChoices, allCho
     for (let x = 1; x <= maxChoices; x++) choices.push(x)
 
     const [availableSubjects, setAvailableSubjects] = useState(groupedSubjects);
-    const [availableWeightings, setAvailableWeightings] = useState(weightings.map((weight) => ({
+    const [availableWeightings, setAvailableWeightings] = useState(weightings.map((weight, index) => ({
         label: weight,
-        value: weight,
+        value: index,
         isDisabled: false
     })))
     const [formattedWeightings, setFormattedWeightings] = useState(formatWeightings(weightings.map((weight) => ({
@@ -29,7 +29,7 @@ export default function SubjectChoices({ message, maxChoices, minChoices, allCho
 
         // Modify the available weightings or subjects to add/remove options
         if (value.weight) {
-            const modifiedWeightings = modifyAvailableWeightings(value.weight, true, availableWeightings)
+            const modifiedWeightings = modifyAvailableWeightings(value.weight.value, true, availableWeightings)
             setAvailableWeightings(modifiedWeightings)
             setFormattedWeightings(formatWeightings(modifiedWeightings))
         } else if (value.subject) {
@@ -38,7 +38,7 @@ export default function SubjectChoices({ message, maxChoices, minChoices, allCho
     }
 
     // Boolean - true if weighting 3 is selected
-    const backupEnabled = availableWeightings.some(weight => weight.value === 3 && weight.isDisabled === true)
+    const backupEnabled = availableWeightings.some(weight => weight.label === 3 && weight.isDisabled === true)
 
     return (
         <Card>
