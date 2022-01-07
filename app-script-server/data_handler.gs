@@ -1,4 +1,5 @@
 /* Set of code to streamline relationships between data stored
+/* Set of code to streamline relationships between data stored
 in spreadsheets and data sent/received from the client. This also
 includes a set of utilities for serializing and deserializing data
 to allow it to be transported and refrences respectively */
