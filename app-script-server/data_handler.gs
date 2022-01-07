@@ -1,8 +1,7 @@
 /* Set of code to streamline relationships between data stored
-/* Set of code to streamline relationships between data stored
 in spreadsheets and data sent/received from the client. This also
 includes a set of utilities for serializing and deserializing data
-to allow it to be transported and refrences respectively */
+to allow it to be transported and refrenced respectively */
 
 function loadSheetDataAsDict(sheet) {
   /* Load data from the provided sheet in a list of
@@ -111,8 +110,6 @@ function storeFormResponse(formResponseData) {
   /* Insert the course choice form into the appropriate spreadsheet.
   Assumes configuration has already been initialized */
 
-  const emailData = JSON.parse(JSON.stringify(formResponseData));
-
   var sheet =
     CONFIG.FORM_RESPONSES_SPREADSHEET.getSheetByName("Form Responses");
   sheet.appendRow([" "]);
@@ -173,9 +170,6 @@ function storeFormResponse(formResponseData) {
 
     appendSheetDataAsDict(sheet, data);
   }
-
-  /* Send confirmation email */
-  sendEmail(emailData);
 }
 
 function cleanChoices(choices) {
@@ -236,7 +230,6 @@ function getSerializedFormClasses() {
   return response;
 }
 
-// David added:
 function getSerializedWiderAchievement() {
   /* Fetch all wider achievement options from the Wider Achievement Choices sheet from the initialized
   config spreadsheet, these are a list of strings */

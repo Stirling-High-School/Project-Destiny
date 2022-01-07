@@ -59,7 +59,7 @@ function testPostS56() {
           wider_achievement_options: [
             "Work Experience (Work Placement SCQF Level 5)",
             "Leadership (SQA Leadership Award Level 6)",
-          ]
+          ],
         },
       }),
     },
@@ -132,4 +132,3 @@ function testGet() {
   });
   Logger.log(response.getContent());
 }
-

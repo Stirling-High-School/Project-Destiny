@@ -14,6 +14,8 @@ var CONFIG = {
   // CONFIGURATION DEPENDANT ON SELECTED LEVEL
   CONFIGURATION_SPREADSHEET: null,
   FORM_RESPONSES_SPREADSHEET: null,
+
+  // Color of border separating form responses - feel free to edit!
   SHEET_BORDER_COLOR: "#4285f4",
 };
 
@@ -34,7 +36,6 @@ function initializeConfiguration(course_choice_id) {
   );
 }
 
-// TODO I feel like this can be standardised in a better way
 const all_courses_without_keys = [
   "config_spreadsheet_id",
   "form_responses_spreadsheet_id",

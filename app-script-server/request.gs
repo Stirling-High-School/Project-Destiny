@@ -2,7 +2,7 @@
 
 function isLive(course_choice_id) {
   /* Determines wether the course choice form is currently live,
-  assumes initialization has occured and course_choice_id is valid */
+  assumes initialization has occurred and course_choice_id is valid */
   return getAttributesForKey(
     "Year Group",
     course_choice_id,

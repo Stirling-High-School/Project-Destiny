@@ -13,7 +13,9 @@ function Response(type, status_code, data = null, errors = null) {
     response.errors = errors;
   }
 
-  return ContentService.createTextOutput(JSON.stringify(response));
+  return ContentService.createTextOutput(JSON.stringify(response)).setMimeType(
+    ContentService.MimeType.JAVASCRIPT
+  );
 }
 
 // PREDEFINED RESPONSES

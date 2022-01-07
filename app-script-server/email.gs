@@ -1,10 +1,13 @@
+/* All handling related to formatting and sending confirmation emails */
+
 function sendEmail(formResponseData) {
-  Logger.log(formResponseData)
-  GmailApp.sendEmail(formResponseData.email, "Your Course Choices", "", {"htmlBody": generateEmailBody(formResponseData)});
+  Logger.log(formResponseData);
+  GmailApp.sendEmail(formResponseData.email, "Your Course Choices", "", {
+    htmlBody: generateEmailBody(formResponseData),
+  });
 }
 
 function generateEmailBody(formResponseData) {
-
   const MESSAGE = "";
 
   let body = `<!DOCTYPE html>
@@ -233,10 +236,10 @@ function generateEmailBody(formResponseData) {
                                   </td>
                               </tr>
                           </tbody>
-                      </table>`
-    
-    for (choice of formResponseData.choices) {
-      body += `<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-6"
+                      </table>`;
+
+  for (choice of formResponseData.choices) {
+    body += `<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-6"
       role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
                 <tbody>
                     <tr>
@@ -318,11 +321,10 @@ function generateEmailBody(formResponseData) {
                     </tr>
                 </tbody>
             </table>`;
-    }
+  }
 
-    if (formResponseData.wider_achievement_options) {
-
-      body += `<br><table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-5"
+  if (formResponseData.wider_achievement_options) {
+    body += `<br><table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-5"
                             role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
                             <tbody>
                                 <tr>
@@ -361,10 +363,10 @@ function generateEmailBody(formResponseData) {
                                     </td>
                                 </tr>
                             </tbody>
-                        </table>`
-      
-      for (let i in formResponseData.wider_achievement_options) {
-        body += `<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-6"
+                        </table>`;
+
+    for (let i in formResponseData.wider_achievement_options) {
+      body += `<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-6"
         role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
                   <tbody>
                       <tr>
@@ -407,12 +409,11 @@ function generateEmailBody(formResponseData) {
                       </tr>
                   </tbody>
               </table>`;
-      }
     }
+  }
 
-    if (formResponseData.optional_fields) {
-
-      body += `<br><table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-5"
+  if (formResponseData.optional_fields) {
+    body += `<br><table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-5"
                             role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
                             <tbody>
                                 <tr>
@@ -472,10 +473,10 @@ function generateEmailBody(formResponseData) {
                                     </td>
                                 </tr>
                             </tbody>
-                        </table>`
-      
-      for (let i in formResponseData.optional_fields) {
-        body += `<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-6"
+                        </table>`;
+
+    for (let i in formResponseData.optional_fields) {
+      body += `<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-6"
         role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
                   <tbody>
                       <tr>
@@ -537,10 +538,10 @@ function generateEmailBody(formResponseData) {
                       </tr>
                   </tbody>
               </table>`;
-      }
     }
+  }
 
-    body += `<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-12" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+  body += `<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-12" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
                         <tbody>
                             <tr>
                                 <td>

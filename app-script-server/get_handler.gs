@@ -1,3 +1,5 @@
+/* All handling related to processing GET requests */
+
 function doGet(request) {
   /* Handle all GET requests */
   if (courseChoiceIdProvided(request)) {

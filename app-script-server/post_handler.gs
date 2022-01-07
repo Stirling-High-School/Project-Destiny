@@ -1,4 +1,4 @@
-// TODO Potentially add deeper validation, inline with config and additional_fields
+/* All handling related to processing POST requests */
 
 function doPost(request) {
   /* Handle all POST requests */
@@ -12,7 +12,10 @@ function doPost(request) {
       if (!checkFormAlreadySubmitted(contents.data.email)) {
         storeFormResponse(contents.data);
 
-        Logger.log("Form submission success");
+        /* Send confirmation email */
+        const emailData = JSON.parse(JSON.stringify(formResponseData));
+        sendEmail(emailData);
+
         return Response(
           "form_submit",
           201,
@@ -23,11 +26,9 @@ function doPost(request) {
         );
       }
 
-      Logger.log("Form already submitted");
       return FORM_ALREADY_SUBMITTED_RESPONSE;
     }
 
-    Logger.log("Invalid course choice ID");
     return INVALID_COURSE_CHOICE_ID_RESPONSE;
   }
 
