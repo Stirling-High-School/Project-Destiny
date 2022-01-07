@@ -2,7 +2,7 @@ import Select, { components } from 'react-select';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
-export default function SelectInput({ name, placeholder, options, description, required, onChange, reinstate, value, setFocusSet, canFocus }) {
+export default function SelectInput({name, placeholder, options, description, required, onChange, reinstate, value, setFocusSet, canFocus }) {
 
     const [error, setError] = useState(false);
     const selectRef = useRef();
@@ -33,8 +33,8 @@ export default function SelectInput({ name, placeholder, options, description, r
 
     const handleChange = (selected) => {
         // Reinstate option to make it available again (for weightings and subjects)
-        let label = value ? value.label : ""
-        if (reinstate) reinstate(label)
+        let resinstate_this = value ? value.value : ""
+        if (reinstate) reinstate(resinstate_this)
 
         // Reset any invalid errors
         toast.dismiss()
@@ -43,7 +43,6 @@ export default function SelectInput({ name, placeholder, options, description, r
 
         if (required) hiddenRef.current.value = selected
 
-        // Set new value
         onChange(selected)
     }
 

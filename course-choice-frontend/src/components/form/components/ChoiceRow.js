@@ -60,9 +60,9 @@ export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weigh
                     {/* Weighting input */}
                     <SelectInput
                         placeholder="Weighting..."
-                        value={weight ? { value: weight, label: weight } : ""}
+                        value={weight ? { value: weight.value, label: weight.label } : ""}
                         options={weightings}
-                        onChange={e => dispatchChoice({ type: 'SET_SELECTED_WEIGHTING', payload: e ? e.value : null })}
+                        onChange={e => dispatchChoice({ type: 'SET_SELECTED_WEIGHTING', payload: e ? e : null })}
                         required={required}
                         reinstate={(weight) => reinstateWeight(weight)}
                         setFocusSet={e => setFocusSet(e)}

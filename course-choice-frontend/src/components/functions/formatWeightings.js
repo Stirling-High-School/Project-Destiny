@@ -24,7 +24,7 @@ const formatWeightings = (availableWeightings) => {
         });
 
     // Remove duplicates again, but taking the last so will reflect whether that weighting is fully disabled or not
-    unique = [...new Map(unique.map(weight => [weight.value, weight])).values()]
+    unique = [...new Map(unique.map(weight => [weight.label, weight])).values()]
     
     return unique
 }
