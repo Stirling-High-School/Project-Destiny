@@ -13,7 +13,7 @@ function testPostS56() {
       contents: JSON.stringify({
         type: "form-submit",
         data: {
-          email: "angus.henderson@citnow.com",
+          email: "digitalwizard06@stirlingschools.net",
           name: "Angus Henderson",
           form_class: "6E1",
           choices: [
@@ -32,6 +32,21 @@ function testPostS56() {
               level: "Advanced Higher",
               weight: 1,
             },
+            {
+              subject: "Chemistry",
+              level: "Higher",
+              weight: 2,
+            },
+            {
+              subject: "Music",
+              level: "Higher",
+              weight: 3,
+            },
+            {
+              subject: "French",
+              level: "Higher",
+              weight: "Backup",
+            },
           ],
           course_choice_id: "s5-6",
           optional_fields: {
@@ -44,7 +59,7 @@ function testPostS56() {
           wider_achievement_options: [
             "Work Experience (Work Placement SCQF Level 5)",
             "Leadership (SQA Leadership Award Level 6)",
-          ],
+          ]
         },
       }),
     },
@@ -87,6 +102,11 @@ function testPostS45() {
               level: "Higher",
               weight: 3,
             },
+            {
+              subject: "French",
+              level: "Higher",
+              weight: "Backup",
+            },
           ],
           course_choice_id: "s4-5",
           optional_fields: {
@@ -106,9 +126,10 @@ function testPostS45() {
 function testGet() {
   const response = doGet({
     parameter: {
-      course_choice_id: "s56",
+      course_choice_id: "s5-6",
       email: "digitalwizard06@stirlingschools.net",
     },
   });
   Logger.log(response.getContent());
 }
+
