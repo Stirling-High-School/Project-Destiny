@@ -16,12 +16,12 @@ export default function SubjectChoices({ message, maxChoices, minChoices, allCho
         label: weight,
         value: index,
         isDisabled: false
-    })))
-    const [formattedWeightings, setFormattedWeightings] = useState(formatWeightings(weightings.map((weight) => ({
+    })));
+    const [formattedWeightings, setFormattedWeightings] = useState(formatWeightings(weightings.map((weight, index) => ({
         label: weight,
-        value: weight,
+        value: index,
         isDisabled: false
-    }))))
+    }))));
 
     const handleChange = (choice, value) => {
         // Push values to formValues
@@ -32,7 +32,9 @@ export default function SubjectChoices({ message, maxChoices, minChoices, allCho
             const modifiedWeightings = modifyAvailableWeightings(value.weight.value, true, availableWeightings)
             setAvailableWeightings(modifiedWeightings)
             setFormattedWeightings(formatWeightings(modifiedWeightings))
-        } else if (value.subject) {
+        }
+        
+        if (value.subject) {
             setAvailableSubjects(modifyAvailableSubjects(value.subject, true, availableSubjects))
         }
     }

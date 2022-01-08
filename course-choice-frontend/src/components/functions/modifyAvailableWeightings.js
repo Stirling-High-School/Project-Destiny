@@ -6,14 +6,13 @@
 * @return {Array} Array of avaiable weightings but with the desired weighting changed to the desired disabled state.
 */
 const modifyAvailableWeightings = (weight, disabled, availableWeightings) => {
+    console.log(availableWeightings)
     for (let x = 0; x < availableWeightings.length; x++) {
         if (availableWeightings[x].value === weight) {
-            if (availableWeightings[x].isDisabled === !disabled) {
-                availableWeightings[x].isDisabled = disabled;
-                break;
-            }
+            availableWeightings[x].isDisabled = disabled;
         }
     }
+    console.log(availableWeightings)
     return availableWeightings;
 }
 

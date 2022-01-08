@@ -23,7 +23,8 @@ export default function ChoiceRow({ allChoices, groupedSubjects, handleSubjectCh
 
     // Runs handlSubjectChoicesChange when return_choice gets new values
     useEffect(() => {
-        handleSubjectChoicesChange("backup", return_choice);
+        console.log(return_choice)
+        handleSubjectChoicesChange("Backup", return_choice);
     }, [return_choice])
 
     return (
@@ -45,22 +46,20 @@ export default function ChoiceRow({ allChoices, groupedSubjects, handleSubjectCh
                 <div className="grid sm:grid-cols-2 w-full sm:gap-4">
                     {/* Subject input */}
                     <SelectInput
-                        name=""
-                        value={subject ? { value: subject, label: subject } : null}
                         placeholder="Subject..."
+                        value={subject ? { value: subject, label: subject } : ""}
                         options={groupedSubjects}
-                        onChange={e => dispatchChoice({ type: 'SET_SELECTED_SUBJECT', payload: e ? e.value : "" })}
+                        onChange={e => dispatchChoice({ type: 'SET_SELECTED_SUBJECT', payload: e ? e.value : null })}
                         reinstate={(subject) => reinstateSubject(subject)}
                         required={true}
                         setFocusSet={e => setFocusSet(e)}
                         canFocus={canFocus} />
                     {/* Level input */}
                     <SelectInput
-                        name=""
                         placeholder="Level..."
-                        value={level ? { value: level, label: level } : null}
+                        value={level ? { value: level, label: level } : ""}
                         options={availableLevels}
-                        onChange={e => dispatchChoice({ type: 'SET_SELECTED_LEVEL', payload: e ? e.value : "" })}
+                        onChange={e => dispatchChoice({ type: 'SET_SELECTED_LEVEL', payload: e ? e.value : null })}
                         required={true}
                         setFocusSet={e => setFocusSet(e)}
                         canFocus={canFocus} />

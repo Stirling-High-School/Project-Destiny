@@ -112,12 +112,23 @@ export default function ActualForm({ profile, id }) {
             // Initialise submit
             dispatchSubmitted({ type: 'SUBMIT_INIT' })
 
+            let submitValues = formValues;
+
+            console.log(submitValues)
+
+            for (let i in submitValues.data.choices) {
+                console.log(submitValues.data.choices[i])
+                submitValues.data.choices[i].weight = submitValues.data.choices[i].weight.label
+            }
+
+            console.log(submitValues)
+
             fetch(api, {
                 redirect: 'follow',
                 method: 'POST',
                 headers: { "Content-Type": "text/plain" },
                 crossDomain: true,
-                body: JSON.stringify(formValues)
+                body: JSON.stringify(submitValues)
             })
                 .then(response => response.json())
                 .then(data => {

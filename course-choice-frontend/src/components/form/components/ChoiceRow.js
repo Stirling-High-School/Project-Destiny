@@ -25,6 +25,8 @@ export default function ChoiceRow({ choiceNo, allChoices, groupedSubjects, weigh
     // TODO - Not the best fix in the world...
     // Runs handlSubjectChoicesChange when return_choice gets new values
     useEffect((choice = choiceNo, pls = handleSubjectChoicesChange) => {
+        console.log(return_choice)
+
         pls(choice - 1, return_choice);
     }, [return_choice])
 

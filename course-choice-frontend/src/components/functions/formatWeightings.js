@@ -6,7 +6,7 @@
 const formatWeightings = (availableWeightings) => {
     
     // Remove duplicates
-    let unique = availableWeightings.filter((x, i, arr) => arr.findIndex(y => y.value === x.value && y.isDisabled === x.isDisabled) === i);
+    let unique = availableWeightings.filter((x, i, arr) => arr.findIndex(y => y.label === x.label && y.isDisabled === x.isDisabled) === i);
     
     // Sort (1-3 and disabled first)
     unique.sort(
