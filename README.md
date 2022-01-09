@@ -1,10 +1,11 @@
 # Project-Destiny
 
+[![Google Drive](https://img.shields.io/badge/Google%20Drive%20Folder-Clone%20Files-brightgreen)](https://drive.google.com/drive/folders/1aGFcdof33KhqZ3Pdomi1yxkQJHJKuqbM)
+[![App Script](https://img.shields.io/badge/Google%20App%20Script%20API-Clone-blue)](https://script.google.com/d/1Rh7b-zKP_G8Bsf_0FGsHX7yLJeHGuAO6TUnFcOmqAfoTMEQLTqs8qaTE/edit?usp=sharing)
+
 [![Twitter](https://img.shields.io/twitter/follow/Stirling_High?style=social)](https://twitter.com/Stirling_High)
 [![Twitter](https://img.shields.io/twitter/follow/beecheyyy?style=social)](https://twitter.com/beecheyyy)
 [![Twitter](https://img.shields.io/twitter/follow/ach_henderson?style=social)](https://twitter.com/ach_henderson)
-
-[![Google Drive](https://img.shields.io/badge/Google%20Drive%20Folder-Clone%20Files-brightgreen)](https://drive.google.com/drive/folders/1aGFcdof33KhqZ3Pdomi1yxkQJHJKuqbM)
 
 Highly customisable online course choice form for high schools. This has been developed internally for [Stirling High School](https://www.stirlinghigh.co.uk), however the core system is extremely customisable, making it ideal for (mostly) every school's course choice use cases. All form responses are stored in a Google Sheet, and all customisation can be done through a separate configuration spreadsheet.
 
@@ -41,12 +42,16 @@ There are 3 main phases to this setup guide, with some additional optional steps
 
 All spreadsheets which are required for this part of the setup can be found within the `Generic Spreadsheet Templates` of the above Google Drive folder. Make a copy of these files to the Google Account you wish to deploy the API from. As these are just Google Sheets, feel free to share them with other members of staff, especially the Form Responses one, although its recommended to keep the Configuration sheets more private, as to avoid any accidental modifications.
 
+If you would like to see an example deployment (how SHS has uses the system), checkout the `Example Deployment` folder. The file structure documented in this drive folder is how we would recommend using the system, in order to keep everything organised. To explain it here, we recommend creating a dedicated drive folder in your Google Drive, the adding the super configuration spreadsheet to this root directory. Then, create sub folder for each year group you would like to have a course choice form for, populating each subfolder with an individual form configuration spreadsheet and form responses spreadsheet. The following setup guide will guide you to populating these spreadsheets. Please note most sheets have notes on cells discussing their uses.
+
 **list spreadsheet templates to copy and walkthrough of what to set**
 **discuss how the configuration is broken down into school, then individual courses**
 
 ### API Setup
 
-1. As mentioned above, the entire backend is build using Google App Script. To get started, clone the following Google App Script to your Google Account **LINK TC**
+[![App Script](https://img.shields.io/badge/Google%20App%20Script%20API-Clone-blue)](https://script.google.com/d/1Rh7b-zKP_G8Bsf_0FGsHX7yLJeHGuAO6TUnFcOmqAfoTMEQLTqs8qaTE/edit?usp=sharing)
+
+1. As mentioned above, the entire backend is build using Google App Script. To get started, clone the above Google App Script to your Google Account. To do this, click the above App Script link, which will take you to the project. Press the Overview tab (the i icon on the left hand side of the screen), then `Make a copy` (the copy icon in the top right of the screen). This will make a copy of the project in your Google Drive. You can now close this tab. Open your Google Drive, and move this file to the root project folder you created in the Spreadsheet setup, this will help keep everything in one place.
 2. Open the cloned project, and open the config.gs file, you'll see this on the left hand panel. On line 2 of this file, you should see something along the lines of `const ROOT_CONFIGURATION_SPREADSHEET_ID = "1laQGLcOqh0ukifaVeAjvBG7N9mWerIDB7tYOz1cZOa4";`. Replace the id inside the quotation marks with the id of your **root configuration spreadsheet** (see spreadsheet setup if you don't have this id stored). Finally, save the file by either pressing Ctrl+s or pressing the save icon along the top bar.
 3. Now, press deploy (the blue button in the top right), and select new deployment. Press `Web app` in the left hand column (if this doesn't appear press the settings cog on the left, then select `Web app` from the dropdown menu). Enter `live` into the Description box. Under `Execute as`, select `me` (you should see your email address as well). Finally, set `Who has access` to `Anyone`, and press deploy (blue box in bottom right)
 4. Once deployed, copy the Web App url, you'll need this later when setting up the frontend
