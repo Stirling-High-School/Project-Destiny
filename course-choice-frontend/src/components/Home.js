@@ -62,7 +62,7 @@ function Home() {
         // Data has loaded, display options
         return (
             <div className="flex flex-col justify-center items-center">
-                <Header title={config.title} imageBlob={config.image_blob} />
+                <Header title={config.title} />
                 <div className="grid md:grid-cols-2 md:gap-10 max-w-max">
                     {courses.map(({ course_choice_id, display_name }, index) => (
                         <Card key={index}>

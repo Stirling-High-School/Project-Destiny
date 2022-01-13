@@ -210,7 +210,6 @@ export default function ActualForm({ profile, id }) {
                 <Header
                     title={config.title}
                     welcomeMessage={config.welcome_message}
-                    imageBlob={config.image_blob}
                     profile={profile} />
                 <form onSubmit={e => submitForm(e)}>
                     {/* Form class section */}
