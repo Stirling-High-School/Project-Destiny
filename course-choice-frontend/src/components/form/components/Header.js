@@ -31,7 +31,7 @@ export default function Header({ title, welcomeMessage, profile }) {
                         <img
                             src={profile.photoURL}
                             alt="profile"
-                            className="h-6 w-6 mr-2" />
+                            className="h-6 w-6 mr-2 rounded-full" />
                         <p className="text-xl">{profile.displayName}</p>
                     </div>
                 </div>}
