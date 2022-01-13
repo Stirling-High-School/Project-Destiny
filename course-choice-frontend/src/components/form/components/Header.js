@@ -1,7 +1,8 @@
 import Linkify from 'react-linkify';
+import Logo from '../../reusable/Logo';
 
 // Form page header
-export default function Header({ title, welcomeMessage, imageBlob, profile }) {
+export default function Header({ title, welcomeMessage, profile }) {
 
     // Open in new tab
     const componentDecorator = (href, text, key) => (
@@ -13,11 +14,7 @@ export default function Header({ title, welcomeMessage, imageBlob, profile }) {
     return (
         <div className="flex flex-col items-center mb-4">
             {/* Display the school logo from imageBlob */}
-            <img
-                style={{ width: "100px", height: "100px" }}
-                src={"data:image/png;base64," + imageBlob}
-                alt="SHS badge"
-            />
+            <Logo />
 
             {/* Header with form title */}
             <h1 className="text-3xl m-2 text-center">{title}</h1>
@@ -34,7 +31,7 @@ export default function Header({ title, welcomeMessage, imageBlob, profile }) {
                         <img
                             src={profile.photoURL}
                             alt="profile"
-                            className="h-6 w-6 mr-2" />
+                            className="h-6 w-6 mr-2 rounded-full" />
                         <p className="text-xl">{profile.displayName}</p>
                     </div>
                 </div>}
