@@ -114,10 +114,7 @@ export default function ActualForm({ profile, id }) {
 
             let submitValues = formValues;
 
-            console.log(submitValues)
-
             for (let i in submitValues.data.choices) {
-                console.log(submitValues.data.choices[i])
                 submitValues.data.choices[i].weight = submitValues.data.choices[i].weight.label
             }
 
@@ -126,7 +123,8 @@ export default function ActualForm({ profile, id }) {
             fetch(api, {
                 redirect: 'follow',
                 method: 'POST',
-                headers: { "Content-Type": "text/plain" },
+                mode: 'cors',
+                headers: { "Content-Type": "text/plain;charset=utf-8", },
                 crossDomain: true,
                 body: JSON.stringify(submitValues)
             })
