@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import axios from 'axios';
 import homeDataReducer from './reducers/homeDataReducer';
 import { useLocation, Redirect } from 'react-router-dom';
+import { Logo } from './reusable';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -122,11 +123,7 @@ function Form() {
                     <Card>
                         <div className="flex flex-col justify-center items-center align-middle">
                             {/* Display the school logo from imageBlob */}
-                            <img
-                                style={{ width: "100px", height: "100px" }}
-                                src={"data:image/png;base64," + config.image_blob}
-                                alt="SHS badge"
-                            />
+                            <Logo />
                             <h1 className="text-2xl mb-2">{formTitle}</h1>
                             <div className="flex flex-col items-center justify-center">
                                 <p className="flex justify-center mt-5 mb-1">To get started, please:</p>
