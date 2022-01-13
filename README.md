@@ -7,7 +7,7 @@
 [![Twitter](https://img.shields.io/twitter/follow/beecheyyy?style=social)](https://twitter.com/beecheyyy)
 [![Twitter](https://img.shields.io/twitter/follow/ach_henderson?style=social)](https://twitter.com/ach_henderson)
 
-Highly customisable online course choice form for high schools. This has been developed internally for [Stirling High School](https://www.stirlinghigh.co.uk), however the core system is extremely customisable, making it ideal for (mostly) every school's course choice use cases. All form responses are stored in a Google Sheet, and all customisation can be done through a separate configuration spreadsheet.
+Highly customisable online course choice form for high schools. This has been developed internally for [Stirling High School](https://www.stirlinghigh.co.uk), a Scottish high school, however the core system is extremely customisable, making it ideal for (mostly) every school's course choice use cases. All form responses are stored in a Google Sheet, and all customisation can be done through a separate configuration spreadsheet.
 
 Identification of users uses Google OAuth, which will require each of your schools students to have their own school Google Account. If you are a Google for Education school, this is yet another reason to use this service, however if you're not, it's not recommended that you use this system. However, if you, or anyone in your school, has some programming experience, feel free to fork this repository and alter it to suit your schools needs!
 
@@ -18,15 +18,17 @@ Identification of users uses Google OAuth, which will require each of your schoo
 
 ## Spreadsheet Format Overview
 
-Course choice form deployments are broken down into 3 parts: the overarching project configuration; the individual year configuration; and the individual year form responses.
+Course choice form deployments are broken down into 3 parts: the overarching project configuration; the individual year configuration; and the individual year form responses. This section gives a summary of the spreadsheets, the section below discusses how to set them up using the templates provided.
 
 ### Super Configuration
 
 Technically speaking, this allows the API to route requests to the correct year group form. It also gives you the ability to set whether the individual forms are live or not from one dashboard, as well as centralise common configuration, such as available course levels. In this spreadsheet, on the `Course ID Map` sheet, you configure the routing to all subsequent spreadsheets, which are discussed below.
 
+When deploying the project for your school, you only need to create one Super Configuration spreadsheet. Its this spreadsheet that will handle all relationships between the API and other individual year group spreadsheets.
+
 ### Year Configuration
 
-As each year group is likely offered different course options and levels, fine grain control is offered to each year group course choice form. Under the `Course Choices` sheet, you can configure the available courses and levels that are available for that year group to take. These are checkboxes, listed from C column to the right, and the column headings match those specified under the `display_name` column in the `Course Levels` sheet found in the Super Configuration Dashboard. If a year group is able to take a level for this course, simply check the box.
+As each year group is likely offered different course options and levels, fine grain control is offered to each year group course choice form. Under the `Course Choices` sheet, you can configure the available courses and levels that are available for that year group to take. These are checkboxes, listed from C column to the right, and the column headings match those specified under the `display_name` column in the `Course Levels` sheet found in the Super Configuration Dashboard. If a year group is able to take a level for this course, simply check the box. There are notes on each heading and config attribute to let you know what they do in more depth.
 
 ### Year Form Responses
 
@@ -52,6 +54,17 @@ You'll notice that the spreadsheets in the Drive folder have data pre populated.
 **discuss how the configuration is broken down into school, then individual courses**
 
 ### Adding a New Year Group Form
+
+[![Google Drive](https://img.shields.io/badge/Google%20Drive%20Folder-Clone%20Files-brightgreen)](https://drive.google.com/drive/folders/1aGFcdof33KhqZ3Pdomi1yxkQJHJKuqbM)
+
+It's important that you follow the below steps very carefully to make sure that you get everything up and running correctly.
+
+1. Enter your folder in Google Drive where all your course choice configuration is stored and create a new folder for the new year group (e.g. S1-2, S2-3 etc).
+2. Now, go to the Google Drive link above and make a copy of the `Form Response Template` and `Year Form Configuration Dashboard Template` into this newly created folder. Feel free to name them whatever you like, just make sure they'll make sense when you look at them in the future.
+3. Open up these 2 spreadsheets, and the super configuration spreadsheet in the root project directory. You'll need to add a new row to the `Course ID Map` sheet in the super configuration, make sure the id is unique and copy in the respective spreadsheet id's into the appropriate cells. Then go to the `Course Choices Live` sheet and add a new row, with the newly created ID and a checkbox, this is used to determine wether the course choice form is live or now, its probably best to leave it disabled for now, however make sure to enable it later.
+4. This is where you have to start making decisions about what you want the form to ask. Go to the newly created year group configuration spreadsheet.
+   1. The template comes with the ability to offer wider achievement options. If you don't want this, leave the `show_wider_achievement_options` box unchecked. Now open the year form responses spreadsheet and delete the `wider_achievement_options` column (right click on the column header and select delete), you can also remove the `Wider Achievement Choices` sheet. If you do want to offer wider achievement options, make sure to populate the `Wider Achievement Choices` sheet with the options you want to offer. Also in the config sheet, populate `wider_achievement_choice_count` and `wider_achievement_message`.
+   2. Whilst you're in the config sheet, read the notes of each key, and change the values to what you want them to be.
 
 ### API Setup
 
