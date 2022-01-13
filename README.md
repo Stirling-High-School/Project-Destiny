@@ -80,10 +80,22 @@ It's important that you follow the below steps very carefully to make sure that 
 
 **TODO - verify that the steps below are accurate**
 
-1. For our implementation, we deployed our website to Firebase because it offers free static hosting and is easy to set up, however you could deploy it to another service in a similar way. To create a Firebase project, go to the [Firebase console](https://console.firebase.google.com) and click `Create a project`. You can now name your project. You probably don't need Google Analytics so I'd recommend disabling it.
+1. For our implementation, we deployed our website to Firebase because it offers free static hosting and is easy to set up, however you could deploy it to another service in a similar way. To create a Firebase project, go to the [Firebase console](https://console.firebase.google.com) and click `Create a project`. You can now name your project. You probably don't need Google Analytics so I'd recommend disabling it. On the project overview page, click the add app button. Give your app a name, and then take a note of the firebase config under "Firebase SDK".
 2. To configure the website, clone the `course-choice-frontend` folder from the GitHub repository to your computer. Open up the `public` folder - this is where the favicon (the icon shown in the browser tab) and some logos are contained. Go to https://favicon.io/favicon-converter/ and upload the logo you'd like to use for the course choice forms. When you click `Download` you'll get a zipped folder containing a few different files. Extract this folder and copy favicon.ico to the public folder to replace the existing file. Rename the files `android-chrome-192x192` and `android-chrome-512x512` to `logo192` and `logo512` respectively and copy them to the public folder too. Next, open `index.html` and `manifest.json` and replace "SHS Course Choice Forms" and "SHS Course Choice" in each file with the title of your website.
-3. Next, you need to download and install [Node.js](https://nodejs.org/en/download/). Once Node.js is installed, open up a command line in the `course-choice-frontend` folder (this can be done by right clicking inside the folder and selecting `Open in terminal` on Windows/Linux) and run the command `npm install`. This will install all of the dependencies required to build the website. Once this is completed, run `npm build`. This will create a folder called `build`.
-4. Now we can deploy to Firebase! First, run `npm install -g firebase-tools` to install the Firebase CLI. When it has finished installing, run `firebase login` to log in. Once logged in, we can initialise the project by running `firebase init`:
+3. Now, in the course-choice-frontend folder, create a file called `.env`. This will hold some configuration for the website. Add the following (replacing the right hand side):
+   ```
+   REACT_APP_API_URL=Paste the deployed Web App URL that you copied earlier
+   REACT_APP_FIREBASE_API_KEY=apiKey from the firebaseConfig earlier
+   REACT_APP_FIREBASE_AUTH_DOMAIN=authDomain from the firebaseConfig earlier
+   REACT_APP_FIREBASE_PROJECT_ID=proectId from the firebaseConfig earlier
+   REACT_APP_FIREBASE_STORAGE_BUCKET=storageBucket from the firebaseConfig earlier
+   REACT_APP_FIREBASE_MESSAGING_SENDER_ID=messagingSenderId from the firebaseConfig earlier
+   REACT_APP_FIREBASE_APP_ID=appId from the firebaseConfig earlier
+   REACT_APP_GOOGLE_DOMAIN=The Google domain for your instutition (end of the email address)
+   ```
+   
+4. Next, you need to download and install [Node.js](https://nodejs.org/en/download/). Once Node.js is installed, open up a command line in the `course-choice-frontend` folder (this can be done by right clicking inside the folder and selecting `Open in terminal` on Windows/Linux) and run the command `npm install`. This will install all of the dependencies required to build the website. Once this is completed, run `npm build`. This will create a folder called `build`.
+5. Now we can deploy to Firebase! First, run `npm install -g firebase-tools` to install the Firebase CLI. When it has finished installing, run `firebase login` to log in. Once logged in, we can initialise the project by running `firebase init`:
 
    1. First, select "Hosting: Configure and deploy Firebase Hosting sites"
    2. Choose the option "Use an existing project" and press enter.
