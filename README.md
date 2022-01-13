@@ -14,7 +14,7 @@ Identification of users uses Google OAuth, which will require each of your schoo
 ## Tech Stack Overview
 
 - **Google App Script**: Whilst a slightly unconventional choice for backend languages, the simple integration with Google Sheets made it an ideal language for us to quickly develop a configuration dashboard, and insert form responses into a Google Sheet.
-- **React**: Extremely popular frontend Javascript framework which allowed us to build a highly customisable form, styled using Tailwind CSS. 
+- **React**: Extremely popular frontend Javascript framework which allowed us to build a highly customisable form, styled using Tailwind CSS.
 
 ## Spreadsheet Format Overview
 
@@ -44,8 +44,14 @@ All spreadsheets which are required for this part of the setup can be found with
 
 If you would like to see an example deployment (how SHS has used the system), checkout the `Example Deployment` folder. The file structure documented in this folder is how we would recommend using the system, in order to keep everything organised. To explain it here, we recommend creating a dedicated folder in your Google Drive, then adding the super configuration spreadsheet to this root directory. Then, create sub folder for each year group you would like to have a course choice form for, populating each sub-folder with an individual form configuration spreadsheet and form responses spreadsheet. The following setup guide will guide you to populating these spreadsheets. Please note most sheets have notes on cells discussing their uses.
 
+You'll notice that the spreadsheets in the Drive folder have data pre populated. This is to make it easier for you to get started, and to make it easier for us to understand how the system works, however feel free to delete it. If you ever need to see an example deployment, you can always find it in the `Example Deployment` folder.
+
+**It's imperative that you don't rename the sheets in any of these spreadsheets. They are effectively id's.** Do feel free to add your own additional sheets, especially in the form responses spreadsheet should you wish to do your own filtering, however **they cannot be named the same as any of the existing sheets. The system will be unable to process requests if these names are changed!**
+
 **list spreadsheet templates to copy and walkthrough of what to set**
 **discuss how the configuration is broken down into school, then individual courses**
+
+### Adding a New Year Group Form
 
 ### API Setup
 
@@ -66,14 +72,14 @@ If you would like to see an example deployment (how SHS has used the system), ch
 3. Next, you need to download and install [Node.js](https://nodejs.org/en/download/). Once Node.js is installed, open up a command line in the `course-choice-frontend` folder (this can be done by right clicking inside the folder and selecting `Open in terminal` on Windows/Linux) and run the command `npm install`. This will install all of the dependencies required to build the website. Once this is completed, run `npm build`. This will create a folder called `build`.
 4. Now we can deploy to Firebase! First, run `npm install -g firebase-tools` to install the Firebase CLI. When it has finished installing, run `firebase login` to log in. Once logged in, we can initialise the project by running `firebase init`:
 
-	1. First, select "Hosting: Configure and deploy Firebase Hosting sites"
-	2. Choose the option "Use an existing project" and press enter.
-	3. Select the Firebase project you just created.
-	4. Type `build` as the public directory folder.
-	5. When asked if we want to configure as a single-page app type `y` and press enter.
-	6. If it asks whether you'd like to override `build/index.html`, type `n` and press enter.
+   1. First, select "Hosting: Configure and deploy Firebase Hosting sites"
+   2. Choose the option "Use an existing project" and press enter.
+   3. Select the Firebase project you just created.
+   4. Type `build` as the public directory folder.
+   5. When asked if we want to configure as a single-page app type `y` and press enter.
+   6. If it asks whether you'd like to override `build/index.html`, type `n` and press enter.
 
-	That's the hosting set up! Now run `firebase deploy` to publish the website to the web!
+   That's the hosting set up! Now run `firebase deploy` to publish the website to the web!
 
 ### Additional Setup (optional!)
 
