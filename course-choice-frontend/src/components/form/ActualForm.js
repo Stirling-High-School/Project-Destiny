@@ -118,8 +118,6 @@ export default function ActualForm({ profile, id }) {
                 submitValues.data.choices[i].weight = submitValues.data.choices[i].weight.label
             }
 
-            console.log(submitValues)
-
             fetch(api, {
                 redirect: 'follow',
                 method: 'POST',
