@@ -133,12 +133,15 @@ export default function ActualForm({ profile, id }) {
 
             let submitValues = formValues;
             for (let i in submitValues.data.choices) {
-                if (submitValues.data.choices[i].weight) {
-                    submitValues.data.choices[i].weight = submitValues.data.choices[i].weight.label;
-                } else {
-                    submitValues.data.choices.splice(i);
+                if (!submitValues.data.choices[i].weight) {
+                    submitValues.data.choices.splice(i,1);
                 }
             }
+
+            for (let i in submitValues.data.choices) {
+                submitValues.data.choices[i].weight = submitValues.data.choices[i].weight.label;
+            }
+
 
             fetch(api, {
                 redirect: "follow",
