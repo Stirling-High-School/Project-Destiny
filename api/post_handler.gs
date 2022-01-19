@@ -10,10 +10,10 @@ function doPost(request) {
       initializeConfiguration(contents.data.course_choice_id);
 
       if (!checkFormAlreadySubmitted(contents.data.email)) {
-        storeFormResponse(contents.data);
+        emailData = JSON.parse(JSON.stringify(contents.data));
 
+        storeFormResponse(contents.data);
         /* Send confirmation email */
-        const emailData = JSON.parse(JSON.stringify(formResponseData));
         sendEmail(emailData);
 
         return Response(
