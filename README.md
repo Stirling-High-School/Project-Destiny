@@ -95,7 +95,7 @@ It's important that you follow the below steps very carefully to make sure that 
    REACT_APP_GOOGLE_DOMAIN=The Google domain for your instutition (end of the email address)
    ```
 
-4. Next, you need to download and install [Node.js](https://nodejs.org/en/download/). Once Node.js is installed, open up a command line in the `course-choice-frontend` folder (this can be done by right clicking inside the folder and selecting `Open in terminal` on Windows/Linux) and run the command `npm install`. This will install all of the dependencies required to build the website. Once this is completed, run `npm build`. This will create a folder called `build`.
+4. Next, you need to download and install [Node.js](https://nodejs.org/en/download/). Once Node.js is installed, open up a command line in the `course-choice-frontend` folder (this can be done by right clicking inside the folder and selecting `Open in terminal` on Windows/Linux) and run the command `npm install`. This will install all of the dependencies required to build the website. Once this is completed, run `npm run build`. This will create a folder called `build`.
 5. Now we can deploy to Firebase! First, run `npm install -g firebase-tools` to install the Firebase CLI. When it has finished installing, run `firebase login` to log in. Once logged in, we can initialise the project by running `firebase init`:
 
    1. First, select "Hosting: Configure and deploy Firebase Hosting sites"
