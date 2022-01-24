@@ -71,7 +71,7 @@ export default function ActualForm({ profile, id }) {
             try {
                 const result = await axios.get(api);
 
-                // If successfull, set data
+                // If successful, set data
                 if (result.data.status_code === 200) {
                     dispatchFetchData({
                         type: "DATA_FETCH_SUCCESS",
@@ -96,7 +96,7 @@ export default function ActualForm({ profile, id }) {
                     type: "DATA_FETCH_FAILURE",
                     payload: (
                         <MessageComponent
-                            message={"An unknown error has occured"}
+                            message={"An unknown error has occurred"}
                             description={"Please try again later."}
                             isError
                         />
@@ -142,6 +142,13 @@ export default function ActualForm({ profile, id }) {
                 submitValues.data.choices[i].weight = submitValues.data.choices[i].weight.label;
             }
 
+            let newChoices = [];
+            for (let i in submitValues.data.wider_achievement_options) {
+                if (!Array.isArray(submitValues.data.wider_achievement_options[i]) && submitValues.data.wider_achievement_options[i] !== "") {
+                    newChoices.push(submitValues.data.wider_achievement_options[i]);
+                }
+            }
+            submitValues.data.wider_achievement_options = newChoices;
 
             fetch(api, {
                 redirect: "follow",
@@ -215,7 +222,7 @@ export default function ActualForm({ profile, id }) {
         return (
             <MessageComponent
                 message={"Form submitted!"}
-                description={"You should recieve an email confirmation shortly."}
+                description={"You should receive an email confirmation shortly."}
             />
         );
     } else if (isSubmitError) {
@@ -275,6 +282,7 @@ export default function ActualForm({ profile, id }) {
                     {config.show_wider_achievement_options && (
                         <WiderAchievementOptions
                             wider_achievement_options={wider_achievement_options}
+                            wider_achievement_choice_count={config.wider_achievement_choice_count}
                             message={config.wider_achievement_message}
                             handleWiderAchievementChange={(values) =>
                                 handleWiderAchievementChange(values)

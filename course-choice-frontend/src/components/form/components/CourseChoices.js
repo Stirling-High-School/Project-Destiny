@@ -108,7 +108,8 @@ export default function SubjectChoices({
                 />
             ))}
 
-            {backupEnabled && (
+            {/* {backupEnabled && ( */}
+            {true && (
                 // Render the backup option
                 <BackupOption
                     allChoices={allChoices}
