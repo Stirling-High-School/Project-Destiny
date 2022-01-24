@@ -51,8 +51,6 @@ export default function ActualForm({ profile, id }) {
     const { data } = formValues;
     const { choices, optional_fields } = data;
 
-    console.log(data);
-
     // Submitted state
     const [submitted, dispatchSubmitted] = useReducer(submittedReducer, {
         isSubmitting: false,
@@ -151,8 +149,6 @@ export default function ActualForm({ profile, id }) {
                 }
             }
             submitValues.data.wider_achievement_options = newChoices;
-
-            console.log(submitValues);
 
             fetch(api, {
                 redirect: "follow",
