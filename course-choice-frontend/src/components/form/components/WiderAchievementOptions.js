@@ -17,7 +17,6 @@ export default function WiderAchievementOptions({ wider_achievement_options, wid
         newOptions[index] = value;
         setOptions(newOptions);
         handleWiderAchievementChange(newOptions);
-        // TODO Should this be a list? ^^^
     }
 
     return (

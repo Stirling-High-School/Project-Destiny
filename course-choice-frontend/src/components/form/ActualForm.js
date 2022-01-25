@@ -6,7 +6,7 @@ import {
     AdditionalFields,
     Submit,
     CourseChoices,
-    FormClass,
+    PersonalDetails,
     WiderAchievementOptions,
     Header,
 } from "./components";
@@ -205,6 +205,23 @@ export default function ActualForm({ profile, id }) {
         });
     };
 
+    // Name change
+    const handleNameChange = (e) => {
+        console.log(e);
+        dispatchFormValues({
+            type: "SET_NAME",
+            payload: e ? e.target.value : null,
+        });
+    }
+
+    // Email change
+    const handleEmailChange = (e) => {
+        dispatchFormValues({
+            type: "SET_EMAIL",
+            payload: e ? e.target.value : null,
+        });
+    }
+
     // Wider Achievement Change
     const handleWiderAchievementChange = (values) => {
         dispatchFormValues({
@@ -246,9 +263,13 @@ export default function ActualForm({ profile, id }) {
                 />
                 <form onSubmit={(e) => submitForm(e)}>
                     {/* Form class section */}
-                    <FormClass
+                    <PersonalDetails
                         formClasses={form_class_options}
                         handleFormClassChange={handleFormClassChange}
+                        name={formValues.data.name}
+                        handleNameChange={handleNameChange}
+                        email={formValues.data.email}
+                        handleEmailChange={handleEmailChange}
                         setFocusSet={(e) => setFocusSet(e)}
                         canFocus={!focusSet}
                     />
