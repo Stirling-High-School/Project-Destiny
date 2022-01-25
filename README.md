@@ -9,7 +9,7 @@
 
 Highly customisable online course choice form for high schools. This has been developed internally for [Stirling High School](https://www.stirlinghigh.co.uk), a Scottish high school, however the core system is extremely customisable, making it ideal for (mostly) every school's course choice use cases. All form responses are stored in a Google Sheet, and all customisation can be done through a separate configuration spreadsheet.
 
-> **If you're a school looking to maximise the potential of this system, please contact either of us directly (angushenderson04@gmail.com or davidtbeechey@gmail.com). We're happy to discuss your needs and help you modify this into a customised solution. Some examples may be: email aliases; custom response formatting; custom domain deployments; or customised branding.**
+> **If you're a school looking to maximise the potential of this system, please contact either of us directly (angushenderson04@gmail.com or david@dtbeechey.dev). We're happy to discuss your needs and help you modify this into a customised solution. Some examples may be: email aliases; custom response formatting; custom domain deployments; or customised branding.**
 
 Identification of users uses Google OAuth, which will require each of your schools students to have their own school Google Account. If you are a Google for Education school, this is yet another reason to use this service, however if you're not, it's not recommended that you use this system. However, if you, or anyone in your school, has some programming experience, feel free to fork this repository and alter it to suit your schools needs!
 
@@ -95,7 +95,7 @@ It's important that you follow the below steps very carefully to make sure that 
    REACT_APP_GOOGLE_DOMAIN=The Google domain for your instutition (end of the email address)
    ```
 
-4. Next, you need to download and install [Node.js](https://nodejs.org/en/download/). Once Node.js is installed, open up a command line in the `course-choice-frontend` folder (this can be done by right clicking inside the folder and selecting `Open in terminal` on Windows/Linux) and run the command `npm install`. This will install all of the dependencies required to build the website. Once this is completed, run `npm build`. This will create a folder called `build`.
+4. Next, you need to download and install [Node.js](https://nodejs.org/en/download/). Once Node.js is installed, open up a command line in the `course-choice-frontend` folder (this can be done by right clicking inside the folder and selecting `Open in terminal` on Windows/Linux) and run the command `npm install`. This will install all of the dependencies required to build the website. Once this is completed, run `npm run build`. This will create a folder called `build`.
 5. Now we can deploy to Firebase! First, run `npm install -g firebase-tools` to install the Firebase CLI. When it has finished installing, run `firebase login` to log in. Once logged in, we can initialise the project by running `firebase init`:
 
    1. First, select "Hosting: Configure and deploy Firebase Hosting sites"
