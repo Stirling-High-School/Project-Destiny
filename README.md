@@ -2,6 +2,11 @@
    <img src="readme-assets/project-destiny-logo-header.png?raw=true" alt="Project Destiny Header Logo" />
 </p>
 
+<p align="center"><b>
+Made with ❤️ by <a href="https://angushenderson.dev">Angus Henderson</a> and <a href="https://github.com/davidbeechey">David Beechey</a>
+</b></p>
+<br>
+
 [![Twitter](https://img.shields.io/twitter/follow/Stirling_High?style=social)](https://twitter.com/Stirling_High)
 [![Twitter](https://img.shields.io/twitter/follow/beecheyyy?style=social)](https://twitter.com/beecheyyy)
 [![Twitter](https://img.shields.io/twitter/follow/ach_henderson?style=social)](https://twitter.com/ach_henderson)
