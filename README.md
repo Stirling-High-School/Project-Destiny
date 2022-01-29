@@ -9,11 +9,15 @@
 [![Google Drive](https://img.shields.io/badge/Google%20Drive%20Folder-Clone%20Files-brightgreen)](https://drive.google.com/drive/folders/1aGFcdof33KhqZ3Pdomi1yxkQJHJKuqbM)
 [![App Script](https://img.shields.io/badge/Google%20App%20Script%20API-Clone-blue)](https://script.google.com/d/1Rh7b-zKP_G8Bsf_0FGsHX7yLJeHGuAO6TUnFcOmqAfoTMEQLTqs8qaTE/edit?usp=sharing)
 
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/digitalwizards)
+
 Highly customisable online course choice form for high schools. This has been developed internally for [Stirling High School](https://www.stirlinghigh.co.uk), a Scottish high school, however the core system is extremely customisable, making it ideal for (mostly) every school's course choice use cases. All form responses are stored in a Google Sheet, and all customisation can be done through a separate configuration spreadsheet.
 
-> **If you're a school looking to maximise the potential of this system, please contact either of us directly (angushenderson04@gmail.com or david@dtbeechey.dev). We're happy to discuss your needs and help you modify this into a customised solution. Some examples may be: email aliases; custom response formatting; custom domain deployments; or customised branding.**
+> **If you want to support the development of this project, please donate to Angus and David via Buy Me a Coffee! Your support would mean the absolute world to us! :D**<br>[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/digitalwizards)
 
-Identification of users uses Google OAuth, which will require each of your schools students to have their own school Google Account. If you are a Google for Education school, this is yet another reason to use this service, however if you're not, it's not recommended that you use this system. However, if you, or anyone in your school, has some programming experience, feel free to fork this repository and alter it to suit your schools needs!
+> **If you're a school looking to maximise the potential of this system, please contact either of us directly (angushenderson04@gmail.com or david@dtbeechey.dev). We're happy to discuss your needs and help you modify this into a customised solution. Some examples may be: a completely customised form; email aliases; custom response formatting; custom domain deployments; or customised branding.**
+
+Identification of users uses Google OAuth, which will require each of your schools students to have their own school Google Account. If you are a Google for Education school, this is yet another reason to use this service, however if you're not, it's not recommended that you use this system in its raw state, however, feel free to contact us at the email addresses above where we'll be more than happy to discuss system customisations. Alternatively, if you, or anyone in your school has some programming experience, feel free to fork this repository and alter it to suit your schools needs!
 
 # Tech Stack Overview
 
@@ -47,36 +51,23 @@ There are 3 main phases to this setup guide, with some additional optional steps
 
 [![Google Drive](https://img.shields.io/badge/Google%20Drive%20Folder-Clone%20Files-brightgreen)](https://drive.google.com/drive/folders/1aGFcdof33KhqZ3Pdomi1yxkQJHJKuqbM)
 
-All spreadsheets which are required for this part of the setup can be found within the `Generic Spreadsheet Templates` of the above Google Drive folder. Make a copy of these files to the Google Account you wish to deploy the API from. As these are just Google Sheets, feel free to share them with other members of staff, especially the Form Responses one, although its recommended to keep the Configuration sheets more private to avoid any accidental modifications.
+All spreadsheets which are required for this part of the setup can be found within the `Generic Spreadsheet Templates` of the above Google Drive folder. Make a copy of these files to the Google Account you wish to deploy the API from. As these are just Google Sheets, feel free to share them with other members of staff, especially the `Form Responses` sheet, although its recommended to keep the `Configuration` sheets more private to avoid any accidental modifications.
 
-If you would like to see an example deployment (how SHS has used the system), checkout the `Example Deployment` folder. The file structure documented in this folder is how we would recommend using the system, in order to keep everything organised. To explain it here, we recommend creating a dedicated folder in your Google Drive, then adding the super configuration spreadsheet to this root directory. Then, create sub folder for each year group you would like to have a course choice form for, populating each sub-folder with an individual form configuration spreadsheet and form responses spreadsheet. The following setup guide will guide you to populating these spreadsheets. Please note most sheets have notes on cells discussing their uses.
+If you would like to see an example deployment (how [Stirling High School](https://www.stirlinghigh.co.uk) has used the system), checkout the `Example Deployment` folder. The file structure documented in this folder is how we would recommend using the system, in order to keep everything organised. To explain it here, we recommend creating a dedicated folder in your Google Drive called something like `Course Choice Forms`, then adding the `Super Configuration Spreadsheet` to this root directory. Then, create sub folder for each year group you would like to have a course choice form for, populating each sub-folder with an individual `Form Configuration` spreadsheet and `Form Responses` spreadsheet. The following setup guide will help you populate these spreadsheets. Please note most sheets have notes on cells discussing their uses.
 
-You'll notice that the spreadsheets in the Drive folder have data pre populated. This is to make it easier for you to get started, and to make it easier for us to understand how the system works, however feel free to delete it. If you ever need to see an example deployment, you can always find it in the `Example Deployment` folder.
+You'll notice that the spreadsheets in the Drive folder have data pre populated. This is to make it easier for you to get started, and to understand how the system works, however feel free to delete it. If you ever need to see an example deployment, you can always find it in the `Example Deployment` folder.
+
+Populate all of these spreadsheets that you have just created with values appropriate for the course choices which your school offers. We'd recommend starting with one year group, then scaling the system to additional year groups from there. Later, once you have the website setup, make sure to try out the form and make sure the values appear as you would expect, and are inserted into the `Form Response` spreadsheet correctly (make sure to delete these responses before you share the site with students). If you notice any anomalies, refer back to this guide and make sure you have entered all data correctly.
 
 **It's imperative that you don't rename the sheets in any of these spreadsheets. They are effectively id's.** Do feel free to add your own additional sheets, especially in the form responses spreadsheet should you wish to do your own filtering, however **they cannot be named the same as any of the existing sheets. The system will be unable to process requests if these names are changed!**
-
-## Adding a New Year Group Form
-
-[![Google Drive](https://img.shields.io/badge/Google%20Drive%20Folder-Clone%20Files-brightgreen)](https://drive.google.com/drive/folders/1aGFcdof33KhqZ3Pdomi1yxkQJHJKuqbM)
-
-It's important that you follow the below steps very carefully to make sure that you get everything up and running correctly.
-
-1. Enter your folder in Google Drive where all your course choice configuration is stored and create a new folder for the new year group (e.g. S1-2, S2-3 etc).
-2. Now, go to the Google Drive link above and make a copy of the `Form Response Template` and `Year Form Configuration Dashboard Template` into this newly created folder. Feel free to name them whatever you like, just make sure they'll make sense when you look at them in the future.
-3. Open up these 2 spreadsheets, and the super configuration spreadsheet in the root project directory. You'll need to add a new row to the `Course ID Map` sheet in the super configuration, make sure the id is unique and copy in the respective spreadsheet id's into the appropriate cells. Then go to the `Course Choices Live` sheet and add a new row, with the newly created ID and a checkbox, this is used to determine wether the course choice form is live or now, its probably best to leave it disabled for now, however make sure to enable it later.
-4. This is where you have to start making decisions about what you want the form to ask. Go to the newly created year group configuration spreadsheet.
-   1. The template comes with the ability to offer wider achievement options. If you don't want this, leave the `show_wider_achievement_options` box unchecked. Now open the year form responses spreadsheet and delete the `wider_achievement_options` column (right click on the column header and select delete), you can also remove the `Wider Achievement Choices` sheet. If you do want to offer wider achievement options, make sure to populate the `Wider Achievement Choices` sheet with the options you want to offer. Also in the config sheet, populate `wider_achievement_choice_count` and `wider_achievement_message`.
-   2. Whilst you're in the config sheet, read the notes of each key, and change the values to what you want them to be.
-   3. Now, configure additional form response questions. To do so, open the `Additional Form Fields` sheet and add the rows which you require, make sure to read the column headings to ensure you fill out values correctly. Now, open the Form Responses sheet for this year group and add these newly created fields to the columns. List these to the right in row 1, and **note that the names have to be all lower case and spelled exactly the same as they are in the `Additional Form Fields` sheet**.
-5. Set this form to be live, then try it out. Fill out the form and make sure all the data is added to the responses spreadsheet correctly. If you notice anything out of place, revisit the above steps to ensure you have done everything correctly.
 
 ## API Setup
 
 [![App Script](https://img.shields.io/badge/Google%20App%20Script%20API-Clone-blue)](https://script.google.com/d/1Rh7b-zKP_G8Bsf_0FGsHX7yLJeHGuAO6TUnFcOmqAfoTMEQLTqs8qaTE/edit?usp=sharing)
 
-1. As mentioned previously, the entire backend is built using Google App Script. To get started, you need to clone the Google App Script to your Google Account. To do this, click the App Script link above, which will take you to the project. Press the Overview tab (the `i` icon on the left hand side of the screen), then `Make a copy` (the copy icon in the top right of the screen). This will make a copy of the project in your Google Drive. You can now close this tab. Open your Google Drive, and move this file to the root project folder you created in the Spreadsheet setup, this will help keep everything in one place.
+1. As mentioned previously, the entire backend is built using Google App Script. To get started, you need to clone the Google App Script project to your Google Account. To do this, click the App Script link above, which will take you to the project. Press the Overview tab (the `i` icon on the left hand side of the screen), then `Make a copy` (the copy icon in the top right of the screen). This will make a copy of the project in your Google Drive. You can now close this tab. Open your Google Drive and find the cloned project, and move this file to the root project folder you created in the Spreadsheet setup, this will help keep everything in one place.
 2. Next, open the cloned project, and open the config.gs file (you'll see this on the left hand panel). On line 2 of this file, you should see something along the lines of: `const ROOT_CONFIGURATION_SPREADSHEET_ID = "1laQGLcOqh0ukifaVeAjvBG7N9mWerIDB7tYOz1cZOa4";`. Replace the id inside the quotation marks with the id of your **root configuration spreadsheet** (see spreadsheet setup if you don't have this id stored). Finally, save the file by either pressing `Ctrl+S` or pressing the save icon along the top bar.
-3. Now press `Deploy` (the blue button in the top right), and select new deployment. Press `Web app` in the left hand column (if this doesn't appear press the settings cog on the left, then select `Web app` from the dropdown menu). Enter `live` into the Description box. Under `Execute as`, select `me` (you should see your email address as well). Finally, set `Who has access` to `Anyone`, and press `Deploy` (blue box in bottom right).
+3. Now press `Deploy` (the blue button in the top right), and select new deployment. Press `Web app` in the left hand column (if this doesn't appear press the settings cog on the left, then select `Web app` from the dropdown menu). Enter `PRODUCTION` into the Description box. Under `Execute as`, select `me` (you should see your email address as well). Finally, set `Who has access` to `Anyone`, and press `Deploy` (blue box in bottom right).
 4. Once deployed, copy the Web App URL, you'll need this later when setting up the frontend.
 5. You can now close this Google App Script window (as long as you have the Web App url saved somewhere for later!)
 
@@ -94,7 +85,7 @@ It's important that you follow the below steps very carefully to make sure that 
    REACT_APP_FIREBASE_STORAGE_BUCKET=storageBucket from the firebaseConfig earlier
    REACT_APP_FIREBASE_MESSAGING_SENDER_ID=messagingSenderId from the firebaseConfig earlier
    REACT_APP_FIREBASE_APP_ID=appId from the firebaseConfig earlier
-   REACT_APP_GOOGLE_DOMAIN=The Google domain for your instutition (end of the email address)
+   REACT_APP_GOOGLE_DOMAIN=The Google domain for your institution (end of the email address e.g. stirlingschools.net)
    ```
 
 4. Next, you need to download and install [Node.js](https://nodejs.org/en/download/). Once Node.js is installed, open up a command line in the `course-choice-frontend` folder (this can be done by right clicking inside the folder and selecting `Open in terminal` on Windows/Linux) and run the command `npm install`. This will install all of the dependencies required to build the website. Once this is completed, run `npm run build`. This will create a folder called `build`.
@@ -108,3 +99,36 @@ It's important that you follow the below steps very carefully to make sure that 
    6. If it asks whether you'd like to override `build/index.html`, type `n` and press enter.
 
    That's the hosting set up! Now run `firebase deploy` to publish the website to the web!
+
+# Additional Configuration Setup
+
+The following steps are not required for initial setup, however could be useful for the future, if you wish to use this form system for additional year groups, or offer additional course levels.
+
+## Adding a New Year Group Form
+
+[![Google Drive](https://img.shields.io/badge/Google%20Drive%20Folder-Clone%20Files-brightgreen)](https://drive.google.com/drive/folders/1aGFcdof33KhqZ3Pdomi1yxkQJHJKuqbM)
+
+It's important that you follow the below steps very carefully to make sure that you get everything up and running correctly.
+
+1. Enter your folder in Google Drive where all your course choice configuration is stored and create a new folder for the new year group (e.g. S1-2, S2-3 etc).
+2. Now, go to the Google Drive link above and make a copy of the `Form Response Template` and `Year Form Configuration Dashboard Template` into this newly created folder. Feel free to name them whatever you like, just make sure they'll make sense when you look at them in the future.
+3. Open up these 2 spreadsheets, and the super configuration spreadsheet in the root project directory. You'll need to add a new row to the `Course ID Map` sheet in the super configuration, make sure the id is unique and copy in the respective spreadsheet id's into the appropriate cells. Then go to the `Course Choices Live` sheet and add a new row, with the newly created ID and a checkbox, this is used to determine wether the course choice form is live or not, its probably best to leave it disabled for now, however make sure to enable it later.
+4. This is where you have to start making decisions about what you want the form to ask. Go to the newly created year group configuration spreadsheet.
+   1. The template comes with the ability to offer wider achievement options. If you don't want this, leave the `show_wider_achievement_options` box unchecked. Now open the year form responses spreadsheet and delete the `wider_achievement_options` column (right click on the column header and select delete), you can also remove the `Wider Achievement Choices` sheet. If you do want to offer wider achievement options, make sure to populate the `Wider Achievement Choices` sheet with the options you want to offer. Also in the config sheet, populate `wider_achievement_choice_count` and `wider_achievement_message`.
+   2. Whilst you're in the config sheet, read the notes of each key, and change the values to what you want them to be.
+   3. Now, configure additional form response questions. To do so, open the `Additional Form Fields` sheet and add the rows which you require, make sure to read the column headings to ensure you fill out values correctly. Now, open the Form Responses sheet for this year group and add these newly created fields to the columns. List these to the right in row 1, and **note that the names have to be all lower case and spelled exactly the same as they are in the `Additional Form Fields` sheet**.
+5. Populate all the Spreadsheets you have just created with the appropriate data and courses which you offer. You may find it easier to copy data from other year groups, then modify them as needed for the new year group.
+6. Set this form to be live, then try it out. Fill out the form and make sure all the data is added to the responses spreadsheet correctly. If you notice anything out of place, revisit the above steps to ensure you have done everything correctly.
+
+## Adding a New Course Level
+
+It's important that you follow teh below steps very carefully to make sure that you get everything up and running correctly.
+
+1. Open the `Super Configuration Dashboard` spreadsheet in the root project directory, then open the `Course Levels` spreadsheet. Add a new row to this sheet, and populate the cells appropriately (however over the column headers to get more information on what each column does).
+2. Open up all `Year Configuration` spreadsheets for all your year groups. Then, open the `Course Levels` sheet and add an additional column to the right, with the display name of the course just added in the column header (row 1). This must be spelled exactly the same as it appears in the `Course Levels` sheet in the `Super Configuration Dashboard` spreadsheet. You must populate the entire column with checkboxes. Initially, these can be all unchecked, but you can check them as you wish to offer the respective course level.
+3. **Repeat step 2 for each year group**
+
+<br>
+<p align="center"><b>
+Made with ❤️ by <a href="https://angushenderson.dev">Angus Henderson</a> and <a href="https://github.com/davidbeechey">David Beechey</a>
+</b></p>
