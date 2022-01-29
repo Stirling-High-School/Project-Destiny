@@ -3,7 +3,7 @@
 </p>
 
 <p align="center"><b>
-Made with ❤️ by <a href="https://angushenderson.dev">Angus Henderson</a> and <a href="https://github.com/davidbeechey">David Beechey</a>
+Made with ❤️ by <a href="https://angushenderson.dev">Angus Henderson</a> and <a href="https://links.dtbeechey.dev/">David Beechey</a>
 </b></p>
 <br>
 
@@ -135,5 +135,5 @@ It's important that you follow teh below steps very carefully to make sure that 
 
 <br>
 <p align="center"><b>
-Made with ❤️ by <a href="https://angushenderson.dev">Angus Henderson</a> and <a href="https://github.com/davidbeechey">David Beechey</a>
+Made with ❤️ by <a href="https://angushenderson.dev">Angus Henderson</a> and <a href="https://links.dtbeechey.dev/">David Beechey</a>
 </b></p>
