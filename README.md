@@ -24,6 +24,16 @@ Highly customisable online course choice form for high schools. This has been de
 
 Identification of users uses Google OAuth, which will require each of your schools students to have their own school Google Account. If you are a Google for Education school, this is yet another reason to use this service, however if you're not, it's not recommended that you use this system in its raw state, however, feel free to contact us at the email addresses above where we'll be more than happy to discuss system customisations. Alternatively, if you, or anyone in your school has some programming experience, feel free to fork this repository and alter it to suit your schools needs!
 
+# Core Features
+
+- Easily configurable course choices and levels
+- Additional form fields to gather additional information from students (e.g. career aspirations and expected destinations)
+- Wider achievement options
+- Student email confirmations
+- Extremely clean design
+- Easily scalable across multiple year groups
+- Save hours of admin time
+
 # Tech Stack Overview
 
 - **Google App Script**: Whilst a slightly unconventional choice for backend languages, the simple integration with Google Sheets made it an ideal language for us to quickly develop a configuration dashboard, and insert form responses into a Google Sheet.
