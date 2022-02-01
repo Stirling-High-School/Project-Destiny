@@ -26,13 +26,13 @@ Identification of users uses Google OAuth, which will require each of your schoo
 
 # Core Features
 
-- Easily configurable course choices and levels
-- Additional form fields to gather additional information from students (e.g. career aspirations and expected destinations)
-- Wider achievement options
-- Student email confirmations
-- Extremely clean design
-- Easily scalable across multiple year groups
-- Save hours of admin time
+- ⚙ Easily configurable course choices and levels
+- 📝Additional form fields to gather additional information from students (e.g. career aspirations and expected destinations)
+- 🏅Wider achievement options
+- 📧Student email confirmations
+- 🧼Extremely clean design
+- 🚧Easily scalable across multiple year groups
+- ⏳ Save hours of admin time
 
 
 # Screenshots
