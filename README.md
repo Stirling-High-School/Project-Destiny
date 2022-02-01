@@ -34,6 +34,13 @@ Identification of users uses Google OAuth, which will require each of your schoo
 - Easily scalable across multiple year groups
 - Save hours of admin time
 
+
+# Screenshots
+
+Shown below are some key sections from the form configured for [Stirling High School](https://www.stirlinghigh.co.uk) to give you a demo of what this system can look like!
+
+<img src="readme-assets/header.png" width="45%"></img> <img src="readme-assets/course-choices-section.png" width="45%"></img> <img src="readme-assets/sign-in-with-google.png" width="45%"></img> <img src="readme-assets/additional-form-fields.png" width="45%"></img>
+
 # Tech Stack Overview
 
 - **Google App Script**: Whilst a slightly unconventional choice for backend languages, the simple integration with Google Sheets made it an ideal language for us to quickly develop a configuration dashboard, and insert form responses into a Google Sheet.
